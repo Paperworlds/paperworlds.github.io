@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Paperworlds</title>
+<meta name="description" content="Tools for multi-agent AI development with Claude Code, born from building a text-based RPG.">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'SF Mono', 'Fira Code', 'Cascadia Code', 'JetBrains Mono', monospace;
+    background: #0d1117;
+    color: #c9d1d9;
+    line-height: 1.6;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+  }
+
+  a { color: #58a6ff; text-decoration: none; }
+  a:hover { text-decoration: underline; }
+
+  .container {
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 0 24px;
+    width: 100%;
+  }
+
+  header {
+    padding: 80px 0 40px;
+    text-align: center;
+  }
+
+  h1 {
+    font-size: 2.4rem;
+    color: #f0f6fc;
+    font-weight: 600;
+    letter-spacing: -0.5px;
+  }
+
+  .tagline {
+    margin-top: 16px;
+    font-size: 1.05rem;
+    color: #8b949e;
+    max-width: 540px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .intro {
+    padding: 0 0 48px;
+    color: #8b949e;
+    font-size: 0.9rem;
+    text-align: center;
+  }
+
+  .tools {
+    padding: 0 0 64px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  .tool {
+    border: 1px solid #21262d;
+    border-radius: 8px;
+    padding: 24px;
+    background: #161b22;
+    transition: border-color 0.2s;
+  }
+
+  .tool:hover { border-color: #30363d; }
+
+  .tool-header {
+    display: flex;
+    align-items: baseline;
+    gap: 12px;
+    margin-bottom: 8px;
+  }
+
+  .tool-number {
+    font-size: 0.8rem;
+    color: #484f58;
+    font-weight: 600;
+  }
+
+  .tool-name {
+    font-size: 1.15rem;
+    color: #f0f6fc;
+    font-weight: 600;
+  }
+
+  .tool-badge {
+    font-size: 0.7rem;
+    color: #3fb950;
+    border: 1px solid #238636;
+    border-radius: 12px;
+    padding: 2px 8px;
+    margin-left: auto;
+  }
+
+  .tool-badge.soon {
+    color: #d29922;
+    border-color: #9e6a03;
+  }
+
+  .tool-desc {
+    color: #8b949e;
+    font-size: 0.88rem;
+  }
+
+  .divider {
+    border: none;
+    border-top: 1px solid #21262d;
+    margin: 48px 0;
+  }
+
+  footer {
+    margin-top: auto;
+    padding: 32px 0;
+    text-align: center;
+    color: #484f58;
+    font-size: 0.78rem;
+  }
+
+  footer a { color: #6e7681; }
+
+  @media (max-width: 480px) {
+    header { padding: 48px 0 24px; }
+    h1 { font-size: 1.8rem; }
+    .tool { padding: 16px; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="container">
+    <h1>Paperworlds</h1>
+    <p class="tagline">We're building a text-based multiplayer RPG. Along the way we had to build tools to manage multi-agent AI development with Claude Code. They turned out to be useful on their own.</p>
+  </div>
+</header>
+
+<main class="container">
+  <p class="intro">The game is in private alpha. The tools are open — explore them in order.</p>
+
+  <div class="tools">
+    <a href="https://github.com/paperworlds/textaccounts" class="tool">
+      <div class="tool-header">
+        <span class="tool-number">01</span>
+        <span class="tool-name">textaccounts</span>
+        <span class="tool-badge">available</span>
+      </div>
+      <p class="tool-desc">Manage multiple Claude Code accounts with full directory isolation. Claude doesn't have profile switching — we needed separate work/personal accounts with isolated sessions, memory, and settings.</p>
+    </a>
+
+    <a href="https://github.com/paperworlds/textsessions" class="tool">
+      <div class="tool-header">
+        <span class="tool-number">02</span>
+        <span class="tool-name">textsessions</span>
+        <span class="tool-badge">available</span>
+      </div>
+      <p class="tool-desc">TUI for Claude Code session management. Browse, search, tag, and resume sessions across repos and profiles. Built for heavy users who lose track of dozens of parallel conversations.</p>
+    </a>
+
+    <a href="https://github.com/paperworlds" class="tool">
+      <div class="tool-header">
+        <span class="tool-number">03</span>
+        <span class="tool-name">textprompts</span>
+        <span class="tool-badge soon">coming soon</span>
+      </div>
+      <p class="tool-desc">Coordinate multi-agent work on single repos. Decompose features into ordered prompt files, run them as a DAG, track progress and cost. The orchestration layer that ties it all together.</p>
+    </a>
+  </div>
+</main>
+
+<footer>
+  <div class="container">
+    Tools released under the <a href="https://www.elastic.co/licensing/elastic-license">Elastic License 2.0</a> &mdash; free to use, not to redistribute.
+    <br>
+    <a href="https://github.com/paperworlds">github.com/paperworlds</a>
+  </div>
+</footer>
+
+</body>
+</html>
