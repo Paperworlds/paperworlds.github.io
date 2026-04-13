@@ -111,6 +111,21 @@
     border-color: #30363d;
   }
 
+  .tool-badge.revisiting {
+    color: #bc8cff;
+    border-color: #8b5cf6;
+  }
+
+  .tool-badge.alpha {
+    color: #f97583;
+    border-color: #da3633;
+  }
+
+  .tool-badge.tbd {
+    color: #6e7681;
+    border-color: #30363d;
+  }
+
   .tool-desc {
     color: #8b949e;
     font-size: 0.88rem;
@@ -152,9 +167,18 @@
   <p class="intro">The <code>text-</code> prefix is the philosophy: no GUIs, no web dashboards, no electron wrappers. If it doesn't work in a terminal, we don't ship it. Explore the tools in order.</p>
 
   <div class="tools">
-    <a href="https://github.com/paperworlds/textaccounts" class="tool">
+    <a href="https://github.com/paperworlds" class="tool">
       <div class="tool-header">
         <span class="tool-number">01</span>
+        <span class="tool-name">textworkspace</span>
+        <span class="tool-badge soon">coming soon</span>
+      </div>
+      <p class="tool-desc">One install, one CLI for the entire text- stack. Onboards you through the tools in dependency order, bootstraps Go binaries from GitHub releases, and exposes custom combo commands that chain actions across tools. The package manager for Paperworlds.</p>
+    </a>
+
+    <a href="https://github.com/paperworlds/textaccounts" class="tool">
+      <div class="tool-header">
+        <span class="tool-number">02</span>
         <span class="tool-name">textaccounts</span>
         <span class="tool-badge">available</span>
       </div>
@@ -163,7 +187,7 @@
 
     <a href="https://github.com/paperworlds/textproxy" class="tool">
       <div class="tool-header">
-        <span class="tool-number">02</span>
+        <span class="tool-number">03</span>
         <span class="tool-name">textproxy</span>
         <span class="tool-badge optional">optional</span>
       </div>
@@ -172,20 +196,11 @@
 
     <a href="https://github.com/paperworlds/textsessions" class="tool">
       <div class="tool-header">
-        <span class="tool-number">03</span>
+        <span class="tool-number">04</span>
         <span class="tool-name">textsessions</span>
         <span class="tool-badge">available</span>
       </div>
       <p class="tool-desc">TUI for Claude Code session management. Browse, search, tag, and resume sessions across repos and profiles. Built for heavy users who lose track of dozens of parallel conversations.</p>
-    </a>
-
-    <a href="https://github.com/paperworlds" class="tool">
-      <div class="tool-header">
-        <span class="tool-number">04</span>
-        <span class="tool-name">textprompts</span>
-        <span class="tool-badge soon">coming soon</span>
-      </div>
-      <p class="tool-desc">Coordinate multi-agent work on single repos. Decompose features into ordered prompt files, run them as a DAG, track progress and cost. The orchestration layer that ties it all together.</p>
     </a>
 
     <a href="https://github.com/paperworlds" class="tool">
@@ -195,6 +210,33 @@
         <span class="tool-badge soon">coming soon</span>
       </div>
       <p class="tool-desc">Fleet manager for MCP servers. Start, stop, and monitor Docker-based and native MCP servers from a single CLI. Injects credentials from your password manager at runtime and auto-registers servers with Claude Code.</p>
+    </a>
+
+    <a href="https://github.com/paperworlds" class="tool">
+      <div class="tool-header">
+        <span class="tool-number">06</span>
+        <span class="tool-name">textprompts</span>
+        <span class="tool-badge revisiting">revisiting</span>
+      </div>
+      <p class="tool-desc">Coordinate multi-agent work on single repos. Decompose features into ordered prompt files, run them as a DAG, track progress and cost. The orchestration layer that ties it all together.</p>
+    </a>
+
+    <a href="https://github.com/paperworlds" class="tool">
+      <div class="tool-header">
+        <span class="tool-number">07</span>
+        <span class="tool-name">textworlds</span>
+        <span class="tool-badge alpha">alpha</span>
+      </div>
+      <p class="tool-desc">Text-based multiplayer RPG — the project that started it all. Everything in the Paperworlds stack was born from building this game. Persistent world, AI-driven NPCs, terminal-native gameplay.</p>
+    </a>
+
+    <a href="https://github.com/paperworlds" class="tool">
+      <div class="tool-header">
+        <span class="tool-number">08</span>
+        <span class="tool-name">textcombos</span>
+        <span class="tool-badge tbd">tbd</span>
+      </div>
+      <p class="tool-desc">Community-shared workflow recipes for textworkspace. YAML files that chain tool actions into reusable combos — install from local files, gists, or repos. Define your own, share with your team.</p>
     </a>
   </div>
 </main>
