@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Paperworlds</title>
-<meta name="description" content="Text-first tools for AI development with Claude Code — everything runs in the terminal.">
+<meta name="description" content="A text-based multiplayer RPG and the AI development tools born from building it.">
 <style>
   * { margin: 0; padding: 0; box-sizing: border-box; }
 
@@ -21,15 +21,8 @@
   a { color: #58a6ff; text-decoration: none; }
   a:hover { text-decoration: underline; }
 
-  .container {
-    max-width: 720px;
-    margin: 0 auto;
-    padding: 0 24px;
-    width: 100%;
-  }
-
   header {
-    padding: 80px 0 40px;
+    padding: 80px 0 72px;
     text-align: center;
   }
 
@@ -49,26 +42,147 @@
     margin-right: auto;
   }
 
-  .intro {
-    padding: 0 0 48px;
-    color: #8b949e;
-    font-size: 0.9rem;
-    text-align: center;
+  /* Layout: sidebar + content */
+  .page {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 0 24px;
+    width: 100%;
+    display: flex;
+    gap: 0;
+    flex: 1;
   }
 
-  .tools {
-    padding: 0 0 64px;
+  .sidebar {
+    width: 140px;
+    flex-shrink: 0;
+    padding-top: 4px;
+  }
+
+  .sidebar-nav {
+    position: sticky;
+    top: 48px;
     display: flex;
     flex-direction: column;
-    gap: 20px;
+    gap: 2px;
+  }
+
+  .sidebar-item {
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: #30363d;
+    padding: 6px 0 6px 12px;
+    border-left: 2px solid #21262d;
+    transition: color 0.2s, border-color 0.2s;
+    text-decoration: none;
+    display: block;
+  }
+
+  .sidebar-item:hover {
+    color: #6e7681;
+    text-decoration: none;
+  }
+
+  .sidebar-item.active {
+    color: #f0f6fc;
+    border-left-color: #f0f6fc;
+  }
+
+  .content {
+    flex: 1;
+    min-width: 0;
+    padding-left: 48px;
+    border-left: 1px solid #21262d;
+  }
+
+  /* Sections */
+  .section {
+    padding: 0 0 96px;
+  }
+
+  .section-label {
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: #484f58;
+    margin-bottom: 32px;
+  }
+
+  /* Manifesto */
+  .manifesto {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .manifesto p {
+    font-size: 0.95rem;
+    color: #c9d1d9;
+  }
+
+  .manifesto p.origin {
+    margin-top: 28px;
+    font-size: 0.85rem;
+    color: #6e7681;
+    border-left: 2px solid #21262d;
+    padding-left: 16px;
+    line-height: 1.7;
+  }
+
+  /* Game section */
+  .game-card {
+    border: 1px solid #21262d;
+    border-radius: 8px;
+    padding: 28px;
+    background: #161b22;
+  }
+
+  .game-card-header {
+    display: flex;
+    align-items: baseline;
+    gap: 12px;
+    margin-bottom: 16px;
+  }
+
+  .game-name {
+    font-size: 1.25rem;
+    color: #f0f6fc;
+    font-weight: 600;
+  }
+
+  .game-card p {
+    font-size: 0.88rem;
+    color: #8b949e;
+    margin-bottom: 12px;
+    line-height: 1.7;
+  }
+
+  .game-card p:last-child { margin-bottom: 0; }
+
+  .game-card p.tease {
+    color: #6e7681;
+    border-left: 2px solid #21262d;
+    padding-left: 14px;
+    font-style: italic;
+  }
+
+  /* Tools */
+  .tools {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
   }
 
   .tool {
     border: 1px solid #21262d;
     border-radius: 8px;
-    padding: 24px;
+    padding: 22px 24px;
     background: #161b22;
     transition: border-color 0.2s;
+    display: block;
   }
 
   .tool:hover { border-color: #30363d; }
@@ -77,200 +191,221 @@
     display: flex;
     align-items: baseline;
     gap: 12px;
-    margin-bottom: 8px;
+    margin-bottom: 6px;
   }
 
   .tool-number {
-    font-size: 0.8rem;
+    font-size: 0.78rem;
     color: #484f58;
     font-weight: 600;
   }
 
   .tool-name {
-    font-size: 1.15rem;
+    font-size: 1.1rem;
     color: #f0f6fc;
     font-weight: 600;
   }
 
   .tool-badge {
-    font-size: 0.7rem;
+    font-size: 0.68rem;
     color: #3fb950;
     border: 1px solid #238636;
     border-radius: 12px;
     padding: 2px 8px;
     margin-left: auto;
+    white-space: nowrap;
   }
 
-  .tool-badge.soon {
-    color: #d29922;
-    border-color: #9e6a03;
-  }
-
-  .tool-badge.optional {
-    color: #8b949e;
-    border-color: #30363d;
-  }
-
-  .tool-badge.revisiting {
-    color: #bc8cff;
-    border-color: #8b5cf6;
-  }
-
-  .tool-badge.alpha {
-    color: #f97583;
-    border-color: #da3633;
-  }
-
-  .tool-badge.tbd {
-    color: #6e7681;
-    border-color: #30363d;
-  }
-
-  .tool-badge.manager {
-    color: #58a6ff;
-    border-color: #388bfd;
-  }
+  .tool-badge.soon    { color: #d29922; border-color: #9e6a03; }
+  .tool-badge.optional { color: #8b949e; border-color: #30363d; }
+  .tool-badge.revisiting { color: #bc8cff; border-color: #8b5cf6; }
+  .tool-badge.alpha   { color: #f97583; border-color: #da3633; }
+  .tool-badge.tbd     { color: #6e7681; border-color: #30363d; }
+  .tool-badge.manager { color: #58a6ff; border-color: #388bfd; }
 
   .tool-desc {
     color: #8b949e;
-    font-size: 0.88rem;
-  }
-
-  .divider {
-    border: none;
-    border-top: 1px solid #21262d;
-    margin: 48px 0;
+    font-size: 0.86rem;
+    line-height: 1.65;
   }
 
   footer {
     margin-top: auto;
-    padding: 32px 0;
+    padding: 40px 0;
     text-align: center;
     color: #484f58;
     font-size: 0.78rem;
+    border-top: 1px solid #21262d;
   }
 
   footer a { color: #6e7681; }
 
-  @media (max-width: 480px) {
-    header { padding: 48px 0 24px; }
+  @media (max-width: 640px) {
+    .page { flex-direction: column; }
+    .sidebar { width: 100%; padding: 0 0 32px; }
+    .sidebar-nav { flex-direction: row; gap: 16px; }
+    .sidebar-item { border-left: none; border-bottom: 2px solid #21262d; padding-left: 0; padding-bottom: 8px; }
+    .sidebar-item.active { border-bottom-color: #484f58; }
+    .content { padding-left: 0; border-left: none; border-top: 1px solid #21262d; padding-top: 32px; }
+    header { padding: 48px 0 40px; }
     h1 { font-size: 1.8rem; }
-    .tool { padding: 16px; }
   }
 </style>
 </head>
 <body>
 
 <header>
-  <div class="container">
-    <h1>Paperworlds</h1>
-    <p class="tagline">Text-first tools for AI development with Claude Code. Everything is a TUI, everything runs in your terminal. Born from building a text-based multiplayer RPG — still in private alpha.</p>
-  </div>
+  <h1>Paperworlds</h1>
+  <p class="tagline">A text-based multiplayer RPG — and all the AI development tools that got built along the way.</p>
 </header>
 
-<main class="container">
-  <p class="intro">The <code>text-</code> prefix is the philosophy: no GUIs, no web dashboards, no electron wrappers. If it doesn't work in a terminal, we don't ship it. Explore the tools in order.</p>
+<div class="page">
 
-  <div class="tools">
-    <a href="https://github.com/paperworlds" class="tool">
-      <div class="tool-header">
-        <span class="tool-number">01</span>
-        <span class="tool-name">textworkspace</span>
-        <span class="tool-badge manager">manager</span>
-      </div>
-      <p class="tool-desc">One install, one CLI for the entire text- stack. Onboards you through the tools in dependency order, bootstraps Go binaries from GitHub releases, and exposes custom combo commands that chain actions across tools. The package manager for Paperworlds.</p>
-    </a>
+  <nav class="sidebar">
+    <div class="sidebar-nav">
+      <a href="#philosophy" class="sidebar-item" data-section="philosophy">Philosophy</a>
+      <a href="#game" class="sidebar-item" data-section="game">The Game</a>
+      <a href="#tools" class="sidebar-item" data-section="tools">The Tools</a>
+    </div>
+  </nav>
 
-    <a href="https://github.com/paperworlds/textaccounts" class="tool">
-      <div class="tool-header">
-        <span class="tool-number">02</span>
-        <span class="tool-name">textaccounts</span>
-        <span class="tool-badge">available</span>
-      </div>
-      <p class="tool-desc">Manage multiple Claude Code accounts with full directory isolation. Claude doesn't have profile switching — we needed separate work/personal accounts with isolated sessions, memory, and settings.</p>
-    </a>
+  <main class="content">
 
-    <a href="https://github.com/paperworlds/textproxy" class="tool">
-      <div class="tool-header">
-        <span class="tool-number">03</span>
-        <span class="tool-name">textproxy</span>
-        <span class="tool-badge optional">optional</span>
+    <div class="section" id="philosophy">
+      <div class="section-label">Philosophy</div>
+      <div class="manifesto">
+        <p>No GUIs. No dashboards. No Electron wrappers.</p>
+        <p>If it doesn't run in a terminal, we don't ship it.</p>
+        <p>Text is the interface. The keyboard is the mouse. The shell is the OS.</p>
+        <p>Every tool does one thing. Every tool composes with the others.</p>
+        <p class="origin">It started as a text-based multiplayer RPG. Building the game meant building tools — for managing Claude Code sessions, switching accounts, coordinating agents across repos. Those tools kept growing. At some point the tooling became its own project. This is that project.</p>
       </div>
-      <p class="tool-desc">Local proxy for Claude API that captures token consumption stats. Understand how your agentic workflows spend tokens — per session, per prompt, per model. Part of the exploration into making AI development more observable.</p>
-    </a>
+    </div>
 
-    <a href="https://github.com/paperworlds/textsessions" class="tool">
-      <div class="tool-header">
-        <span class="tool-number">04</span>
-        <span class="tool-name">textsessions</span>
-        <span class="tool-badge">available</span>
+    <div class="section" id="game">
+      <div class="section-label">The Game</div>
+      <div class="game-card">
+        <div class="game-card-header">
+          <span class="game-name">textworlds</span>
+          <span class="tool-badge alpha">alpha</span>
+        </div>
+        <p>A persistent text-based multiplayer RPG. Players connect from any terminal — or any client that speaks the protocol. AI-driven NPCs share the world with human players. Everything is text. Everything is live.</p>
+        <p>We are building an open client/server standard around the game: a typed WebSocket protocol, a reference server, and a web client — so the world can be reached from anywhere, and anyone can build a client against the spec.</p>
+        <p class="tease">There is something else. The boundary between the game world and everything outside it is not as fixed as it looks. More on that when it's ready.</p>
       </div>
-      <p class="tool-desc">TUI for Claude Code session management. Browse, search, tag, and resume sessions across repos and profiles. Built for heavy users who lose track of dozens of parallel conversations.</p>
-    </a>
+    </div>
 
-    <a href="https://github.com/paperworlds" class="tool">
-      <div class="tool-header">
-        <span class="tool-number">05</span>
-        <span class="tool-name">textserve</span>
-        <span class="tool-badge soon">coming soon</span>
-      </div>
-      <p class="tool-desc">Fleet manager for MCP servers. Start, stop, and monitor Docker-based and native MCP servers from a single CLI. Injects credentials from your password manager at runtime and auto-registers servers with Claude Code.</p>
-    </a>
+    <div class="section" id="tools">
+      <div class="section-label">The Tools</div>
+      <div class="tools">
 
-    <a href="https://github.com/paperworlds" class="tool">
-      <div class="tool-header">
-        <span class="tool-number">06</span>
-        <span class="tool-name">textmap</span>
-        <span class="tool-badge soon">coming soon</span>
-      </div>
-      <p class="tool-desc">Knowledge graph as single source of truth for your local MCP infrastructure. Maps servers, credentials, dependencies, and tags in one queryable graph. The config layer that textserve and textworkspace read from.</p>
-    </a>
+        <a href="https://github.com/paperworlds" class="tool">
+          <div class="tool-header">
+            <span class="tool-number">01</span>
+            <span class="tool-name">textworkspace</span>
+            <span class="tool-badge manager">manager</span>
+          </div>
+          <p class="tool-desc">One install, one CLI for the entire text- stack. Onboards you through the tools in dependency order, bootstraps Go binaries from GitHub releases, and exposes custom combo commands that chain actions across tools. The package manager for Paperworlds.</p>
+        </a>
 
-    <a href="https://github.com/paperworlds" class="tool">
-      <div class="tool-header">
-        <span class="tool-number">07</span>
-        <span class="tool-name">textprompts</span>
-        <span class="tool-badge revisiting">revisiting</span>
-      </div>
-      <p class="tool-desc">Coordinate multi-agent work on single repos. Decompose features into ordered prompt files, run them as a DAG, track progress and cost. The orchestration layer that ties it all together.</p>
-    </a>
+        <a href="https://github.com/paperworlds/textaccounts" class="tool">
+          <div class="tool-header">
+            <span class="tool-number">02</span>
+            <span class="tool-name">textaccounts</span>
+            <span class="tool-badge">available</span>
+          </div>
+          <p class="tool-desc">Manage multiple Claude Code accounts with full directory isolation. Claude doesn't have profile switching — we needed separate work/personal accounts with isolated sessions, memory, and settings.</p>
+        </a>
 
-    <a href="https://github.com/paperworlds" class="tool">
-      <div class="tool-header">
-        <span class="tool-number">08</span>
-        <span class="tool-name">textworlds</span>
-        <span class="tool-badge alpha">alpha</span>
-      </div>
-      <p class="tool-desc">Text-based multiplayer RPG — the project that started it all. Everything in the Paperworlds stack was born from building this game. Persistent world, AI-driven NPCs, terminal-native gameplay.</p>
-    </a>
+        <a href="https://github.com/paperworlds/textproxy" class="tool">
+          <div class="tool-header">
+            <span class="tool-number">03</span>
+            <span class="tool-name">textproxy</span>
+            <span class="tool-badge optional">optional</span>
+          </div>
+          <p class="tool-desc">Local proxy for Claude API that captures token consumption stats. Understand how your agentic workflows spend tokens — per session, per prompt, per model. Part of the exploration into making AI development more observable.</p>
+        </a>
 
-    <a href="https://github.com/paperworlds" class="tool">
-      <div class="tool-header">
-        <span class="tool-number">09</span>
-        <span class="tool-name">textcombos</span>
-        <span class="tool-badge tbd">tbd</span>
-      </div>
-      <p class="tool-desc">Community-shared workflow recipes for textworkspace. YAML files that chain tool actions into reusable combos — install from local files, gists, or repos. Define your own, share with your team.</p>
-    </a>
+        <a href="https://github.com/paperworlds/textsessions" class="tool">
+          <div class="tool-header">
+            <span class="tool-number">04</span>
+            <span class="tool-name">textsessions</span>
+            <span class="tool-badge">available</span>
+          </div>
+          <p class="tool-desc">TUI for Claude Code session management. Browse, search, tag, and resume sessions across repos and profiles. Built for heavy users who lose track of dozens of parallel conversations.</p>
+        </a>
 
-    <a href="https://github.com/paperworlds/textworkspace" class="tool">
-      <div class="tool-header">
-        <span class="tool-number">10</span>
-        <span class="tool-name">textforums</span>
-        <span class="tool-badge">available</span>
+        <a href="https://github.com/paperworlds/textworkspace" class="tool">
+          <div class="tool-header">
+            <span class="tool-number">05</span>
+            <span class="tool-name">textforums</span>
+            <span class="tool-badge">available</span>
+          </div>
+          <p class="tool-desc">Async coordination layer for Claude Code sessions. Post threads when you hit a cross-repo dependency, pick them up from another session. File-based, YAML threads, zero infrastructure. Ships inside textworkspace.</p>
+        </a>
+
+        <a href="https://github.com/paperworlds" class="tool">
+          <div class="tool-header">
+            <span class="tool-number">06</span>
+            <span class="tool-name">textserve</span>
+            <span class="tool-badge soon">coming soon</span>
+          </div>
+          <p class="tool-desc">Fleet manager for MCP servers. Start, stop, and monitor Docker-based and native MCP servers from a single CLI. Injects credentials from your password manager at runtime and auto-registers servers with Claude Code.</p>
+        </a>
+
+        <a href="https://github.com/paperworlds" class="tool">
+          <div class="tool-header">
+            <span class="tool-number">07</span>
+            <span class="tool-name">textmap</span>
+            <span class="tool-badge soon">coming soon</span>
+          </div>
+          <p class="tool-desc">Knowledge graph as single source of truth for your local MCP infrastructure. Maps servers, credentials, dependencies, and tags in one queryable graph. The config layer that textserve and textworkspace read from.</p>
+        </a>
+
+        <a href="https://github.com/paperworlds" class="tool">
+          <div class="tool-header">
+            <span class="tool-number">08</span>
+            <span class="tool-name">textprompts</span>
+            <span class="tool-badge revisiting">revisiting</span>
+          </div>
+          <p class="tool-desc">Coordinate multi-agent work on single repos. Decompose features into ordered prompt files, run them as a DAG, track progress and cost. The orchestration layer that ties it all together.</p>
+        </a>
+
+        <a href="https://github.com/paperworlds" class="tool">
+          <div class="tool-header">
+            <span class="tool-number">09</span>
+            <span class="tool-name">textcombos</span>
+            <span class="tool-badge tbd">tbd</span>
+          </div>
+          <p class="tool-desc">Community-shared workflow recipes for textworkspace. YAML files that chain tool actions into reusable combos — install from local files, gists, or repos. Define your own, share with your team.</p>
+        </a>
+
       </div>
-      <p class="tool-desc">Async coordination layer for Claude Code sessions. Post threads when you hit a cross-repo dependency, pick them up from another session. File-based, YAML threads, zero infrastructure. Ships inside textworkspace.</p>
-    </a>
-  </div>
-</main>
+    </div>
+
+  </main>
+</div>
 
 <footer>
-  <div class="container">
-    Tools released under the <a href="https://www.elastic.co/licensing/elastic-license">Elastic License 2.0</a> &mdash; free to use, not to redistribute.
-    <br>
-    <a href="https://github.com/paperworlds">github.com/paperworlds</a>
-  </div>
+  Tools released under the <a href="https://www.elastic.co/licensing/elastic-license">Elastic License 2.0</a> &mdash; free to use, not to redistribute. &nbsp;&middot;&nbsp;
+  <a href="https://github.com/paperworlds">github.com/paperworlds</a>
 </footer>
 
+<script>
+  const sections = document.querySelectorAll('.section[id]');
+  const navItems = document.querySelectorAll('.sidebar-item[data-section]');
+
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        navItems.forEach(item => item.classList.remove('active'));
+        const active = document.querySelector(`.sidebar-item[data-section="${entry.target.id}"]`);
+        if (active) active.classList.add('active');
+      }
+    });
+  }, { rootMargin: '-20% 0px -70% 0px' });
+
+  sections.forEach(s => observer.observe(s));
+</script>
 </body>
 </html>
