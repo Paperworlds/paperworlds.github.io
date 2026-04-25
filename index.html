@@ -224,6 +224,14 @@
     white-space: nowrap;
   }
 
+  .tool-version {
+    font-size: 0.7rem;
+    color: #6e7681;
+    font-family: inherit;
+    margin-left: 6px;
+    white-space: nowrap;
+  }
+
   .tool-badge.soon    { color: #d29922; border-color: #9e6a03; }
   .tool-badge.optional { color: #8b949e; border-color: #30363d; }
   .tool-badge.revisiting { color: #bc8cff; border-color: #8b5cf6; }
@@ -640,6 +648,62 @@
   }, { rootMargin: '-20% 0px -70% 0px' });
 
   sections.forEach(s => observer.observe(s));
+
+  // Inject latest version chips for each tool by querying GitHub.
+  // Tries /releases/latest first, falls back to /tags. Caches per-repo for 1h.
+  (function injectVersions() {
+    const TTL_MS = 60 * 60 * 1000;
+    const repoFromHref = href => {
+      const m = href && href.match(/github\.com\/([^/]+)\/([^/?#]+)/i);
+      if (!m) return null;
+      const [, owner, name] = m;
+      // Skip the bare org link (e.g. github.com/paperworlds with no repo).
+      if (!name || name === '' || name.toLowerCase() === owner.toLowerCase()) return null;
+      return `${owner}/${name}`;
+    };
+
+    async function fetchVersion(repo) {
+      const cacheKey = `pw:ver:${repo}`;
+      try {
+        const cached = JSON.parse(localStorage.getItem(cacheKey) || 'null');
+        if (cached && Date.now() - cached.t < TTL_MS) return cached.v;
+      } catch (e) { /* ignore */ }
+
+      const tryFetch = async (path) => {
+        const r = await fetch(`https://api.github.com/repos/${repo}/${path}`);
+        if (!r.ok) return null;
+        return r.json();
+      };
+
+      let version = null;
+      const rel = await tryFetch('releases/latest');
+      if (rel && rel.tag_name) version = rel.tag_name;
+      if (!version) {
+        const tags = await tryFetch('tags');
+        if (Array.isArray(tags) && tags[0] && tags[0].name) version = tags[0].name;
+      }
+
+      if (version) {
+        try { localStorage.setItem(cacheKey, JSON.stringify({ v: version, t: Date.now() })); } catch (e) {}
+      }
+      return version;
+    }
+
+    document.querySelectorAll('a.tool').forEach(async (el) => {
+      const repo = repoFromHref(el.getAttribute('href'));
+      if (!repo) return;
+      try {
+        const v = await fetchVersion(repo);
+        if (!v) return;
+        const header = el.querySelector('.tool-header');
+        if (!header) return;
+        const span = document.createElement('span');
+        span.className = 'tool-version';
+        span.textContent = v.startsWith('v') ? v : `v${v}`;
+        header.appendChild(span);
+      } catch (e) { /* network blocked / rate limited — leave card unchanged */ }
+    });
+  })();
 </script>
 </body>
 </html>
