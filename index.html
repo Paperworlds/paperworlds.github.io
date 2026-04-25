@@ -229,6 +229,54 @@
     line-height: 1.65;
   }
 
+  /* Features grid */
+  .features {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 12px;
+  }
+
+  .feature {
+    border: 1px solid #21262d;
+    border-radius: 6px;
+    padding: 14px 16px;
+    background: #161b22;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .feature-header {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 8px;
+  }
+
+  .feature-name {
+    font-size: 0.86rem;
+    color: #f0f6fc;
+    font-weight: 600;
+  }
+
+  .feature-tool {
+    font-size: 0.66rem;
+    color: #6e7681;
+    font-family: inherit;
+    text-transform: lowercase;
+    letter-spacing: 0.02em;
+    white-space: nowrap;
+  }
+
+  .feature-tool a { color: #6e7681; }
+  .feature-tool a:hover { color: #58a6ff; text-decoration: none; }
+
+  .feature-desc {
+    font-size: 0.78rem;
+    color: #8b949e;
+    line-height: 1.55;
+  }
+
   footer {
     margin-top: auto;
     padding: 40px 0;
@@ -266,6 +314,7 @@
       <a href="#philosophy" class="sidebar-item" data-section="philosophy">Philosophy</a>
       <a href="#game" class="sidebar-item" data-section="game">The Game</a>
       <a href="#tools" class="sidebar-item" data-section="tools">The Tools</a>
+      <a href="#features" class="sidebar-item" data-section="features">Features</a>
     </div>
   </nav>
 
@@ -388,6 +437,163 @@
           </div>
           <p class="tool-desc">Community-shared workflow recipes for textworkspace. YAML files that chain tool actions into reusable combos — install from local files, gists, or repos. Define your own, share with your team.</p>
         </a>
+
+      </div>
+    </div>
+
+    <div class="section" id="features">
+      <div class="section-label">Features</div>
+      <div class="features">
+
+        <div class="feature">
+          <div class="feature-header"><span class="feature-name">One CLI for the stack</span><span class="feature-tool"><a href="https://github.com/paperworlds/textworkspace">textworkspace</a></span></div>
+          <p class="feature-desc"><code>tw</code> forwards unknown subcommands to the right tool — one muscle-memory entry point, no shimming.</p>
+        </div>
+
+        <div class="feature">
+          <div class="feature-header"><span class="feature-name">Workspace switching</span><span class="feature-tool"><a href="https://github.com/paperworlds/textworkspace">textworkspace</a></span></div>
+          <p class="feature-desc"><code>tw start data</code> swaps profile, brings up servers, opens a session. One command, named context.</p>
+        </div>
+
+        <div class="feature">
+          <div class="feature-header"><span class="feature-name">Combos</span><span class="feature-tool"><a href="https://github.com/paperworlds/textworkspace">textworkspace</a></span></div>
+          <p class="feature-desc">YAML recipes for multi-step workflows. Any combo name becomes a top-level <code>tw</code> command.</p>
+        </div>
+
+        <div class="feature">
+          <div class="feature-header"><span class="feature-name">Cross-stack doctor</span><span class="feature-tool"><a href="https://github.com/paperworlds/textworkspace">textworkspace</a></span></div>
+          <p class="feature-desc"><code>tw doctor</code> runs health checks, finds stale paths, and verifies spec conformance across every installed tool.</p>
+        </div>
+
+        <div class="feature">
+          <div class="feature-header"><span class="feature-name">Adopt without copying</span><span class="feature-tool"><a href="https://github.com/paperworlds/textaccounts">textaccounts</a></span></div>
+          <p class="feature-desc">Register an existing <code>~/.claude*</code> directory in place — nothing moved, nothing copied.</p>
+        </div>
+
+        <div class="feature">
+          <div class="feature-header"><span class="feature-name">Worker profiles</span><span class="feature-tool"><a href="https://github.com/paperworlds/textaccounts">textaccounts</a></span></div>
+          <p class="feature-desc">Auth-only copies of a parent profile for parallel work — same login, isolated session state.</p>
+        </div>
+
+        <div class="feature">
+          <div class="feature-header"><span class="feature-name">Profile auto-discovery</span><span class="feature-tool"><a href="https://github.com/paperworlds/textaccounts">textaccounts</a></span></div>
+          <p class="feature-desc">The TUI surfaces unregistered <code>~/.claude*</code> directories as adoption suggestions.</p>
+        </div>
+
+        <div class="feature">
+          <div class="feature-header"><span class="feature-name">MITM token capture</span><span class="feature-tool"><a href="https://github.com/paperworlds/textproxy">textproxy</a></span></div>
+          <p class="feature-desc">Local proxy intercepts <code>api.anthropic.com</code> responses and extracts input + cache token counts. Doesn't change Claude Code's behaviour.</p>
+        </div>
+
+        <div class="feature">
+          <div class="feature-header"><span class="feature-name">Statusline integration</span><span class="feature-tool"><a href="https://github.com/paperworlds/textproxy">textproxy</a></span></div>
+          <p class="feature-desc">Atomic writes to <code>~/.files/states/ctx.json</code> for live context-window display in your shell statusline.</p>
+        </div>
+
+        <div class="feature">
+          <div class="feature-header"><span class="feature-name">Subscription-friendly</span><span class="feature-tool"><a href="https://github.com/paperworlds/textproxy">textproxy</a></span></div>
+          <p class="feature-desc">Built for Claude Team / Claude.ai users who don't pay per token but still want to know what each session burns.</p>
+        </div>
+
+        <div class="feature">
+          <div class="feature-header"><span class="feature-name">Cross-repo session TUI</span><span class="feature-tool"><a href="https://github.com/paperworlds/textsessions">textsessions</a></span></div>
+          <p class="feature-desc">Browse, search, tag, and resume every Claude Code session across every repo and profile.</p>
+        </div>
+
+        <div class="feature">
+          <div class="feature-header"><span class="feature-name">Tagging + priority</span><span class="feature-tool"><a href="https://github.com/paperworlds/textsessions">textsessions</a></span></div>
+          <p class="feature-desc">Triage dozens of parallel conversations by tag and priority. Built for heavy users who lose track.</p>
+        </div>
+
+        <div class="feature">
+          <div class="feature-header"><span class="feature-name">Auto-detected integrations</span><span class="feature-tool"><a href="https://github.com/paperworlds/textsessions">textsessions</a></span></div>
+          <p class="feature-desc">If textaccounts and textproxy are installed, profile and token data show up automatically — no config.</p>
+        </div>
+
+        <div class="feature">
+          <div class="feature-header"><span class="feature-name">Lensed link reading</span><span class="feature-tool"><a href="https://github.com/paperworlds/textread">textread</a></span></div>
+          <p class="feature-desc">URL in, relevance verdict and summary out — lensed through your role and current projects, not a generic abstract.</p>
+        </div>
+
+        <div class="feature">
+          <div class="feature-header"><span class="feature-name">Local raw cache</span><span class="feature-tool"><a href="https://github.com/paperworlds/textread">textread</a></span></div>
+          <p class="feature-desc">Raw + cleaned markdown stored locally — re-map the same URL with new context without re-fetching.</p>
+        </div>
+
+        <div class="feature">
+          <div class="feature-header"><span class="feature-name">Use Claude Code's auth</span><span class="feature-tool"><a href="https://github.com/paperworlds/textread">textread</a></span></div>
+          <p class="feature-desc"><code>--via-cli</code> shells out to <code>claude -p</code> — no separate API key required, just the CLI you already have.</p>
+        </div>
+
+        <div class="feature">
+          <div class="feature-header"><span class="feature-name">1Password credentials</span><span class="feature-tool"><a href="https://github.com/paperworlds/textserve">textserve</a></span></div>
+          <p class="feature-desc">Server credentials are pulled from 1Password at start time and cached in <code>~/.cache/mcp-&lt;name&gt;</code>. No secrets in dotfiles.</p>
+        </div>
+
+        <div class="feature">
+          <div class="feature-header"><span class="feature-name">Auto-register with Claude</span><span class="feature-tool"><a href="https://github.com/paperworlds/textserve">textserve</a></span></div>
+          <p class="feature-desc"><code>textserve start &lt;name&gt;</code> brings the server up and registers the MCP endpoint with Claude Code in one step.</p>
+        </div>
+
+        <div class="feature">
+          <div class="feature-header"><span class="feature-name">Tag-based fleet control</span><span class="feature-tool"><a href="https://github.com/paperworlds/textserve">textserve</a></span></div>
+          <p class="feature-desc"><code>textserve start --tag ci</code> brings up every server matching a tag. Group servers however your workflow needs.</p>
+        </div>
+
+        <div class="feature">
+          <div class="feature-header"><span class="feature-name">Server scaffolding</span><span class="feature-tool"><a href="https://github.com/paperworlds/textserve">textserve</a></span></div>
+          <p class="feature-desc"><code>textserve add</code> generates the directory, server.yaml, hook.sh, and README — fill in env, run start.</p>
+        </div>
+
+        <div class="feature">
+          <div class="feature-header"><span class="feature-name">Typed knowledge graph</span><span class="feature-tool"><a href="https://github.com/paperworlds/textmap">textmap</a></span></div>
+          <p class="feature-desc">10 node types and 11 edge relations. Curated, queryable by relation — the canonical answer is the same every time.</p>
+        </div>
+
+        <div class="feature">
+          <div class="feature-header"><span class="feature-name">YAML is the source</span><span class="feature-tool"><a href="https://github.com/paperworlds/textmap">textmap</a></span></div>
+          <p class="feature-desc">Edit <code>graph.yaml</code> by hand, run <code>textmap sync</code>, the Kuzu DB rebuilds deterministically.</p>
+        </div>
+
+        <div class="feature">
+          <div class="feature-header"><span class="feature-name">MCP query tools</span><span class="feature-tool"><a href="https://github.com/paperworlds/textmap">textmap</a></span></div>
+          <p class="feature-desc">Seven tools (<code>search</code>, <code>query_node</code>, <code>query_relation</code>, <code>query_why</code>, <code>expand</code>, …) so an agent can reach the graph through MCP.</p>
+        </div>
+
+        <div class="feature">
+          <div class="feature-header"><span class="feature-name">Inbox for proposed nodes</span><span class="feature-tool"><a href="https://github.com/paperworlds/textmap">textmap</a></span></div>
+          <p class="feature-desc">Agents can propose new nodes — they land in <code>textmap inbox</code> for human review before they touch the graph.</p>
+        </div>
+
+        <div class="feature">
+          <div class="feature-header"><span class="feature-name">Ingestors</span><span class="feature-tool"><a href="https://github.com/paperworlds/textmap">textmap</a></span></div>
+          <p class="feature-desc">Pull from <code>.md</code> frontmatter, Cursor <code>.mdc</code> rules, toolmaps, and inventory finding files. Five built-in pipelines.</p>
+        </div>
+
+        <div class="feature">
+          <div class="feature-header"><span class="feature-name">DAG-driven prompts</span><span class="feature-tool"><a href="https://github.com/paperworlds/textprompts">textprompts</a></span></div>
+          <p class="feature-desc">Numbered prompt files with <code>depends_on</code> — <code>pp run</code> resolves the chain, runs eligible tasks via <code>claude -p</code>.</p>
+        </div>
+
+        <div class="feature">
+          <div class="feature-header"><span class="feature-name">Budget-aware runs</span><span class="feature-tool"><a href="https://github.com/paperworlds/textprompts">textprompts</a></span></div>
+          <p class="feature-desc">Per-task and per-pipeline cost tracking. <code>pp cost forecast</code> estimates pending tasks before you spend.</p>
+        </div>
+
+        <div class="feature">
+          <div class="feature-header"><span class="feature-name">Live progress TUI</span><span class="feature-tool"><a href="https://github.com/paperworlds/textprompts">textprompts</a></span></div>
+          <p class="feature-desc"><code>pp view</code> shows projects, features, and tasks with state, model, and cost — live-tail any task.</p>
+        </div>
+
+        <div class="feature">
+          <div class="feature-header"><span class="feature-name">Feature scaffolding</span><span class="feature-tool"><a href="https://github.com/paperworlds/textprompts">textprompts</a></span></div>
+          <p class="feature-desc"><code>pp features new</code> + <code>pp features plan</code> decompose a <code>LEAD.md</code> into ordered YAML prompt files automatically.</p>
+        </div>
+
+        <div class="feature">
+          <div class="feature-header"><span class="feature-name">Per-task model</span><span class="feature-tool"><a href="https://github.com/paperworlds/textprompts">textprompts</a></span></div>
+          <p class="feature-desc">Each prompt picks haiku, sonnet, or opus — match cost to task, not pipeline-wide.</p>
+        </div>
 
       </div>
     </div>
