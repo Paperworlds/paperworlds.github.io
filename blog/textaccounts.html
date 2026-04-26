@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Two Claude accounts, one config directory — Paperworlds</title>
+<meta name="description" content="Claude Code stores every account's sessions, memory, and auth in a single ~/.claude/ directory. Here's the missing primitive — and the small tool that adds it.">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'SF Mono', 'Fira Code', 'Cascadia Code', 'JetBrains Mono', monospace;
+    background: #0d1117;
+    color: #c9d1d9;
+    line-height: 1.7;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+  }
+
+  a { color: #58a6ff; text-decoration: none; }
+  a:hover { text-decoration: underline; }
+
+  .crumbs {
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 32px 24px 0;
+    width: 100%;
+    font-size: 0.78rem;
+    color: #6e7681;
+  }
+  .crumbs a { color: #6e7681; }
+  .crumbs a:hover { color: #c9d1d9; text-decoration: none; }
+
+  article {
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 40px 24px 64px;
+    width: 100%;
+    flex: 1;
+  }
+
+  article header { margin-bottom: 40px; }
+
+  h1 {
+    font-size: 1.8rem;
+    color: #f0f6fc;
+    font-weight: 600;
+    line-height: 1.3;
+    letter-spacing: -0.3px;
+    margin-bottom: 12px;
+  }
+
+  .meta {
+    font-size: 0.78rem;
+    color: #6e7681;
+  }
+
+  .meta .tool-tag {
+    color: #3fb950;
+    border: 1px solid #238636;
+    border-radius: 12px;
+    padding: 1px 8px;
+    margin-left: 8px;
+  }
+
+  h2 {
+    font-size: 1.05rem;
+    color: #f0f6fc;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    margin: 40px 0 16px;
+    padding-top: 24px;
+    border-top: 1px solid #21262d;
+  }
+
+  h2:first-of-type { border-top: none; padding-top: 0; }
+
+  p {
+    color: #c9d1d9;
+    font-size: 0.92rem;
+    margin-bottom: 16px;
+  }
+
+  p code, li code {
+    background: #161b22;
+    border: 1px solid #21262d;
+    border-radius: 4px;
+    padding: 1px 6px;
+    font-size: 0.85rem;
+    color: #f0f6fc;
+  }
+
+  pre {
+    background: #161b22;
+    border: 1px solid #21262d;
+    border-radius: 6px;
+    padding: 14px 18px;
+    overflow-x: auto;
+    margin: 16px 0 24px;
+    font-size: 0.84rem;
+    line-height: 1.55;
+  }
+
+  pre code {
+    color: #c9d1d9;
+    background: transparent;
+    border: none;
+    padding: 0;
+  }
+
+  ul {
+    padding-left: 22px;
+    margin: 8px 0 16px;
+  }
+
+  li {
+    color: #c9d1d9;
+    font-size: 0.92rem;
+    margin-bottom: 8px;
+  }
+
+  blockquote {
+    border-left: 3px solid #30363d;
+    padding: 4px 0 4px 18px;
+    margin: 24px 0;
+    color: #8b949e;
+    font-style: italic;
+  }
+
+  .end {
+    margin-top: 48px;
+    padding-top: 24px;
+    border-top: 1px solid #21262d;
+    color: #8b949e;
+    font-size: 0.86rem;
+  }
+
+  footer {
+    padding: 24px;
+    text-align: center;
+    color: #484f58;
+    font-size: 0.78rem;
+    border-top: 1px solid #21262d;
+  }
+
+  footer a { color: #6e7681; }
+
+  @media (max-width: 640px) {
+    article { padding: 24px 18px 48px; }
+    h1 { font-size: 1.5rem; }
+  }
+</style>
+</head>
+<body>
+
+<nav class="crumbs">
+  <a href="/">Paperworlds</a> · <a href="/blog/">Blog</a>
+</nav>
+
+<article>
+  <header>
+    <h1>Two Claude accounts, one config directory: the missing primitive</h1>
+    <div class="meta">
+      2026-04-26 · 8 min read
+      <span class="tool-tag">textaccounts</span>
+    </div>
+  </header>
+
+  <h2>The pain</h2>
+
+  <p>If you use <a href="https://claude.ai/code">Claude Code</a> with two accounts &mdash; say work and personal &mdash; you've already hit this. Claude stores everything under a single <code>~/.claude/</code> directory: sessions, memory files, settings, auth tokens, MCP server registrations. There's no profile flag, no <code>--user</code>, no concept of "switch accounts."</p>
+
+  <p>The result is mush. Open a personal session and your work memory loads. Run <code>claude</code> after a work <code>claude logout</code> and your personal sessions are still visible on disk. Custom slash commands you wrote for one workspace bleed into the other. The two contexts you want firewalled &mdash; for security, for sanity, for not-leaking-internal-stuff-into-personal-prompts &mdash; share a single home on disk.</p>
+
+  <p>The pattern, if you've been around long enough, is familiar. Browsers solved this with profiles. Git solved it with config-includes. Cloud CLIs solve it with <code>--profile</code> flags. Claude Code, today, hasn't.</p>
+
+  <p>I needed real isolation. So I wrote <a href="https://github.com/paperworlds/textaccounts"><strong>textaccounts</strong></a> &mdash; a small CLI that registers separate <code>~/.claude*</code> directories as named profiles and switches between them by setting <code>CLAUDE_CONFIG_DIR</code>. No patches to Claude Code. No wrappers around <code>claude</code> itself. Just the missing primitive.</p>
+
+  <h2>Why I built it</h2>
+
+  <p>The first time I noticed the problem was when an agent in a personal-account session suggested I push something to <code>paradigm-staging</code>. Wrong project. Wrong context. The two memory files had merged because Claude Code reads <code>CLAUDE.md</code> from any ancestor directory, and the global <code>~/.claude/CLAUDE.md</code> was the same regardless of which account I was logged in as.</p>
+
+  <p>That was funny. The next time, less funny &mdash; a personal session pulled in custom slash commands written for work, and ran one without me noticing. Nothing leaked, but it could have.</p>
+
+  <p>The fix, if you read Claude Code's source, is half a fix that already exists: Claude reads <code>CLAUDE_CONFIG_DIR</code> natively. Set it to <code>~/.claude-work</code>, Claude uses that directory for everything. Set it to <code>~/.claude-personal</code>, same thing for personal. The config-dir variable <em>is</em> the seam. The missing piece was just: a tool to manage the seam.</p>
+
+  <p><code>textaccounts</code> registers your existing config directories as named profiles, then switches <code>CLAUDE_CONFIG_DIR</code> in your shell when you ask it to. A Python subprocess can't change its parent's environment &mdash; that's a fundamental Unix constraint &mdash; so the tool ships a small fish function that evaluates the output of <code>textaccounts show &lt;name&gt;</code>. That fish function is the only "magic"; everything else is plain config.</p>
+
+  <p>Two design choices mattered most.</p>
+
+  <p><strong>Adopt, don't copy.</strong> When you run <code>textaccounts adopt work ~/.claude-work</code>, nothing moves. The directory stays where it is. textaccounts just remembers it exists. If you decide tomorrow you don't like the tool, delete <code>~/.textaccounts/profiles.yaml</code> and your real Claude directories are untouched.</p>
+
+  <p><strong>Worker profiles.</strong> Sometimes I want two parallel work sessions &mdash; one for an experiment, one for the real branch &mdash; without copying the entire memory and session history. <code>textaccounts create my-experiment --worker --from work</code> makes an auth-only copy: same login, fresh session and memory state. Cheap to spin up, cheap to throw away. Useful when you're running parallel agents (which I now do daily).</p>
+
+  <p>That's the whole tool. A few hundred lines of Python plus a fish function, MIT licensed.</p>
+
+  <h2>How to use it in five minutes</h2>
+
+  <p>Install:</p>
+
+<pre><code>pip install textaccounts
+textaccounts install   # writes the fish function + completions</code></pre>
+
+  <p>Open a new shell to pick up the function, then register your existing directories:</p>
+
+<pre><code>textaccounts adopt work ~/.claude-work
+textaccounts adopt personal ~/.claude-personal</code></pre>
+
+  <p>Switch profiles:</p>
+
+<pre><code>textaccounts switch work
+# Or with the fish wrapper installed:
+ta switch work</code></pre>
+
+  <p>Verify:</p>
+
+<pre><code>echo $CLAUDE_CONFIG_DIR
+# /Users/you/.claude-work</code></pre>
+
+  <p>Now run Claude in that profile:</p>
+
+<pre><code>claude
+# All sessions, memory, settings come from ~/.claude-work.</code></pre>
+
+  <p>Switch to personal in another shell tab:</p>
+
+<pre><code>ta switch personal
+claude
+# Different sessions, different memory, different auth.</code></pre>
+
+  <p>A few extras worth knowing:</p>
+
+<pre><code>textaccounts list                # all profiles + active marker
+textaccounts status              # sync state, paths, current
+textaccounts view                # interactive Textual TUI
+
+# Worker profile for parallel experiments
+textaccounts create scratch --worker --from work
+
+# Aliases (type `ta switch p` instead of `personal`)
+textaccounts alias personal p</code></pre>
+
+  <p>The TUI auto-discovers any <code>~/.claude*</code> directories you haven't registered yet and surfaces them as adoption suggestions. Press <code>a</code>, name the profile, done.</p>
+
+  <p>If you're on bash or zsh, the fish dependency is a fair complaint &mdash; bash/zsh integration is on the roadmap. The Python core is shell-agnostic; only <code>switch</code> needs the fish function, because that's the only command that has to mutate the parent shell's environment.</p>
+
+  <h2>The bigger picture</h2>
+
+  <p><code>textaccounts</code> is one of eight tools in <a href="https://paperworlds.github.io">Paperworlds</a> &mdash; open-source agent infrastructure for AI coding agents. Each tool closes one missing primitive in Claude Code: sessions (<a href="https://github.com/paperworlds/textsessions">textsessions</a>), MCP server lifecycle (<a href="https://github.com/paperworlds/textserve">textserve</a>), token observability (<a href="https://github.com/paperworlds/textproxy">textproxy</a>), agent orchestration (<a href="https://github.com/paperworlds/textprompts">textprompts</a>), long-term memory (<a href="https://github.com/paperworlds/textmap">textmap</a>), workspaces (<a href="https://github.com/paperworlds/textworkspace">textworkspace</a>), reading (<a href="https://github.com/paperworlds/textread">textread</a>), and profiles (textaccounts).</p>
+
+  <p>The full set is at <a href="https://github.com/paperworlds">github.com/paperworlds</a>. Issues, PRs, and "I want this for bash" requests welcome. If you've been merging your two Claude accounts into one directory and resigning yourself to it, try this instead.</p>
+
+  <div class="end">
+    Repo: <a href="https://github.com/paperworlds/textaccounts">github.com/paperworlds/textaccounts</a>
+  </div>
+</article>
+
+<footer>
+  <a href="/">Paperworlds</a> · <a href="https://www.elastic.co/licensing/elastic-license">Elastic License 2.0</a> (tools) / MIT (textaccounts)
+</footer>
+
+</body>
+</html>

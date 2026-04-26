@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Blog — Paperworlds</title>
+<meta name="description" content="Notes on the missing primitives in Claude Code, and the small tools that close them. One post per Paperworlds tool.">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'SF Mono', 'Fira Code', 'Cascadia Code', 'JetBrains Mono', monospace;
+    background: #0d1117;
+    color: #c9d1d9;
+    line-height: 1.6;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+  }
+
+  a { color: #58a6ff; text-decoration: none; }
+  a:hover { text-decoration: underline; }
+
+  .crumbs {
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 32px 24px 0;
+    width: 100%;
+    font-size: 0.78rem;
+    color: #6e7681;
+  }
+  .crumbs a { color: #6e7681; }
+  .crumbs a:hover { color: #c9d1d9; text-decoration: none; }
+
+  header.page {
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 32px 24px 24px;
+    width: 100%;
+  }
+
+  h1 {
+    font-size: 2rem;
+    color: #f0f6fc;
+    font-weight: 600;
+    letter-spacing: -0.5px;
+    margin-bottom: 12px;
+  }
+
+  .lede {
+    font-size: 0.95rem;
+    color: #8b949e;
+    line-height: 1.65;
+    max-width: 580px;
+  }
+
+  main {
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 16px 24px 64px;
+    width: 100%;
+    flex: 1;
+  }
+
+  .posts { display: flex; flex-direction: column; gap: 12px; margin-top: 24px; }
+
+  .post {
+    border: 1px solid #21262d;
+    border-radius: 8px;
+    padding: 18px 20px;
+    background: #161b22;
+    transition: border-color 0.2s;
+    display: block;
+  }
+
+  .post:hover { border-color: #30363d; text-decoration: none; }
+
+  .post-header {
+    display: flex;
+    align-items: baseline;
+    gap: 12px;
+    margin-bottom: 6px;
+    flex-wrap: wrap;
+  }
+
+  .post-title {
+    font-size: 1rem;
+    color: #f0f6fc;
+    font-weight: 600;
+  }
+
+  .post-tag {
+    font-size: 0.68rem;
+    color: #3fb950;
+    border: 1px solid #238636;
+    border-radius: 12px;
+    padding: 1px 8px;
+    margin-left: auto;
+    white-space: nowrap;
+  }
+
+  .post-meta {
+    font-size: 0.74rem;
+    color: #6e7681;
+    margin-bottom: 8px;
+  }
+
+  .post-desc {
+    font-size: 0.85rem;
+    color: #8b949e;
+    line-height: 1.6;
+  }
+
+  footer {
+    margin-top: auto;
+    padding: 24px;
+    text-align: center;
+    color: #484f58;
+    font-size: 0.78rem;
+    border-top: 1px solid #21262d;
+  }
+
+  footer a { color: #6e7681; }
+
+  @media (max-width: 640px) {
+    h1 { font-size: 1.6rem; }
+  }
+</style>
+</head>
+<body>
+
+<nav class="crumbs">
+  <a href="/">Paperworlds</a>
+</nav>
+
+<header class="page">
+  <h1>Blog</h1>
+  <p class="lede">Notes on the missing primitives in Claude Code, and the small tools that close them. One post per Paperworlds tool.</p>
+</header>
+
+<main>
+  <div class="posts">
+
+    <a href="/blog/textaccounts.html" class="post">
+      <div class="post-header">
+        <span class="post-title">Two Claude accounts, one config directory: the missing primitive</span>
+        <span class="post-tag">textaccounts</span>
+      </div>
+      <div class="post-meta">2026-04-26 · 8 min read</div>
+      <p class="post-desc">Claude Code stores every account's sessions, memory, and auth in a single <code>~/.claude/</code> directory. There's no profile flag, no <code>--user</code>, no concept of "switch accounts." Here's the small CLI that adds the missing primitive — adopt your existing directories, switch profiles via <code>CLAUDE_CONFIG_DIR</code>, no patches to Claude itself.</p>
+    </a>
+
+  </div>
+</main>
+
+<footer>
+  <a href="/">Paperworlds</a> · <a href="https://www.elastic.co/licensing/elastic-license">Elastic License 2.0</a> (tools)
+</footer>
+
+</body>
+</html>
