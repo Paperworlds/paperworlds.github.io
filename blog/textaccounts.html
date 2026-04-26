@@ -255,6 +255,18 @@ textaccounts alias personal p</code></pre>
 
   <p>If you're on bash or zsh, the fish dependency is a fair complaint &mdash; bash/zsh integration is on the roadmap. The Python core is shell-agnostic; only <code>switch</code> needs the fish function, because that's the only command that has to mutate the parent shell's environment.</p>
 
+  <h2>One requirement: Claude Code &geq; 2.1.56</h2>
+
+  <p>One caveat that's worth knowing: <code>CLAUDE_CONFIG_DIR</code> alone doesn't isolate OAuth credentials. Older Claude Code versions stored auth in a single shared macOS keychain entry, so two profiles pointing at different config dirs would still share the underlying login (this is <a href="https://github.com/anthropics/claude-code/issues/20553">claude-code#20553</a>).</p>
+
+  <p>Claude Code v2.1.56 fixed this by suffixing the keychain service name with a hash of <code>CLAUDE_CONFIG_DIR</code>. With current Claude Code, your work and personal logins really are isolated &mdash; different keychain entries, different tokens, no leak.</p>
+
+  <p>textaccounts checks this for you. Run:</p>
+
+<pre><code>textaccounts doctor</code></pre>
+
+  <p>It reports your installed Claude Code version and tells you whether per-profile keychain isolation is supported on your machine. If you're below the floor, the fix is just to upgrade Claude Code &mdash; nothing in textaccounts changes.</p>
+
   <h2>The bigger picture</h2>
 
   <p><code>textaccounts</code> is one of several tools in <a href="https://paperworlds.github.io">Paperworlds</a> &mdash; small open-source fixes for missing primitives I kept hitting in Claude Code while running it daily. The other tools tackle different layers of the same problem; this one is the base layer.</p>
