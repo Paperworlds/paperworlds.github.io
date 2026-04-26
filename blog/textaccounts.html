@@ -180,9 +180,11 @@
 
   <h2>Why I built it</h2>
 
-  <p>The first time I noticed the problem was when an agent in a personal-account session suggested I push something to <code>paradigm-staging</code>. Wrong project. Wrong context. The two memory files had merged because Claude Code reads <code>CLAUDE.md</code> from any ancestor directory, and the global <code>~/.claude/CLAUDE.md</code> was the same regardless of which account I was logged in as.</p>
+  <p>The story is mundane but maybe useful. I had a long-running personal project &mdash; a text-based multiplayer game I work on in the evenings &mdash; and I'd been using my personal Claude account on it. Day job runs on a separate account.</p>
 
-  <p>That was funny. The next time, less funny &mdash; a personal session pulled in custom slash commands written for work, and ran one without me noticing. Nothing leaked, but it could have.</p>
+  <p>After a while, I started hitting on the personal side the same friction I'd been hitting at work: memory bleeding between contexts, settings drifting, sessions piling up indistinguishably. I made a list of the things that broke and grouped them. Most of the groups had their own fix &mdash; session navigation, MCP server lifecycle, agent context recovery, context-lensed reading. But underneath all of them was a shared problem: there was no notion of <em>which Claude is this</em> at the OS level. One config dir, two identities.</p>
+
+  <p>textaccounts is the base layer for the rest. Get profile isolation first; everything else gets easier on top of it. The other groups in that list became their own tools &mdash; sibling projects to this one.</p>
 
   <p>The fix, if you read Claude Code's source, is half a fix that already exists: Claude reads <code>CLAUDE_CONFIG_DIR</code> natively. Set it to <code>~/.claude-work</code>, Claude uses that directory for everything. Set it to <code>~/.claude-personal</code>, same thing for personal. The config-dir variable <em>is</em> the seam. The missing piece was just: a tool to manage the seam.</p>
 
@@ -200,7 +202,10 @@
 
   <p>Install:</p>
 
-<pre><code>pip install textaccounts
+<pre><code>pip install git+https://github.com/paperworlds/textaccounts
+# or with uv:
+uv tool install git+https://github.com/paperworlds/textaccounts
+
 textaccounts install   # writes the fish function + completions</code></pre>
 
   <p>Open a new shell to pick up the function, then register your existing directories:</p>
@@ -216,8 +221,12 @@ ta switch work</code></pre>
 
   <p>Verify:</p>
 
-<pre><code>echo $CLAUDE_CONFIG_DIR
-# /Users/you/.claude-work</code></pre>
+<pre><code>$ textaccounts status
+Active profile: work
+Path: /Users/you/.claude-work
+Email: yo***@example.com
+Sessions: 37
+CLAUDE_CONFIG_DIR: /Users/you/.claude-work (in sync)</code></pre>
 
   <p>Now run Claude in that profile:</p>
 
@@ -248,9 +257,9 @@ textaccounts alias personal p</code></pre>
 
   <h2>The bigger picture</h2>
 
-  <p><code>textaccounts</code> is one of eight tools in <a href="https://paperworlds.github.io">Paperworlds</a> &mdash; open-source agent infrastructure for AI coding agents. Each tool closes one missing primitive in Claude Code: sessions (<a href="https://github.com/paperworlds/textsessions">textsessions</a>), MCP server lifecycle (<a href="https://github.com/paperworlds/textserve">textserve</a>), token observability (<a href="https://github.com/paperworlds/textproxy">textproxy</a>), agent orchestration (<a href="https://github.com/paperworlds/textprompts">textprompts</a>), long-term memory (<a href="https://github.com/paperworlds/textmap">textmap</a>), workspaces (<a href="https://github.com/paperworlds/textworkspace">textworkspace</a>), reading (<a href="https://github.com/paperworlds/textread">textread</a>), and profiles (textaccounts).</p>
+  <p><code>textaccounts</code> is one of several tools in <a href="https://paperworlds.github.io">Paperworlds</a> &mdash; small open-source fixes for missing primitives I kept hitting in Claude Code while running it daily. The other tools tackle different layers of the same problem; this one is the base layer.</p>
 
-  <p>The full set is at <a href="https://github.com/paperworlds">github.com/paperworlds</a>. Issues, PRs, and "I want this for bash" requests welcome. If you've been merging your two Claude accounts into one directory and resigning yourself to it, try this instead.</p>
+  <p>If you've been merging your two Claude accounts into one directory and resigning yourself to it, try this instead. Issues, PRs, and "I want this for bash" requests welcome.</p>
 
   <div class="end">
     Repo: <a href="https://github.com/paperworlds/textaccounts">github.com/paperworlds/textaccounts</a>
