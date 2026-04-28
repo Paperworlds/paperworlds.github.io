@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Shallow clones for parallel agents — Paperworlds</title>
+<meta name="description" content="A parallel agent shouldn't drag your whole Claude profile along for the ride. Worker profiles are shallow clones — same auth, no inherited memory or sessions.">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'SF Mono', 'Fira Code', 'Cascadia Code', 'JetBrains Mono', monospace;
+    background: #0d1117;
+    color: #c9d1d9;
+    line-height: 1.7;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+  }
+
+  a { color: #58a6ff; text-decoration: none; }
+  a:hover { text-decoration: underline; }
+
+  .crumbs {
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 32px 24px 0;
+    width: 100%;
+    font-size: 0.78rem;
+    color: #6e7681;
+  }
+  .crumbs a { color: #6e7681; }
+  .crumbs a:hover { color: #c9d1d9; text-decoration: none; }
+
+  article {
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 40px 24px 64px;
+    width: 100%;
+    flex: 1;
+  }
+
+  article header { margin-bottom: 40px; }
+
+  h1 {
+    font-size: 1.8rem;
+    color: #f0f6fc;
+    font-weight: 600;
+    line-height: 1.3;
+    letter-spacing: -0.3px;
+    margin-bottom: 12px;
+  }
+
+  .meta {
+    font-size: 0.78rem;
+    color: #6e7681;
+  }
+
+  .meta .tool-tag {
+    color: #3fb950;
+    border: 1px solid #238636;
+    border-radius: 12px;
+    padding: 1px 8px;
+    margin-left: 8px;
+  }
+
+  h2 {
+    font-size: 1.05rem;
+    color: #f0f6fc;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    margin: 40px 0 16px;
+    padding-top: 24px;
+    border-top: 1px solid #21262d;
+  }
+
+  h2:first-of-type { border-top: none; padding-top: 0; }
+
+  p {
+    color: #c9d1d9;
+    font-size: 0.92rem;
+    margin-bottom: 16px;
+  }
+
+  p code, li code {
+    background: #161b22;
+    border: 1px solid #21262d;
+    border-radius: 4px;
+    padding: 1px 6px;
+    font-size: 0.85rem;
+    color: #f0f6fc;
+  }
+
+  pre {
+    background: #161b22;
+    border: 1px solid #21262d;
+    border-radius: 6px;
+    padding: 14px 18px;
+    overflow-x: auto;
+    margin: 16px 0 24px;
+    font-size: 0.84rem;
+    line-height: 1.55;
+  }
+
+  pre code {
+    color: #c9d1d9;
+    background: transparent;
+    border: none;
+    padding: 0;
+  }
+
+  ul {
+    padding-left: 22px;
+    margin: 8px 0 16px;
+  }
+
+  li {
+    color: #c9d1d9;
+    font-size: 0.92rem;
+    margin-bottom: 8px;
+  }
+
+  blockquote {
+    border-left: 3px solid #30363d;
+    padding: 4px 0 4px 18px;
+    margin: 24px 0;
+    color: #8b949e;
+    font-style: italic;
+  }
+
+  .end {
+    margin-top: 48px;
+    padding-top: 24px;
+    border-top: 1px solid #21262d;
+    color: #8b949e;
+    font-size: 0.86rem;
+  }
+
+  footer {
+    padding: 24px;
+    text-align: center;
+    color: #484f58;
+    font-size: 0.78rem;
+    border-top: 1px solid #21262d;
+  }
+
+  footer a { color: #6e7681; }
+
+  @media (max-width: 640px) {
+    article { padding: 24px 18px 48px; }
+    h1 { font-size: 1.5rem; }
+  }
+</style>
+</head>
+<body>
+
+<nav class="crumbs">
+  <a href="/">Paperworlds</a> · <a href="/blog/">Blog</a>
+</nav>
+
+<article>
+  <header>
+    <h1>Shallow clones for parallel agents</h1>
+    <div class="meta">
+      2026-04-28 · 4 min read
+      <span class="tool-tag">textaccounts</span>
+    </div>
+  </header>
+
+  <h2>The setup</h2>
+
+  <p>I run parallel Claude agents most days now. Say you have eight files with the same anti-pattern, and you'd like eight parallel agents to fix them in one shot. Same prompt, different file each. You don't want them stomping each other's session log, and you don't want each one to drag along the entire memory of your day: the in-progress refactor, the ten skills you have loaded, the agent context from this morning. You want a small, focused process for one focused task. Eight times.</p>
+
+  <p>The two obvious shapes are both wrong.</p>
+
+  <p><strong>Reuse the main profile.</strong> Now eight subprocesses are writing into the same <code>~/.claude/</code>. Sessions interleaved, memory racing, settings drifting under your feet. You spend the afternoon untangling whose log is whose.</p>
+
+  <p><strong>Spin up eight fresh profiles.</strong> Now each one logs in from scratch, re-onboards, has no skills, no MCP servers, none of the auth setup that took you a week to get right. The cost of cleanliness is dead time at startup, eight times over.</p>
+
+  <h2>The shape that works</h2>
+
+  <p>What you actually want is a <em>shallow clone</em>, the same idea as <code>git clone --depth 1</code>. Bring the auth, the keys, the model access, the billing identity. Skip the history. Skip the memory. Skip everything that's about <em>who you've been</em> as opposed to <em>what you can do right now</em>.</p>
+
+  <p>That's a worker profile in <a href="https://github.com/paperworlds/textaccounts">textaccounts</a>:</p>
+
+<pre><code>textaccounts create sweep-1 --shallow --from personal
+textaccounts create sweep-2 --shallow --from personal
+# ...</code></pre>
+
+  <p>Each <code>sweep-N</code> shares your <code>personal</code> profile's auth: same Claude account, same model access, no extra login. Everything else is fresh: empty session log, empty memory file, default settings. The parent is untouched. The siblings don't see each other.</p>
+
+  <p>They all show up in your registry:</p>
+
+<pre><code>$ textaccounts list
+  Name      Path
+  personal  ~/.claude-personal               (active)
+  sweep-1   ~/.textaccounts/profiles/sweep-1
+  sweep-2   ~/.textaccounts/profiles/sweep-2
+  sweep-3   ~/.textaccounts/profiles/sweep-3
+  ...</code></pre>
+
+  <p>You hand each one a single prompt:</p>
+
+<pre><code>CLAUDE_CONFIG_DIR=~/.textaccounts/profiles/sweep-1 \
+  claude -p "Apply the rename in src/foo/a.py, run the tests."
+
+CLAUDE_CONFIG_DIR=~/.textaccounts/profiles/sweep-2 \
+  claude -p "Apply the rename in src/foo/b.py, run the tests."</code></pre>
+
+  <p>Eight parallel agents. Eight clean rooms. One shared identity. Your main profile keeps reading <em>The Brothers Karamazov</em> on the side without spoilers from the refactor sweep.</p>
+
+  <h2>Why "shallow" is the right model</h2>
+
+  <p>The thing I kept getting wrong before this clicked was treating <em>identity</em> and <em>state</em> as the same thing. They're not. Identity is "I am allowed to call this model, billed to this account." State is "I have been thinking about X for the last three hours and these are the skills I've loaded." Most parallel-agent work needs the first and is actively poisoned by the second.</p>
+
+  <p>Once you separate them, the right primitive is obvious: copy the identity layer (auth tokens, account binding), throw away the state layer (sessions, memory, agent context). A shallow clone of the profile, made cheaply, used briefly.</p>
+
+  <p>This is also the layer where things like <a href="/blog/textaccounts.html">profile isolation</a> and parallel orchestration meet. The previous post in this series was about firewalling work and personal accounts on disk. That's the deep separation, the one you set up once and live with for years. Worker profiles are the shallow separation, made on demand, thrown away when the job's done.</p>
+
+  <h2>What's coming next</h2>
+
+  <p>Worker profiles pile up if you make a lot of them. Today the cleanup is manual: <code>textaccounts remove sweep-1</code>, repeat. There's a draft spec in the repo (<code>docs/specs/shallow-clone.md</code>) for <code>--ephemeral</code> and a <code>gc</code> command, so an orchestrator (or a weekly human sweep) can throw a whole batch away at once without forgetting any. The shape will become clearer in upcoming posts on the orchestration layer of Paperworlds. For now, worker profiles are the primitive; the cleanup is your problem.</p>
+
+  <p>If you've been running parallel agents by hand and feeling the pollution, this is the smallest thing that fixes it. Try it on your next eight-file refactor.</p>
+
+  <div class="end">
+    Repo: <a href="https://github.com/paperworlds/textaccounts">github.com/paperworlds/textaccounts</a> · Previous: <a href="/blog/textaccounts.html">Two Claude accounts, one config directory</a>
+  </div>
+</article>
+
+<footer>
+  <a href="/">Paperworlds</a> · <a href="https://www.elastic.co/licensing/elastic-license">Elastic License 2.0</a> (tools) / MIT (textaccounts)
+</footer>
+
+</body>
+</html>
