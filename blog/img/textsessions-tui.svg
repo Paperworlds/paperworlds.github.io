@@ -1,0 +1,117 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 800" width="1280" height="800" font-family="ui-monospace, SF Mono, Menlo, Consolas, monospace">
+  <defs>
+    <filter id="shadow" x="-5%" y="-5%" width="110%" height="115%">
+      <feDropShadow dx="0" dy="8" stdDeviation="14" flood-color="#000" flood-opacity="0.5"/>
+    </filter>
+  </defs>
+
+  <!-- Window outer shadow + body -->
+  <rect x="20" y="14" width="1240" height="772" rx="10" ry="10" fill="#0d1117" stroke="#21262d" stroke-width="1" filter="url(#shadow)"/>
+
+  <!-- Title bar -->
+  <rect x="20" y="14" width="1240" height="34" rx="10" ry="10" fill="#161b22"/>
+  <rect x="20" y="34" width="1240" height="14" fill="#161b22"/>
+  <line x1="20" y1="48" x2="1260" y2="48" stroke="#21262d" stroke-width="1"/>
+
+  <!-- Traffic lights -->
+  <circle cx="40" cy="31" r="6" fill="#ff5f57"/>
+  <circle cx="60" cy="31" r="6" fill="#febc2e"/>
+  <circle cx="80" cy="31" r="6" fill="#28c840"/>
+
+  <!-- Title and clock -->
+  <text x="640" y="35" fill="#c9d1d9" font-size="13" text-anchor="middle">TextSessionsApp</text>
+  <text x="1232" y="35" fill="#8b949e" font-size="12" text-anchor="end">16:24:47</text>
+
+  <!-- Body content -->
+  <foreignObject x="32" y="60" width="1216" height="710">
+    <div xmlns="http://www.w3.org/1999/xhtml" style="font: 13px ui-monospace, 'SF Mono', Menlo, Consolas, monospace; color: #c9d1d9; line-height: 1.45; height: 100%; display: flex; gap: 16px;">
+
+      <!-- Left pane: list -->
+      <div style="flex: 1.7; border: 1px solid #21262d; border-radius: 6px; padding: 12px 14px; display: flex; flex-direction: column; min-width: 0;">
+
+        <!-- Filter bar -->
+        <div style="border: 1px solid #21262d; border-radius: 4px; padding: 8px 12px; color: #6e7681; margin-bottom: 8px;">/ to filter…</div>
+        <div style="color: #58a6ff; padding: 0 4px 8px; font-size: 12px;">api-core</div>
+
+        <!-- Column headers -->
+        <div style="display: grid; grid-template-columns: 2.6fr 1.1fr 1.6fr 0.5fr 1.5fr; gap: 12px; padding: 4px 6px; color: #8b949e; font-size: 12px; border-bottom: 1px solid #21262d;">
+          <span>Name</span><span>Profile</span><span>Tags</span><span>Pri</span><span>Last Active</span>
+        </div>
+
+        <!-- Rows -->
+        <div style="margin-top: 4px; display: flex; flex-direction: column;">
+
+          <!-- Selected row -->
+          <div style="display: grid; grid-template-columns: 2.6fr 1.1fr 1.6fr 0.5fr 1.5fr; gap: 12px; padding: 4px 6px; background: #1f6feb; color: #f0f6fc; border-radius: 3px;">
+            <span>★ queue-patch</span><span>work</span><span style="color: #79c0ff;">#aws #msk #queue</span><span></span><span>2026-04-24 08:14</span>
+          </div>
+
+          <!-- Other rows -->
+          <div style="display: grid; grid-template-columns: 2.6fr 1.1fr 1.6fr 0.5fr 1.5fr; gap: 12px; padding: 4px 6px;"><span>ci-failure</span><span>work</span><span></span><span></span><span>2026-04-25 07:49</span></div>
+          <div style="display: grid; grid-template-columns: 2.6fr 1.1fr 1.6fr 0.5fr 1.5fr; gap: 12px; padding: 4px 6px;"><span>new-venue</span><span>work</span><span style="color: #79c0ff;">#wip</span><span></span><span>2026-04-24 21:41</span></div>
+          <div style="display: grid; grid-template-columns: 2.6fr 1.1fr 1.6fr 0.5fr 1.5fr; gap: 12px; padding: 4px 6px;"><span>vpc-privatelink</span><span>work</span><span></span><span></span><span>2026-04-24 18:13</span></div>
+          <div style="display: grid; grid-template-columns: 2.6fr 1.1fr 1.6fr 0.5fr 1.5fr; gap: 12px; padding: 4px 6px;"><span>slack-watcher</span><span>work</span><span></span><span></span><span>2026-04-24 13:53</span></div>
+          <div style="display: grid; grid-template-columns: 2.6fr 1.1fr 1.6fr 0.5fr 1.5fr; gap: 12px; padding: 4px 6px;"><span>docs-merge</span><span>work</span><span></span><span></span><span>2026-04-24 12:59</span></div>
+          <div style="display: grid; grid-template-columns: 2.6fr 1.1fr 1.6fr 0.5fr 1.5fr; gap: 12px; padding: 4px 6px;"><span>log-filtering-review</span><span>work</span><span></span><span></span><span>2026-04-24 11:31</span></div>
+          <div style="display: grid; grid-template-columns: 2.6fr 1.1fr 1.6fr 0.5fr 1.5fr; gap: 12px; padding: 4px 6px;"><span>agents-md</span><span>work</span><span></span><span></span><span>2026-04-24 09:50</span></div>
+          <div style="display: grid; grid-template-columns: 2.6fr 1.1fr 1.6fr 0.5fr 1.5fr; gap: 12px; padding: 4px 6px;"><span>log-filtering-review</span><span>work</span><span></span><span></span><span>2026-04-24 09:13</span></div>
+          <div style="display: grid; grid-template-columns: 2.6fr 1.1fr 1.6fr 0.5fr 1.5fr; gap: 12px; padding: 4px 6px;"><span>metric-rewrite</span><span>work</span><span></span><span></span><span>2026-04-24 08:58</span></div>
+          <div style="display: grid; grid-template-columns: 2.6fr 1.1fr 1.6fr 0.5fr 1.5fr; gap: 12px; padding: 4px 6px;"><span>move-staging-resources</span><span>work</span><span></span><span></span><span>2026-04-24 07:58</span></div>
+          <div style="display: grid; grid-template-columns: 2.6fr 1.1fr 1.6fr 0.5fr 1.5fr; gap: 12px; padding: 4px 6px;"><span>labeling-again</span><span style="color: #d2a8ff;">personal</span><span></span><span></span><span>2026-04-23 23:23</span></div>
+          <div style="display: grid; grid-template-columns: 2.6fr 1.1fr 1.6fr 0.5fr 1.5fr; gap: 12px; padding: 4px 6px;"><span>labeling</span><span>work</span><span></span><span></span><span>2026-04-23 23:16</span></div>
+          <div style="display: grid; grid-template-columns: 2.6fr 1.1fr 1.6fr 0.5fr 1.5fr; gap: 12px; padding: 4px 6px;"><span>label</span><span>work</span><span></span><span></span><span>2026-04-23 22:36</span></div>
+          <div style="display: grid; grid-template-columns: 2.6fr 1.1fr 1.6fr 0.5fr 1.5fr; gap: 12px; padding: 4px 6px;"><span>testing-map-again</span><span>work</span><span></span><span></span><span>2026-04-23 22:23</span></div>
+          <div style="display: grid; grid-template-columns: 2.6fr 1.1fr 1.6fr 0.5fr 1.5fr; gap: 12px; padding: 4px 6px;"><span>testing-map</span><span>work</span><span></span><span></span><span>2026-04-23 22:18</span></div>
+          <div style="display: grid; grid-template-columns: 2.6fr 1.1fr 1.6fr 0.5fr 1.5fr; gap: 12px; padding: 4px 6px;"><span>exchange-pd</span><span>work</span><span></span><span></span><span>2026-04-23 20:59</span></div>
+          <div style="display: grid; grid-template-columns: 2.6fr 1.1fr 1.6fr 0.5fr 1.5fr; gap: 12px; padding: 4px 6px;"><span>latency</span><span>work</span><span></span><span></span><span>2026-04-23 19:31</span></div>
+          <div style="display: grid; grid-template-columns: 2.6fr 1.1fr 1.6fr 0.5fr 1.5fr; gap: 12px; padding: 4px 6px;"><span>world-map</span><span style="color: #d2a8ff;">personal</span><span></span><span></span><span>2026-04-23 16:30</span></div>
+          <div style="display: grid; grid-template-columns: 2.6fr 1.1fr 1.6fr 0.5fr 1.5fr; gap: 12px; padding: 4px 6px;"><span>open-claw</span><span>work</span><span></span><span></span><span>2026-04-23 15:04</span></div>
+
+        </div>
+
+        <!-- Bottom shortcut bar -->
+        <div style="margin-top: auto; padding-top: 10px; border-top: 1px solid #21262d; display: flex; justify-content: space-between; color: #8b949e; font-size: 12px; padding-left: 4px; padding-right: 4px;">
+          <div>
+            <span style="color: #f0f6fc; background: #30363d; padding: 1px 5px; border-radius: 3px; margin-right: 4px;">n</span> New
+            <span style="margin: 0 6px;"></span>
+            <span style="color: #f0f6fc; background: #30363d; padding: 1px 5px; border-radius: 3px; margin-right: 4px;">/</span> Filter
+            <span style="margin: 0 6px;"></span>
+            <span style="color: #f0f6fc; background: #30363d; padding: 1px 5px; border-radius: 3px; margin-right: 4px;">c</span> Config
+            <span style="margin: 0 6px;"></span>
+            <span style="color: #f0f6fc; background: #30363d; padding: 1px 5px; border-radius: 3px; margin-right: 4px;">?</span> Help
+            <span style="margin: 0 6px;"></span>
+            <span style="color: #f0f6fc; background: #30363d; padding: 1px 5px; border-radius: 3px; margin-right: 4px;">q</span> Quit
+          </div>
+          <div>
+            <span style="color: #f0f6fc; background: #30363d; padding: 1px 5px; border-radius: 3px; margin-right: 4px;">^p</span> palette
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Right pane: detail -->
+      <div style="flex: 1; border: 1px solid #21262d; border-radius: 6px; padding: 16px 18px; display: flex; flex-direction: column; gap: 6px;">
+        <div style="display: grid; grid-template-columns: 110px 1fr; gap: 6px;">
+          <span style="color: #8b949e;">Name:</span><span style="color: #f0f6fc;">queue-patch</span>
+          <span style="color: #8b949e;">Repo:</span><span style="color: #f0f6fc;">api-core</span>
+          <span style="color: #8b949e;">Profile:</span><span style="color: #f0f6fc;">work</span>
+          <span style="color: #8b949e;">Tags:</span><span style="color: #79c0ff;">#aws  #msk  #queue</span>
+          <span style="color: #8b949e;">Priority:</span><span style="color: #f0f6fc;">—</span>
+          <span style="color: #8b949e;">Active:</span><span style="color: #f0f6fc;">2026-04-24 08:14</span>
+          <span style="color: #8b949e;">ID:</span><span style="color: #f0f6fc; font-size: 11px; word-break: break-all;">7b3a9c12-4e5f-4b67-8c91-d2a5e3f4b8c9</span>
+        </div>
+
+        <hr style="border: 0; border-top: 1px solid #21262d; margin: 14px 0 8px;"/>
+
+        <div style="display: grid; grid-template-columns: 110px 1fr; gap: 6px;">
+          <span style="color: #8b949e;">Desc:</span><span style="color: #c9d1d9;">queue-patch</span>
+        </div>
+
+        <div style="margin-top: auto; color: #6e7681; font-size: 11px; border-top: 1px solid #21262d; padding-top: 12px;">
+          Press <span style="color: #f0f6fc;">Enter</span> to resume · <span style="color: #f0f6fc;">t</span> tag · <span style="color: #f0f6fc;">p</span> priority · <span style="color: #f0f6fc;">x</span> pin · <span style="color: #f0f6fc;">d</span> archive
+        </div>
+      </div>
+
+    </div>
+  </foreignObject>
+</svg>

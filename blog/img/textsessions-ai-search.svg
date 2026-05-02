@@ -1,0 +1,48 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 920 480" width="920" height="480" font-family="ui-monospace, SF Mono, Menlo, Consolas, monospace">
+  <defs>
+    <filter id="shadow" x="-10%" y="-10%" width="120%" height="130%">
+      <feDropShadow dx="0" dy="6" stdDeviation="10" flood-color="#000" flood-opacity="0.45"/>
+    </filter>
+  </defs>
+
+  <!-- Window -->
+  <rect x="20" y="14" width="880" height="448" rx="10" ry="10" fill="#0d1117" stroke="#21262d" stroke-width="1" filter="url(#shadow)"/>
+
+  <!-- Title bar -->
+  <rect x="20" y="14" width="880" height="32" rx="10" ry="10" fill="#161b22"/>
+  <rect x="20" y="32" width="880" height="14" fill="#161b22"/>
+  <line x1="20" y1="46" x2="900" y2="46" stroke="#21262d" stroke-width="1"/>
+
+  <!-- Traffic lights -->
+  <circle cx="40" cy="30" r="6" fill="#ff5f57"/>
+  <circle cx="60" cy="30" r="6" fill="#febc2e"/>
+  <circle cx="80" cy="30" r="6" fill="#28c840"/>
+
+  <!-- Title -->
+  <text x="460" y="34" fill="#8b949e" font-size="12" text-anchor="middle">paolo — textsessions — search</text>
+
+  <!-- Body content as foreignObject for easy text layout -->
+  <foreignObject x="32" y="58" width="868" height="400">
+    <div xmlns="http://www.w3.org/1999/xhtml" style="font: 13px ui-monospace, 'SF Mono', Menlo, Consolas, monospace; color: #c9d1d9; line-height: 1.5; white-space: pre; padding: 4px;">
+<tspan style="color:#8b949e">$</tspan> textsessions search <tspan style="color:#a5d6ff">"review"</tspan> --profile personal
+sessions with <tspan style="color:#a5d6ff">'review'</tspan> in name or description: pr-feedback-review (x2), gh-action-review,
+pr-882-review, search-review, reviewing, code-review-comments, self-review,
+migration-review-notes, review-memory
+
+<tspan style="color:#7d8590">┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━┳━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━┓
+┃</tspan> <tspan style="color:#f0f6fc;font-weight:600">Name                          </tspan> <tspan style="color:#7d8590">┃</tspan> <tspan style="color:#f0f6fc;font-weight:600">Info                          </tspan> <tspan style="color:#7d8590">┃</tspan> <tspan style="color:#f0f6fc;font-weight:600">Repo      </tspan> <tspan style="color:#7d8590">┃</tspan> <tspan style="color:#f0f6fc;font-weight:600">Tags      </tspan> <tspan style="color:#7d8590">┃</tspan> <tspan style="color:#f0f6fc;font-weight:600">Last Active     </tspan> <tspan style="color:#7d8590">┃
+┡━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━╇━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━┩
+│</tspan> pr-feedback-review            <tspan style="color:#7d8590">│</tspan> pr-feedback-review            <tspan style="color:#7d8590">│</tspan> api-core   <tspan style="color:#7d8590">│</tspan>            <tspan style="color:#7d8590">│</tspan> 2026-04-24 11:31 <tspan style="color:#7d8590">│
+│</tspan> pr-feedback-review            <tspan style="color:#7d8590">│</tspan> pr-feedback-review            <tspan style="color:#7d8590">│</tspan> api-core   <tspan style="color:#7d8590">│</tspan>            <tspan style="color:#7d8590">│</tspan> 2026-04-24 09:13 <tspan style="color:#7d8590">│
+│</tspan> gh-action-review              <tspan style="color:#7d8590">│</tspan> gh-action-review              <tspan style="color:#7d8590">│</tspan> api-core   <tspan style="color:#7d8590">│</tspan>            <tspan style="color:#7d8590">│</tspan> 2026-04-21 13:16 <tspan style="color:#7d8590">│
+│</tspan> pr-882-review                 <tspan style="color:#7d8590">│</tspan> pr-882-review                 <tspan style="color:#7d8590">│</tspan> trading    <tspan style="color:#7d8590">│</tspan>            <tspan style="color:#7d8590">│</tspan> 2026-04-13 08:07 <tspan style="color:#7d8590">│
+│</tspan> search-review                 <tspan style="color:#7d8590">│</tspan> search-review                 <tspan style="color:#7d8590">│</tspan> api-core   <tspan style="color:#7d8590">│</tspan>            <tspan style="color:#7d8590">│</tspan> 2026-04-13 08:33 <tspan style="color:#7d8590">│
+│</tspan> reviewing                     <tspan style="color:#7d8590">│</tspan> reviewing                     <tspan style="color:#7d8590">│</tspan> trading    <tspan style="color:#7d8590">│</tspan>            <tspan style="color:#7d8590">│</tspan> 2026-04-09 14:56 <tspan style="color:#7d8590">│
+│</tspan> code-review-comments          <tspan style="color:#7d8590">│</tspan> code-review-comments          <tspan style="color:#7d8590">│</tspan> api-core   <tspan style="color:#7d8590">│</tspan>            <tspan style="color:#7d8590">│</tspan> 2026-04-16 13:36 <tspan style="color:#7d8590">│
+│</tspan> self-review                   <tspan style="color:#7d8590">│</tspan> self-review                   <tspan style="color:#7d8590">│</tspan> trading    <tspan style="color:#7d8590">│</tspan>            <tspan style="color:#7d8590">│</tspan> 2026-04-03 06:55 <tspan style="color:#7d8590">│
+│</tspan> migration-review-notes        <tspan style="color:#7d8590">│</tspan> migration-review-notes        <tspan style="color:#7d8590">│</tspan> api-core   <tspan style="color:#7d8590">│</tspan>            <tspan style="color:#7d8590">│</tspan> 2026-03-27 10:15 <tspan style="color:#7d8590">│
+│</tspan> review-memory                 <tspan style="color:#7d8590">│</tspan> review-memory                 <tspan style="color:#7d8590">│</tspan> api-core   <tspan style="color:#7d8590">│</tspan> <tspan style="color:#79c0ff">#recurrent</tspan> <tspan style="color:#7d8590">│</tspan> 2026-04-03 20:41 <tspan style="color:#7d8590">│
+└───────────────────────────────┴───────────────────────────────┴────────────┴────────────┴──────────────────┘</tspan>
+    </div>
+  </foreignObject>
+</svg>

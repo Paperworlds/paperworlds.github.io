@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Sessions pile up: triaging Claude Code across repos — Paperworlds</title>
+<meta name="description" content="Running parallel Claude Code agents creates a session pile within days. Native --resume is single-repo, recency-only. Here's the TUI that handles cross-repo triage — tags, priority, AI search, ghost recovery.">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'SF Mono', 'Fira Code', 'Cascadia Code', 'JetBrains Mono', monospace;
+    background: #0d1117;
+    color: #c9d1d9;
+    line-height: 1.7;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+  }
+
+  a { color: #58a6ff; text-decoration: none; }
+  a:hover { text-decoration: underline; }
+
+  .crumbs {
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 32px 24px 0;
+    width: 100%;
+    font-size: 0.78rem;
+    color: #6e7681;
+  }
+  .crumbs a { color: #6e7681; }
+  .crumbs a:hover { color: #c9d1d9; text-decoration: none; }
+
+  article {
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 40px 24px 64px;
+    width: 100%;
+    flex: 1;
+  }
+
+  article header { margin-bottom: 40px; }
+
+  h1 {
+    font-size: 1.8rem;
+    color: #f0f6fc;
+    font-weight: 600;
+    line-height: 1.3;
+    letter-spacing: -0.3px;
+    margin-bottom: 12px;
+  }
+
+  .meta {
+    font-size: 0.78rem;
+    color: #6e7681;
+  }
+
+  .meta .tool-tag {
+    color: #3fb950;
+    border: 1px solid #238636;
+    border-radius: 12px;
+    padding: 1px 8px;
+    margin-left: 8px;
+  }
+
+  h2 {
+    font-size: 1.05rem;
+    color: #f0f6fc;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    margin: 40px 0 16px;
+    padding-top: 24px;
+    border-top: 1px solid #21262d;
+  }
+
+  h2:first-of-type { border-top: none; padding-top: 0; }
+
+  p {
+    color: #c9d1d9;
+    font-size: 0.92rem;
+    margin-bottom: 16px;
+  }
+
+  p code, li code {
+    background: #161b22;
+    border: 1px solid #21262d;
+    border-radius: 4px;
+    padding: 1px 6px;
+    font-size: 0.85rem;
+    color: #f0f6fc;
+  }
+
+  pre {
+    background: #161b22;
+    border: 1px solid #21262d;
+    border-radius: 6px;
+    padding: 14px 18px;
+    overflow-x: auto;
+    margin: 16px 0 24px;
+    font-size: 0.84rem;
+    line-height: 1.55;
+  }
+
+  pre code {
+    color: #c9d1d9;
+    background: transparent;
+    border: none;
+    padding: 0;
+  }
+
+  ul {
+    padding-left: 22px;
+    margin: 8px 0 16px;
+  }
+
+  li {
+    color: #c9d1d9;
+    font-size: 0.92rem;
+    margin-bottom: 8px;
+  }
+
+  blockquote {
+    border-left: 3px solid #30363d;
+    padding: 4px 0 4px 18px;
+    margin: 24px 0;
+    color: #8b949e;
+    font-style: italic;
+  }
+
+  table {
+    border-collapse: collapse;
+    width: 100%;
+    margin: 16px 0 24px;
+    font-size: 0.85rem;
+  }
+
+  th, td {
+    border: 1px solid #21262d;
+    padding: 6px 10px;
+    text-align: left;
+    vertical-align: top;
+  }
+
+  th {
+    background: #161b22;
+    color: #f0f6fc;
+    font-weight: 600;
+  }
+
+  td code {
+    background: transparent;
+    border: none;
+    padding: 0;
+    color: #f0f6fc;
+  }
+
+  figure {
+    margin: 24px 0 32px;
+    text-align: center;
+  }
+
+  figure img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 8px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.45), 0 0 0 1px #21262d;
+  }
+
+  figcaption {
+    font-size: 0.78rem;
+    color: #6e7681;
+    margin-top: 10px;
+    font-style: italic;
+  }
+
+  .end {
+    margin-top: 48px;
+    padding-top: 24px;
+    border-top: 1px solid #21262d;
+    color: #8b949e;
+    font-size: 0.86rem;
+  }
+
+  footer {
+    padding: 24px;
+    text-align: center;
+    color: #484f58;
+    font-size: 0.78rem;
+    border-top: 1px solid #21262d;
+  }
+
+  footer a { color: #6e7681; }
+
+  @media (max-width: 640px) {
+    article { padding: 24px 18px 48px; }
+    h1 { font-size: 1.5rem; }
+  }
+</style>
+</head>
+<body>
+
+<nav class="crumbs">
+  <a href="/">Paperworlds</a> · <a href="/blog/">Blog</a>
+</nav>
+
+<article>
+  <header>
+    <h1>Sessions pile up: triaging Claude Code across repos</h1>
+    <div class="meta">
+      2026-05-02 · 9 min read
+      <span class="tool-tag">textsessions</span>
+    </div>
+  </header>
+
+  <h2>The pile</h2>
+
+  <p>If you run Claude Code seriously, across multiple repos, with parallel sessions for different tasks, you've watched the session pile grow. Within a week, dozens of <code>.jsonl</code> files have accumulated under <code>~/.claude*/projects/&lt;encoded-path&gt;/</code>, one per session, scattered across as many directories as you have repos. Some of them are gold (the one that fixed the production bug, the migration discussion, the architecture call you want to revisit). Most are noise.</p>
+
+  <p>Native Claude Code's <code>--resume</code> flag is single-repo and recency-ordered. Two repos and a few days in, you've outgrown it. There's no cross-repo view, no search, no tagging, no priority, no way to mark "this one matters, save it; that one can go." The pile just gets bigger.</p>
+
+  <p>The activity this needs isn't "list sessions." It's <em>triage</em>: rapid scanning, quick judgment, occasional rescue. The way you'd handle a busy email inbox. Most messages are noise, a few are gold, a tiny number need follow-up. Sessions are the same.</p>
+
+  <p><a href="https://github.com/paperworlds/textsessions"><strong>textsessions</strong></a> is a TUI for that workflow. It indexes every Claude Code session on your machine across every repo, gives you a dense Textual view to browse, filter, search, tag, prioritize, pin, archive, and resume. The reason it's a TUI and not a CLI is that triage doesn't fit on a flag. You need eyes, scrolling, and shortcut keys.</p>
+
+  <figure>
+    <img src="img/textsessions-tui.svg" alt="textsessions TUI showing a list of Claude Code sessions across multiple repos, with columns for name, repo, profile, tags, priority, and last-active timestamp">
+    <figcaption>The triage view: every session, every repo, in one place.</figcaption>
+  </figure>
+
+  <h2>Why I built it</h2>
+
+  <p>I started running parallel Claude agents at work, one terminal per task, several at once, across drastically different domains. Sometimes the same repo with different scopes. Sometimes different repos for unrelated work. Within a week the pile was unmanageable.</p>
+
+  <p>The breaking moment was familiar. I remembered solving a tricky problem in a session a few days earlier and wanted to come back to it. I couldn't find it. <code>--resume</code> showed me the most recent runs in the current repo. The session I needed was in a <em>different</em> repo, four days back. I knew it existed; I knew roughly what was in it; I had no way to reach it.</p>
+
+  <p>That's when I realized the act of running many agents creates a new kind of work: triage. Native Claude has no triage primitives. The session list is flat, single-repo, and sorted only by recency. There's no tagging, no priority, no search inside session content, no way to say "this one matters, keep it" vs "this one was a dead end, prune it." The activity that the tool needed didn't yet have a tool.</p>
+
+  <p>textsessions ships the primitives. It reads the JSONL trail Claude already writes, builds a per-repo YAML index, and surfaces a dense list with metadata you can edit: short display name, description, comma-separated tags, priority (urgent / 1 / 2 / 3), pin state. It doesn't fight Claude Code. It just makes Claude's existing trail navigable.</p>
+
+  <p>One feature worth calling out: <strong>ghosts and orphans</strong>. Sessions whose source <code>.jsonl</code> files have moved or been deleted (because you renamed a repo, or moved your project tree, or Claude Code regenerated something) become "ghosts" in the index. textsessions surfaces them in a dedicated view (<code>g</code>), so you can either recover the metadata onto a fresh session or hard-delete the stale entry. This kind of thing ("the underlying file moved and now I have an index entry pointing at nothing") is exactly the noise that breaks every session-management tool that doesn't think about it.</p>
+
+  <h2>How to use it in five minutes</h2>
+
+  <p>Install:</p>
+
+<pre><code>pip install git+https://github.com/paperworlds/textsessions
+# or with uv:
+uv tool install git+https://github.com/paperworlds/textsessions</code></pre>
+
+  <p>For multi-account integration with <a href="https://paperworlds.github.io/blog/textaccounts.html">textaccounts</a> (so each session shows which profile it came from):</p>
+
+<pre><code>uv tool install "git+https://github.com/paperworlds/textsessions[accounts]"</code></pre>
+
+  <p>First-run discovery. Let textsessions find your existing Claude session directories:</p>
+
+<pre><code>textsessions init</code></pre>
+
+  <p>It scans for repos under <code>~/.claude*/projects/</code> and registers them. Then build the index:</p>
+
+<pre><code>textsessions reindex</code></pre>
+
+  <p>This walks every <code>.jsonl</code> file in the registered locations and writes a YAML index per repo. It's fast (milliseconds on hundreds of sessions), so you can run it whenever you sit down at the keyboard.</p>
+
+  <p>Open the TUI:</p>
+
+<pre><code>textsessions view</code></pre>
+
+  <p>You see a dense list across every registered repo: name, repo, profile (if textaccounts is integrated), tags, priority, last-active timestamp.</p>
+
+  <p>Useful shortcuts in the TUI:</p>
+
+  <table>
+    <thead>
+      <tr><th>Key</th><th>Action</th></tr>
+    </thead>
+    <tbody>
+      <tr><td><code>Enter</code></td><td>Resume session (TUI suspends, Claude launches, returns when you exit)</td></tr>
+      <tr><td><code>n</code></td><td>Start a new session (with profile, repo, optional name)</td></tr>
+      <tr><td><code>/</code></td><td>Filter by name, description, or slug</td></tr>
+      <tr><td><code>a</code></td><td>Toggle: current repo only ↔ all repos</td></tr>
+      <tr><td><code>t</code></td><td>Tag / untag (comma-separated; prefix <code>-</code> to remove)</td></tr>
+      <tr><td><code>p</code></td><td>Set priority (urgent / 1 / 2 / 3)</td></tr>
+      <tr><td><code>x</code></td><td>Pin / unpin</td></tr>
+      <tr><td><code>r</code></td><td>Rename (short display name + description)</td></tr>
+      <tr><td><code>g</code></td><td>Ghosts & orphans view (sessions whose <code>.jsonl</code> is gone)</td></tr>
+      <tr><td><code>d</code></td><td>Archive (recoverable)</td></tr>
+      <tr><td><code>D</code></td><td>Hard delete (confirmation required)</td></tr>
+      <tr><td><code>?</code></td><td>Full keymap</td></tr>
+    </tbody>
+  </table>
+
+  <p>For semantic search across session content (different from the simple filter on <code>/</code>), there's an <code>ai-search</code> CLI that ranks sessions by relevance to a query, useful for "find the session where I figured out the migration." That one sends content to Claude, so use it when the simple filter isn't enough rather than as the default.</p>
+
+  <figure>
+    <img src="img/textsessions-ai-search.svg" alt="textsessions ai-search command output, showing sessions ranked by semantic relevance to a query, with relevance scores and short justifications">
+    <figcaption><code>ai-search</code>: semantic ranking when a name filter isn't enough.</figcaption>
+  </figure>
+
+  <p>One workflow that makes the pile sustainable: <code>reindex</code> plus a minute of triage every few days. Tag the gold ones, archive the dead ends, pin the in-progress ones. That's it. The pile stays navigable.</p>
+
+  <h2>Pairs with textaccounts</h2>
+
+  <p>If you've already adopted <a href="/blog/textaccounts.html"><strong>textaccounts</strong></a> (the previous post in this series, the tool that gives Claude Code real profile isolation), textsessions picks up your profiles automatically. Each session shows which profile it belongs to in a dedicated column, and the same row tells you whether it's a work session, a personal session, or a worker profile spawned for a parallel run. Triage stays scoped: filter to one profile, archive across another, never accidentally resume a personal session in a work context.</p>
+
+  <p>That's why I install them together. textaccounts isolates the configuration so two contexts don't bleed into each other. textsessions makes the resulting two piles navigable. Different layers, same pain.</p>
+
+  <h2>The bigger picture</h2>
+
+  <p>textsessions is one of several tools in <a href="https://paperworlds.github.io">Paperworlds</a>, small open-source fixes for missing primitives I kept hitting in Claude Code while running it daily. The other tools tackle different layers of the same problem; this one is about making the trail Claude leaves on disk navigable, after the fact.</p>
+
+  <p>If your <code>~/.claude*/projects/</code> directory has more than a handful of sessions and you've felt the friction of finding the right one, give it a try. Issues, PRs, and "I want this for bash" requests welcome.</p>
+
+  <div class="end">
+    Repo: <a href="https://github.com/paperworlds/textsessions">github.com/paperworlds/textsessions</a>
+  </div>
+</article>
+
+<footer>
+  <a href="/">Paperworlds</a> · <a href="https://www.elastic.co/licensing/elastic-license">Elastic License 2.0</a> (textsessions: MIT)
+</footer>
+
+</body>
+</html>
