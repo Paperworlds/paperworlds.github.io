@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The thing I found myself doing — Paperworlds</title>
+<meta name="description" content="A note from inside the project. Eight small tools, none of them planned, and the day I caught myself building them as a set.">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'SF Mono', 'Fira Code', 'Cascadia Code', 'JetBrains Mono', monospace;
+    background: #0d1117;
+    color: #c9d1d9;
+    line-height: 1.7;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+  }
+
+  a { color: #58a6ff; text-decoration: none; }
+  a:hover { text-decoration: underline; }
+
+  .crumbs {
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 32px 24px 0;
+    width: 100%;
+    font-size: 0.78rem;
+    color: #6e7681;
+  }
+  .crumbs a { color: #6e7681; }
+  .crumbs a:hover { color: #c9d1d9; text-decoration: none; }
+
+  article {
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 40px 24px 64px;
+    width: 100%;
+    flex: 1;
+  }
+
+  article header { margin-bottom: 40px; }
+
+  h1 {
+    font-size: 1.8rem;
+    color: #f0f6fc;
+    font-weight: 600;
+    line-height: 1.3;
+    letter-spacing: -0.3px;
+    margin-bottom: 12px;
+  }
+
+  .meta {
+    font-size: 0.78rem;
+    color: #6e7681;
+  }
+
+  .meta .tool-tag {
+    color: #d29922;
+    border: 1px solid #9e6a03;
+    border-radius: 12px;
+    padding: 1px 8px;
+    margin-left: 8px;
+  }
+
+  h2 {
+    font-size: 1.05rem;
+    color: #f0f6fc;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    margin: 40px 0 16px;
+    padding-top: 24px;
+    border-top: 1px solid #21262d;
+  }
+
+  h2:first-of-type { border-top: none; padding-top: 0; }
+
+  p {
+    color: #c9d1d9;
+    font-size: 0.92rem;
+    margin-bottom: 16px;
+  }
+
+  p code, li code {
+    background: #161b22;
+    border: 1px solid #21262d;
+    border-radius: 4px;
+    padding: 1px 6px;
+    font-size: 0.85rem;
+    color: #f0f6fc;
+  }
+
+  em { color: #f0f6fc; }
+
+  blockquote {
+    border-left: 3px solid #30363d;
+    padding: 4px 0 4px 18px;
+    margin: 24px 0;
+    color: #8b949e;
+    font-style: italic;
+  }
+
+  hr.movement {
+    border: none;
+    text-align: center;
+    color: #484f58;
+    margin: 32px 0;
+    height: 1em;
+    font-size: 0.9rem;
+    letter-spacing: 0.5em;
+  }
+  hr.movement::before {
+    content: "* * *";
+  }
+
+  .end {
+    margin-top: 48px;
+    padding-top: 24px;
+    border-top: 1px solid #21262d;
+    color: #8b949e;
+    font-size: 0.86rem;
+  }
+
+  footer {
+    padding: 24px;
+    text-align: center;
+    color: #484f58;
+    font-size: 0.78rem;
+    border-top: 1px solid #21262d;
+  }
+
+  footer a { color: #6e7681; }
+
+  @media (max-width: 640px) {
+    article { padding: 24px 18px 48px; }
+    h1 { font-size: 1.5rem; }
+  }
+</style>
+</head>
+<body>
+
+<nav class="crumbs">
+  <a href="/">Paperworlds</a> · <a href="/blog/">Blog</a>
+</nav>
+
+<article>
+  <header>
+    <h1>The thing I found myself doing</h1>
+    <div class="meta">
+      2026-05-03 · 5 min read
+      <span class="tool-tag">essay</span>
+    </div>
+  </header>
+
+  <p>I was just having fun with the idea of working on text games. It seems so poetic to me. Words on a page, and the world arrives, fully formed, the moment you write it. There's this feeling of unlimited power, because the words can reach anywhere, compared to graphics and the other dynamics you need before a visual world can even start to happen.</p>
+
+  <p>The tools came later. The first one closed a small annoyance, the second closed another, and by the eighth I caught myself, looking at the names lined up in the folder. This is a note from inside that catching.</p>
+
+  <hr class="movement">
+
+  <p>I'd been working with parallel agents most days. Three or four conversations going at once, each one about a different problem, each one in its own little room. It doesn't feel like orchestrating. It feels like talking to a friend and discussing a problem you're having, trying to find a solution. You're not directing anyone. You're thinking out loud, and someone is thinking back. Claude Code, like most tools that grew up in 2024, is built around one of those conversations at a time. My day was already in the plural.</p>
+
+  <p>And every time I tried to do something with it, the friction kept arriving in the same shape: not having the control, the organization in your hand, the management. Every time I hit something the cloud AI or the interface didn't let me do, I'd have two reactions at once. <em>This could be so much powerful.</em> And: <em>this is not how it should be.</em> Both at once, in the same breath, every time. One evening I sat down and made a list of those moments. Six items, then eight. They held still on the page while I tried to group them. Each group had its own small fix, not a framework, a fix, half a Saturday each. The surprise wasn't the fixes; it was the grouping. Under all of them sat the same bigger assumption: one config dir, one session log, one auth, one mental thread, one reading lens. The tool was singular by default.</p>
+
+  <hr class="movement">
+
+  <p>The fun, by the way, isn't an 11pm thing. It's not a desk thing at all. The fun was getting agents I could check on remotely. The feeling when one was running and I was somewhere else was great. Bone-conduction earphones on, the kind that leave your ears open to the room. Dictating through an app called Wispr Flow, talking out loud, watching the words become text again on the other end. Speaking to my phone like I was talking to an audience of agents. A small futuristic feeling, when it was starting to work. It never completed, of course. Never quite the way you want it. Still, a very interesting feeling when it's starting to shape. The remote-control layer and the cloud are buggy for now. Another tool I'd like to leverage in some way, to do that part better. The list isn't done.</p>
+
+  <hr class="movement">
+
+  <p>What I'd like from a reader is that they recognize the feeling. <em>I had this too.</em> The frictions, but also the pleasure of stepping away and finding the conversation still going. And one more thing, the bigger one. I'd like the reader to start seeing agents through the magic of a writer. Agents do feel, the way characters in a novel feel. We're going to talk about that, in this series, the way you'd talk about a book. Some of the essays go further into it. It's the thread under everything.</p>
+
+  <p>The folder all of this lives in is called Paperworlds. It definitely came out of the text game. The idea came out of the fact that we wanted to say it's text, but in a way that it's closer to writing. So paper, and words. There's a very interesting, fascinating idea I still need to make real: that text games can be connected, and they can be creating this hybrid space. The most powerful thing around the corner is the last and most complex hybrid, which is the one between reality and fiction, between Paperworlds and the real world. In the end, the real world is also a paper world. They are infinite. Reality is just one of them. Or at least, this meta-universe is one side, and it also has many.</p>
+
+  <div class="end">
+    <a href="/blog/">More posts</a> · <a href="https://github.com/paperworlds">github.com/paperworlds</a>
+  </div>
+</article>
+
+<footer>
+  <a href="/">Paperworlds</a>
+</footer>
+
+</body>
+</html>
