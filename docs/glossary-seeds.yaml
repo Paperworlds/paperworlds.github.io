@@ -1,0 +1,41 @@
+# Glossary seeds — pre-textmap-glossary
+#
+# Terms collected before `textmap glossary export` ships (forum thread:
+# `feat-glossary-node-type-textmap-glossary-export-command`). When the
+# textmap glossary node type lands, these become the first
+# `type: glossary` nodes; this file becomes a drop-in source for
+# `textmap propose_node` calls.
+#
+# Until then: hand-curated, append-only, ordered roughly by when each
+# term was first felt as needing a definition.
+
+generated: pre-textmap-glossary
+workspace: paperworlds
+
+entries:
+  - id: conventions
+    term: "conventions"
+    description: "Cross-repo norms collected at workspace level (textworkspace/docs/CONVENTIONS.yaml). API contracts, config paths, versioning, shell rules, refactor rules, testing, Claude session habits — the shared substrate every Paperworlds tool reads from."
+    aliases: ["CONVENTIONS.yaml", "workspace conventions"]
+    appears_in:
+      - {post_slug: textaccounts, relation: mentions}
+      - {post_slug: textsessions, relation: mentions}
+
+  - id: spec
+    term: "spec"
+    description: "A canonical, durable design document for a feature or contract. In Paperworlds, specs come out of textforums threads after sufficient discussion: thread → opinionated reply → phased ship → spec adoption. Specs live in the consuming repo's `docs/specs/`."
+    aliases: ["specification", "specs"]
+    appears_in:
+      - {post_slug: textaccounts-workers, relation: mentions}
+
+  - id: ideas
+    term: "ideas"
+    description: "Pre-spec, pre-thread captures of work that hasn't yet earned a forum thread. Stored as `IDEAS.md` or `IDEAS.yaml` at the repo root. Lower threshold than a forum thread; used to keep half-formed thoughts addressable without committing to design discussion."
+    aliases: ["IDEAS.md", "IDEAS.yaml"]
+
+  - id: task-flow
+    term: "task flow"
+    description: "A YAML mapping of source → sink in textbridge: where Actions come from, where they go, on what schedule. Lives at `~/.textbridge/flows/<name>.yaml`. The execution unit textbridge runs in `sync` or `watch` mode."
+    aliases: ["flow", "textbridge flow"]
+    appears_in:
+      - {post_slug: textbridge, relation: defines}  # post not yet shipped
