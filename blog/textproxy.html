@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>textproxy: observe, analyze, survive — Paperworlds</title>
+<meta name="description" content="A local MITM proxy between Claude Code and api.anthropic.com. Tracks token consumption in real time, surfaces a degradation curve at the wire, and rewrites requests toward cheaper models before you hit the hard limit.">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'SF Mono', 'Fira Code', 'Cascadia Code', 'JetBrains Mono', monospace;
+    background: #0d1117;
+    color: #c9d1d9;
+    line-height: 1.7;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+  }
+
+  a { color: #58a6ff; text-decoration: none; }
+  a:hover { text-decoration: underline; }
+
+  .crumbs {
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 32px 24px 0;
+    width: 100%;
+    font-size: 0.78rem;
+    color: #6e7681;
+  }
+  .crumbs a { color: #6e7681; }
+  .crumbs a:hover { color: #c9d1d9; text-decoration: none; }
+
+  article {
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 40px 24px 64px;
+    width: 100%;
+    flex: 1;
+  }
+
+  article header { margin-bottom: 40px; }
+
+  h1 {
+    font-size: 1.8rem;
+    color: #f0f6fc;
+    font-weight: 600;
+    line-height: 1.3;
+    letter-spacing: -0.3px;
+    margin-bottom: 12px;
+  }
+
+  .meta {
+    font-size: 0.78rem;
+    color: #6e7681;
+  }
+
+  .meta .tool-tag {
+    color: #3fb950;
+    border: 1px solid #238636;
+    border-radius: 12px;
+    padding: 1px 8px;
+    margin-left: 8px;
+  }
+
+  h2 {
+    font-size: 1.05rem;
+    color: #f0f6fc;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    margin: 40px 0 16px;
+    padding-top: 24px;
+    border-top: 1px solid #21262d;
+  }
+
+  h2:first-of-type { border-top: none; padding-top: 0; }
+
+  p {
+    color: #c9d1d9;
+    font-size: 0.92rem;
+    margin-bottom: 16px;
+  }
+
+  p code, li code {
+    background: #161b22;
+    border: 1px solid #21262d;
+    border-radius: 4px;
+    padding: 1px 6px;
+    font-size: 0.85rem;
+    color: #f0f6fc;
+  }
+
+  pre {
+    background: #161b22;
+    border: 1px solid #21262d;
+    border-radius: 6px;
+    padding: 14px 18px;
+    overflow-x: auto;
+    margin: 16px 0 24px;
+    font-size: 0.84rem;
+    line-height: 1.55;
+  }
+
+  pre code {
+    color: #c9d1d9;
+    background: transparent;
+    border: none;
+    padding: 0;
+  }
+
+  ul {
+    padding-left: 22px;
+    margin: 8px 0 16px;
+  }
+
+  li {
+    color: #c9d1d9;
+    font-size: 0.92rem;
+    margin-bottom: 8px;
+  }
+
+  blockquote {
+    border-left: 3px solid #30363d;
+    padding: 4px 0 4px 18px;
+    margin: 24px 0;
+    color: #8b949e;
+    font-style: italic;
+  }
+
+  table {
+    border-collapse: collapse;
+    width: 100%;
+    margin: 16px 0 24px;
+    font-size: 0.85rem;
+  }
+
+  th, td {
+    border: 1px solid #21262d;
+    padding: 6px 10px;
+    text-align: left;
+    vertical-align: top;
+  }
+
+  th {
+    background: #161b22;
+    color: #f0f6fc;
+    font-weight: 600;
+  }
+
+  td code {
+    background: transparent;
+    border: none;
+    padding: 0;
+    color: #f0f6fc;
+  }
+
+  .end {
+    margin-top: 48px;
+    padding-top: 24px;
+    border-top: 1px solid #21262d;
+    color: #8b949e;
+    font-size: 0.86rem;
+  }
+
+  footer {
+    padding: 24px;
+    text-align: center;
+    color: #484f58;
+    font-size: 0.78rem;
+    border-top: 1px solid #21262d;
+  }
+
+  footer a { color: #6e7681; }
+
+  @media (max-width: 640px) {
+    article { padding: 24px 18px 48px; }
+    h1 { font-size: 1.5rem; }
+  }
+</style>
+</head>
+<body>
+
+<nav class="crumbs">
+  <a href="/">Paperworlds</a> · <a href="/blog/">Blog</a>
+</nav>
+
+<article>
+  <header>
+    <h1>textproxy: observe, analyze, survive</h1>
+    <div class="meta">
+      2026-05-04 · 9 min read
+      <span class="tool-tag">textproxy</span>
+    </div>
+  </header>
+
+  <h2>The megathread</h2>
+
+  <p>In late March 2026 a Reddit thread started collecting reports of severe degradation in Claude usage limits. Not a one-off. The thread grew. Users on every tier, including the $200/month Max plan at 20x usage, documented the same pattern: limits tightening during peak hours, requests throttled in ways the official documentation didn't describe, behavior that changed depending on when you sent the request and how much you'd already sent.</p>
+
+  <p>The frustrating part wasn't the limits themselves. It was the opacity. You hit something, but you couldn't see what. Claude Code kept working until it didn't. No visible meter. No warning. Just a hard stop, or a cryptic degradation that left you wondering whether your prompt was the problem or your quota was.</p>
+
+  <p>That's the problem textproxy was built to address. Not the limits, which Anthropic sets and we can't change. But the missing visibility layer between your work and the wire.</p>
+
+  <h2>Why a proxy</h2>
+
+  <p>The proxy is the right seat for everything that wants to observe or shape the API conversation. Claude Code sends HTTPS requests to <code>api.anthropic.com</code>. Every token count, every model selection, every response header crosses the wire. If you sit in that position, you see all of it.</p>
+
+  <p>textproxy is a lightweight local MITM between Claude Code and the API. It listens on <code>localhost:7474</code>, terminates TLS, inspects each SSE response for token usage data, and re-encrypts before forwarding. Claude Code doesn't notice. You get a live counter.</p>
+
+<pre><code>brew install paperworlds/tap/textproxy
+
+# Start the daemon
+textproxy start
+
+# Use the proxied alias
+claude-ctx   # fish alias: HTTPS_PROXY=http://localhost:7474 + CA cert
+
+# Check what happened
+textproxy stats</code></pre>
+
+  <p>The CA cert is installed once during setup (<code>textproxy ca install</code>). Everything after that is transparent.</p>
+
+  <h2>Observe</h2>
+
+  <p>The first thing you get is the session view: how many tokens this session has consumed, broken down by input, output, and cache. <code>textproxy stats</code> prints the current snapshot. The statusline integration writes a compact version to a state file, so your shell prompt or tmux status bar can show it live.</p>
+
+<pre><code>$ textproxy stats
+session     2h 14m · 23 requests
+input       184,320 tok
+output       41,880 tok
+cache read   92,100 tok
+─────────────────────────
+total       318,300 tok   31.8% of 1M cap</code></pre>
+
+  <p>The history is a <code>~/.cache/textproxy/history.jsonl</code> file, one JSON object per request. Each entry records the model, token counts, profile, timestamp, and a short request fingerprint. That file is the raw material for everything downstream.</p>
+
+  <h2>Analyze</h2>
+
+  <p><code>textproxy analyze</code> reads the history and buckets it by hour, model, day, and profile. The main use is seeing your own peak-hour pattern. Do you send more requests in the afternoon? Does the model distribution shift when you're under deadline? After a week of real data, the picture gets specific.</p>
+
+<pre><code>$ textproxy analyze --by hour
+hour  requests  input     output    cache
+00    12        84k       18k       42k
+09    38        271k      58k       134k
+10    47        334k      71k       167k
+11    61        435k      93k       217k
+...</code></pre>
+
+  <p><code>textproxy bench</code> does the other half: controlled time-of-day request firing on a fixed prompt, so you can measure actual latency and token delivery by hour rather than inferring from your real workload. If you suspected peak-hour degradation before, bench gives you numbers to compare against.</p>
+
+  <h2>Survive</h2>
+
+  <p>Observing the problem doesn't solve it. The third mode is the one that's harder to talk about, because it's designed and implemented but not yet on by default.</p>
+
+  <p>The limp-home routing layer sits inside the proxy and rewrites outbound requests based on how close you are to your rolling cap. The idea is a degradation curve: rather than hitting a hard limit and stopping, you get a softer landing. The model steps down. Requests slow down. At the extreme edge, the proxy refuses rather than letting Anthropic's 429 catch you mid-task.</p>
+
+  <p>The default curve looks like this:</p>
+
+  <table>
+    <thead>
+      <tr><th>Consumption</th><th>Action</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>80%</td><td>Rewrite model to <code>claude-haiku-4</code></td></tr>
+      <tr><td>90%</td><td>Rewrite model to <code>claude-haiku-4</code> + 10s sleep</td></tr>
+      <tr><td>95%</td><td>Refuse with 429</td></tr>
+    </tbody>
+  </table>
+
+  <p>The signal is a percent-of-cap reading. By default, textproxy derives it from its own rolling window: it tracks how many tokens you've sent over the last five hours and divides by your configured cap. You tell it your cap once; it handles the math from there.</p>
+
+<pre><code># ~/.config/textproxy/config.json
+{
+  "routing": {
+    "enabled": true,
+    "dry_run": false,
+    "signal_source": "internal",
+    "token_cap_5h": 1000000
+  }
+}</code></pre>
+
+  <p>Pro subscribers are around 1M tokens per five-hour window. Max subscribers are higher, around 5M. The right number depends on your tier and isn't exposed via the API, so you set it once based on what you know about your plan.</p>
+
+  <p>The <code>dry_run: true</code> default is deliberate. When dry_run is on, the routing decisions are logged but the request body is sent unchanged. You can watch what the system would have done without committing to it. To activate for real, set both <code>enabled: true</code> and <code>dry_run: false</code>.</p>
+
+  <p>You can also test the curve manually before running it live:</p>
+
+<pre><code># Simulate being at 87.5% of cap
+textproxy consumption set 87.5
+
+# Watch what would happen
+textproxy stats   # shows routing decision alongside consumption</code></pre>
+
+  <p>The routing is pure: no goroutines, no file watchers. It reads the signal on each request, evaluates the curve, and applies the decision. No background state to reason about.</p>
+
+  <h2>What's not done yet</h2>
+
+  <p>The internal signal source works for the common case, but it has a limitation. textproxy only sees requests that cross its own proxy. If you also use Claude.ai in a browser, or have other tools hitting the API, their consumption is invisible to the rolling window. The internal reading will undercount.</p>
+
+  <p>The fix is the file signal source: an external process reads your actual account consumption (via ccusage or similar) and writes <code>{"percent": 87.5}</code> to <code>~/.cache/textproxy/consumption.json</code>. The routing layer will use that instead of its own estimate. The wiring is there; the external poller isn't written yet.</p>
+
+<pre><code># Future: a cron or launchd job will write this automatically.
+# For now you can write it manually to test.
+textproxy consumption set 87.5   # set
+textproxy consumption            # read current value
+textproxy consumption clear      # reset</code></pre>
+
+  <p>The other open item is response caching: identical prompts returning cached answers, gated on request flags (no caching when temperature is non-zero or tool_choice is non-deterministic). Agentic loops that re-ask the same question stop paying twice. That's the most user-value-aligned thing on the roadmap and the most complex to get right with streaming responses.</p>
+
+  <h2>The bigger picture</h2>
+
+  <p>The proxy is the natural seat for everything that wants to observe or shape the API conversation. textproxy starts with token observability because that's the most immediate pain. The roadmap is broader: caching, per-session budgets, request rewriting, eventually cross-vendor adapter translation once an agent protocol stabilises. If it crosses the wire, it can live here. The MITM cert is the leverage.</p>
+
+  <p>Pairs with <a href="/blog/textsessions.html">textsessions</a>: the TUI reads <code>~/.cache/textproxy/session.json</code> directly and refreshes every five seconds. While you're triaging sessions, the detail panel shows the current session's token consumption without leaving the interface. No separate terminal, no <code>textproxy stats</code> call.</p>
+
+  <p>Pairs with <a href="/blog/textaccounts.html">textaccounts</a>: each profile in textaccounts produces a separate token consumption track in textproxy's history. You can see exactly how many tokens your work profile versus your personal profile have consumed in the same five-hour window, and configure different caps per profile if the plans differ.</p>
+
+  <div class="end">
+    Repo: <a href="https://github.com/paperworlds/textproxy">github.com/paperworlds/textproxy</a>
+  </div>
+</article>
+
+<footer>
+  <a href="/">Paperworlds</a> · <a href="https://www.elastic.co/licensing/elastic-license">Elastic License 2.0</a>
+</footer>
+
+</body>
+</html>
