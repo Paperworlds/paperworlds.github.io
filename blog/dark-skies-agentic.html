@@ -203,13 +203,11 @@
 
   <h2>Not fighting agents</h2>
 
-  <p>The folder I work in is, in one sense, an answer to this. Not a rebellion against AI assistance — I use Claude Code for most of what ships in this folder, and I don't plan to stop. Not a prescription for more manual work, which is Faye's answer, and which would slow things down without restoring legibility. A set of small tools built to answer the question that neither delegation nor saturation solves: what happened, and where.</p>
+  <p>Paperworlds is a pet project where I'm trying to work through some of these questions in practice. Not a framework, not a prescription — a handful of small tools, each trying to close a gap that kept arriving in the same shape. The checkpoint log is one of them, and honestly the one I'm least certain about. The idea is simple enough: write the receipt during, not after. Whether that's actually the right answer I don't know yet.</p>
 
-  <p>The checkpoint log is dark-sky infrastructure. The goal isn't to dim the agent — it's to keep the session legible enough that you can see what's up there when you need to look. Not the absence of AI. The absence of the noise that drowns out the signal.</p>
+  <p>Faye and Hochstein are right that something is wrong. The frame I'd offer is narrower — not more delegation or less, not faster rearchitecture, but: when the session ends, can you read what happened? Right now, mostly you can't. The trace is in a JSONL nobody opens, expiring on a timer, written for the model that compressed it, not the engineer who comes back a week later.</p>
 
-  <p>Faye and Hochstein are right that something is wrong. The frame I'd offer is narrower: the wrong thing isn't the delegation, and it isn't the demand. It's that when the session ends, you mostly have the output. The trace of how you got there is in a format nobody reads, expiring on a timer, written for the model that compressed it, not the engineer who comes back a week later.</p>
-
-  <p>Make the session auditable. Write the receipt during. That's the missing primitive.</p>
+  <p>Make the session auditable, as to automatically write the receipt during — right now I'm feeling like this is a missing primitive I can test, and Paperworlds is where I'm testing it.</p>
 
   <div class="end">
     Pairs with: <a href="/blog/every-agent-dies.html">Every agent dies when you close the chat</a>
