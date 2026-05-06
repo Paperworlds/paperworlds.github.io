@@ -203,11 +203,11 @@
 
   <h2>Not fighting agents</h2>
 
-  <p>Paperworlds is a pet project where I'm trying to work through some of these questions in practice. Not a framework, not a prescription — a handful of small tools, each trying to close a gap that kept arriving in the same shape. The checkpoint log is one of them, and honestly the one I'm least certain about. The idea is simple enough: write the receipt during, not after. Whether that's actually the right answer I don't know yet.</p>
+  <p>Paperworlds is a pet project where I'm trying to work through some of these questions in practice. Not a framework, not a prescription — a handful of small tools, each working on a specific problem. The checkpoint log is one of them, and honestly the one I'm least certain about. The idea is simple: write the receipt during, not after. Whether that's actually the right answer I don't know yet.</p>
 
   <p>Faye and Hochstein are right that something is wrong. The frame I'd offer is narrower — not more delegation or less, not faster rearchitecture, but: when the session ends, can you read what happened? Right now, mostly you can't. The trace is in a JSONL nobody opens, expiring on a timer, written for the model that compressed it, not the engineer who comes back a week later.</p>
 
-  <p>Make the session auditable, as to automatically write the receipt during — right now I'm feeling like this is a missing primitive I can test, and Paperworlds is where I'm testing it.</p>
+  <p>Make the session auditable, write the receipt during — right now I'm feeling like this is a missing primitive I can test, and Paperworlds is where I'm testing it.</p>
 
   <div class="end">
     Pairs with: <a href="/blog/every-agent-dies.html">Every agent dies when you close the chat</a>
