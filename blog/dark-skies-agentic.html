@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Dark skies — Paperworlds</title>
+<meta name="description" content="Two recent essays on agentic coding diagnose the same darkness from opposite directions. Neither asks the right question: not how much you delegate, but what trace you get back.">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'SF Mono', 'Fira Code', 'Cascadia Code', 'JetBrains Mono', monospace;
+    background: #0d1117;
+    color: #c9d1d9;
+    line-height: 1.7;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+  }
+
+  a { color: #58a6ff; text-decoration: none; }
+  a:hover { text-decoration: underline; }
+
+  .crumbs {
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 32px 24px 0;
+    width: 100%;
+    font-size: 0.78rem;
+    color: #6e7681;
+  }
+  .crumbs a { color: #6e7681; }
+  .crumbs a:hover { color: #c9d1d9; text-decoration: none; }
+
+  article {
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 40px 24px 64px;
+    width: 100%;
+    flex: 1;
+  }
+
+  article header { margin-bottom: 40px; }
+
+  h1 {
+    font-size: 1.8rem;
+    color: #f0f6fc;
+    font-weight: 600;
+    line-height: 1.3;
+    letter-spacing: -0.3px;
+    margin-bottom: 12px;
+  }
+
+  .meta {
+    font-size: 0.78rem;
+    color: #6e7681;
+  }
+
+  .meta .essay-tag {
+    color: #d29922;
+    border: 1px solid #9e6a03;
+    border-radius: 12px;
+    padding: 1px 8px;
+    margin-left: 8px;
+  }
+
+  h2 {
+    font-size: 1.05rem;
+    color: #f0f6fc;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    margin: 40px 0 16px;
+    padding-top: 24px;
+    border-top: 1px solid #21262d;
+  }
+
+  h2:first-of-type { border-top: none; padding-top: 0; }
+
+  p {
+    color: #c9d1d9;
+    font-size: 0.92rem;
+    margin-bottom: 16px;
+  }
+
+  p code, li code {
+    background: #161b22;
+    border: 1px solid #21262d;
+    border-radius: 4px;
+    padding: 1px 6px;
+    font-size: 0.85rem;
+    color: #f0f6fc;
+  }
+
+  pre {
+    background: #161b22;
+    border: 1px solid #21262d;
+    border-radius: 6px;
+    padding: 14px 18px;
+    overflow-x: auto;
+    margin: 16px 0 24px;
+    font-size: 0.84rem;
+    line-height: 1.55;
+  }
+
+  pre code {
+    color: #c9d1d9;
+    background: transparent;
+    border: none;
+    padding: 0;
+  }
+
+  blockquote {
+    border-left: 3px solid #30363d;
+    padding: 4px 0 4px 18px;
+    margin: 24px 0;
+    color: #8b949e;
+    font-style: italic;
+  }
+
+  .end {
+    margin-top: 48px;
+    padding-top: 24px;
+    border-top: 1px solid #21262d;
+    color: #8b949e;
+    font-size: 0.86rem;
+  }
+
+  footer {
+    padding: 24px;
+    text-align: center;
+    color: #484f58;
+    font-size: 0.78rem;
+    border-top: 1px solid #21262d;
+  }
+
+  footer a { color: #6e7681; }
+
+  @media (max-width: 640px) {
+    article { padding: 24px 18px 48px; }
+    h1 { font-size: 1.5rem; }
+  }
+</style>
+</head>
+<body>
+
+<nav class="crumbs">
+  <a href="/">Paperworlds</a> · <a href="/blog/">Blog</a>
+</nav>
+
+<article>
+  <header>
+    <h1>Dark skies</h1>
+    <div class="meta">
+      2026-05-06 · 7 min read
+      <span class="essay-tag">essay</span>
+    </div>
+  </header>
+
+  <p>Two essays came out recently that I keep returning to. Lars Faye's "<a href="https://larsfaye.com/articles/agentic-coding-is-a-trap">Agentic Coding is a Trap</a>" and Lorin Hochstein's "<a href="https://surfingcomplexity.blog/2026/04/28/life-comes-at-you-fast/">Life Comes at You Fast</a>." Both are careful, honest, and pointing at something real. Both stop just short of naming what the thing actually is.</p>
+
+  <p>They diagnose darkness from opposite directions. Faye goes inward: delegation erodes the mental model you need to supervise what you delegated. Anthropic's own research found a 47% drop in debugging skills among developers who used AI assistance heavily. His prescription is aggressive: keep 20 to 100 percent of your coding manual. His argument is that you can't understand what you didn't write, and that understanding is what you need when the model fails you.</p>
+
+  <p>Hochstein goes outward: AI generates demand faster than the infrastructure can adapt. GitHub and Anthropic have both been saturated by their own growth. The engineers who need to rearchitect for scale are the same engineers fighting the fires caused by the scale they haven't rearchitectured for yet. The loop closes on itself. His argument isn't about skill erosion — it's about structural saturation that steals its own remedy.</p>
+
+  <p>Both are right. The darkness is real in both places. But they're arguing about <em>how much</em> to delegate, and that's not where the problem lives.</p>
+
+  <h2>The wrong question</h2>
+
+  <p>The question both essays are circling, without quite asking it, is: after the session ends, what do you actually have?</p>
+
+  <p>Faye's answer is: less skill than you started with, if you delegated the hard parts. Hochstein's answer is: a system under more pressure than before. These are accurate. But neither is asking about the session itself. What trace does the work leave? Not in the git history, not in the compiled output — in the process that produced them. What happened? Why did it take that path? Where did it go wrong before it corrected?</p>
+
+  <p>When a human engineer works through a problem, there's a residue. A scratchpad, a Slack thread, a comment someone will hate in six months that starts with <em>// do not remove this</em>. The session has a shape. When the same work happens inside a long-running Claude session, the shape is locked in a JSONL file, compressed after a few hours, unreadable without tooling. You can see what was committed. You can't see how it got there.</p>
+
+  <p>That's the darkness. Not skill erosion. Not saturation. Illegibility.</p>
+
+  <h2>The closest prior art</h2>
+
+  <p>Cursor published something relevant recently on customizing agents: a clean model distinguishing Rules (always-on markdown context, loaded into every session) from Skills (contextually loaded workflows, invoked by name). The model is genuinely useful. If you want the agent to always follow a naming convention, that's a Rule. If you want it to run a specific testing workflow when asked, that's a Skill. Both live in version-controlled files. Both are explicit and reviewable.</p>
+
+  <p>This is structure-in. It's the right direction. But it's still configuration declared before the session starts, not observation captured during it. You define what the agent knows. You get no receipt.</p>
+
+  <p>After the session ends, you have whatever was committed. The decision trail — why this approach and not that one, what the agent tried first, where it stalled, what it reconsidered — is in the JSONL, which nobody reads, and which gets compressed before most people think to look.</p>
+
+  <h2>Dark skies</h2>
+
+  <p>Astronomers use the term "dark sky" to mean a place with low enough light pollution that you can see what's actually up there. It's not the absence of light. It's the absence of the wrong light — the ambient noise that drowns out the signal you're trying to read.</p>
+
+  <p>Agentic work generates its own light pollution. Every session is a source of signal (what happened, what worked, what the model decided) surrounded by noise (full JSONL transcripts, tool call payloads, intermediate states). The signal is in there. But you have to already know what you're looking for to extract it, and by the time you know what you're looking for, you've usually already moved on.</p>
+
+  <p>What you want is a dark sky: low-noise, human-readable signal from the session, written as the session runs, not reconstructed afterward. Not a summary generated at the end (the model is compressing at the point of maximum uncertainty). Not the raw JSONL (unreadable at volume). Something written incrementally, in human time, answering the specific question a future reader needs to answer: what happened here, and why.</p>
+
+  <h2>The receipt</h2>
+
+  <p>The thing that's been missing from the conversation — missing from Faye, from Hochstein, from the Cursor model — is a per-session structured log written <em>during</em> the session.</p>
+
+  <p>Not a plan written before (that's a wishlist). Not a summary written after (that's reconstruction). A log written as the work unfolds, at the granularity of "here's the step, here's the outcome, here's what changed direction." A <code>---</code>-delimited YAML block per phase. Timestamp, phase label, what was attempted, what was found, what's next. A hundred words per block, written once, never re-read within the session itself.</p>
+
+  <p>That's the checkpoint log format that lives in the textforums thread pinned since last week. The session writes it. The session never reads it back. Token cost is negligible because write-only streams are cheap. The file lands next to the work, named for the session, human-shaped, answering without a grep.</p>
+
+  <p>This is what neither Faye's "code more manually" nor Hochstein's "rearchitect faster" addresses. The skill erosion Faye describes is partly an illegibility problem: if you could read back what the agent actually tried, you'd learn from it the way you learn from watching someone else debug. The saturation Hochstein describes generates incidents that have no readable history beyond what the model reported at the time, which is a description of the surface, not a map of the subsurface.</p>
+
+  <h2>Not fighting agents</h2>
+
+  <p>The folder I work in is, in one sense, an answer to this. Not a rebellion against AI assistance — I use Claude Code for most of what ships in this folder, and I don't plan to stop. Not a prescription for more manual work, which is Faye's answer, and which would slow things down without restoring legibility. A set of small tools built to answer the question that neither delegation nor saturation solves: what happened, and where.</p>
+
+  <p>The checkpoint log is dark-sky infrastructure. The goal isn't to dim the agent — it's to keep the session legible enough that you can see what's up there when you need to look. Not the absence of AI. The absence of the noise that drowns out the signal.</p>
+
+  <p>Faye and Hochstein are right that something is wrong. The frame I'd offer is narrower: the wrong thing isn't the delegation, and it isn't the demand. It's that when the session ends, you mostly have the output. The trace of how you got there is in a format nobody reads, expiring on a timer, written for the model that compressed it, not the engineer who comes back a week later.</p>
+
+  <p>Make the session auditable. Write the receipt during. That's the missing primitive.</p>
+
+  <div class="end">
+    Pairs with: <a href="/blog/every-agent-dies.html">Every agent dies when you close the chat</a>
+  </div>
+</article>
+
+<footer>
+  <a href="/">Paperworlds</a> · <a href="https://www.elastic.co/licensing/elastic-license">Elastic License 2.0</a> (tools)
+</footer>
+
+</body>
+</html>
