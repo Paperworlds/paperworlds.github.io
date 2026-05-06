@@ -161,7 +161,7 @@
 
   <p>They diagnose darkness from opposite directions. Faye goes inward: delegation erodes the mental model you need to supervise what you delegated. Anthropic's own research found a 47% drop in debugging skills among developers who used AI assistance heavily. His prescription is aggressive: keep 20 to 100 percent of your coding manual. His argument is that you can't understand what you didn't write, and that understanding is what you need when the model fails you.</p>
 
-  <p>Hochstein goes outward: AI generates demand faster than the infrastructure can adapt. GitHub and Anthropic have both been saturated by their own growth. The engineers who need to rearchitect for scale are the same engineers fighting the fires caused by the scale they haven't rearchitectured for yet. The loop closes on itself. His argument isn't about skill erosion — it's about structural saturation that steals its own remedy.</p>
+  <p>Hochstein goes outward: AI generates demand faster than the infrastructure can adapt. GitHub and Anthropic have both been saturated by their own growth. The engineers who need to rearchitect for scale are the same engineers fighting the fires caused by the scale they haven't rearchitectured for yet. The loop closes on itself. His argument isn't about skill erosion. It's about structural saturation that steals its own remedy.</p>
 
   <p>Both are right. The darkness is real in both places. But they're arguing about <em>how much</em> to delegate, and that's not where the problem lives.</p>
 
@@ -169,7 +169,7 @@
 
   <p>The question both essays are circling, without quite asking it, is: after the session ends, what do you actually have?</p>
 
-  <p>Faye's answer is: less skill than you started with, if you delegated the hard parts. Hochstein's answer is: a system under more pressure than before. These are accurate. But neither is asking about the session itself. What trace does the work leave? Not in the git history, not in the compiled output — in the process that produced them. What happened? Why did it take that path? Where did it go wrong before it corrected?</p>
+  <p>Faye's answer is: less skill than you started with, if you delegated the hard parts. Hochstein's answer is: a system under more pressure than before. These are accurate. But neither is asking about the session itself. What trace does the work leave? Not in the git history, not in the compiled output. In the process that produced them. What happened? Why did it take that path? Where did it go wrong before it corrected?</p>
 
   <p>When a human engineer works through a problem, there's a residue. A scratchpad, a Slack thread, a comment someone will hate in six months that starts with <em>// do not remove this</em>. The session has a shape. When the same work happens inside a long-running Claude session, the shape is locked in a JSONL file, compressed after a few hours, unreadable without tooling. You can see what was committed. You can't see how it got there.</p>
 
@@ -181,11 +181,11 @@
 
   <p>This is structure-in. It's the right direction. But it's still configuration declared before the session starts, not observation captured during it. You define what the agent knows. You get no receipt.</p>
 
-  <p>After the session ends, you have whatever was committed. The decision trail — why this approach and not that one, what the agent tried first, where it stalled, what it reconsidered — is in the JSONL, which nobody reads, and which gets compressed before most people think to look.</p>
+  <p>After the session ends, you have whatever was committed. The decision trail (why this approach and not that one, what the agent tried first, where it stalled, what it reconsidered) is in the JSONL, which nobody reads, and which gets compressed before most people think to look.</p>
 
   <h2>Dark skies</h2>
 
-  <p>Astronomers use the term "dark sky" to mean a place with low enough light pollution that you can see what's actually up there. It's not the absence of light. It's the absence of the wrong light — the ambient noise that drowns out the signal you're trying to read.</p>
+  <p>Astronomers use the term "dark sky" to mean a place with low enough light pollution that you can see what's actually up there. It's not the absence of light. It's the absence of the wrong light: the ambient noise that drowns out the signal you're trying to read.</p>
 
   <p>Agentic work generates its own light pollution. Every session is a source of signal (what happened, what worked, what the model decided) surrounded by noise (full JSONL transcripts, tool call payloads, intermediate states). The signal is in there. But you have to already know what you're looking for to extract it, and by the time you know what you're looking for, you've usually already moved on.</p>
 
@@ -193,7 +193,7 @@
 
   <h2>The receipt</h2>
 
-  <p>The thing that's been missing from the conversation — missing from Faye, from Hochstein, from the Cursor model — is a per-session structured log written <em>during</em> the session.</p>
+  <p>The thing that's been missing from the conversation (missing from Faye, from Hochstein, from the Cursor model) is a per-session structured log written <em>during</em> the session.</p>
 
   <p>Not a plan written before (that's a wishlist). Not a summary written after (that's reconstruction). A log written as the work unfolds, at the granularity of "here's the step, here's the outcome, here's what changed direction." A <code>---</code>-delimited YAML block per phase. Timestamp, phase label, what was attempted, what was found, what's next. A hundred words per block, written once, never re-read within the session itself.</p>
 
@@ -203,11 +203,11 @@
 
   <h2>Not fighting agents</h2>
 
-  <p>Paperworlds is a pet project where I'm trying to work through some of these questions in practice. Not a framework, not a prescription — a handful of small tools, each working on a specific problem. The checkpoint log is one of them, and honestly the one I'm least certain about. The idea is simple: write the receipt during, not after. Whether that's actually the right answer I don't know yet.</p>
+  <p>Paperworlds is a pet project where I'm trying to work through some of these questions in practice. Not a framework, not a prescription. A handful of small tools, each working on a specific problem. The checkpoint log is one of them, and honestly the one I'm least certain about. The idea is simple: write the receipt during, not after. Whether that's actually the right answer I don't know yet.</p>
 
-  <p>Faye and Hochstein are right that something is wrong. The frame I'd offer is narrower — not more delegation or less, not faster rearchitecture, but: when the session ends, can you read what happened? Right now, mostly you can't. The trace is in a JSONL nobody opens, expiring on a timer, written for the model that compressed it, not the engineer who comes back a week later.</p>
+  <p>Faye and Hochstein are right that something is wrong. The frame I'd offer is narrower: not more delegation or less, not faster rearchitecture, but when the session ends, can you read what happened? Right now, mostly you can't. The trace is in a JSONL nobody opens, expiring on a timer, written for the model that compressed it, not the engineer who comes back a week later.</p>
 
-  <p>Make the session auditable, write the receipt during — right now I'm feeling like this is a missing primitive I can test, and Paperworlds is where I'm testing it.</p>
+  <p>Make the session auditable, write the receipt during; right now I'm feeling like this is a missing primitive I can test, and Paperworlds is where I'm testing it.</p>
 
   <div class="end">
     Pairs with: <a href="/blog/every-agent-dies.html">Every agent dies when you close the chat</a>
