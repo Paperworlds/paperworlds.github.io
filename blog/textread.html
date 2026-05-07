@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Five tabs in sequence — Paperworlds</title>
+<meta name="description" content="A small tool for context-lensed reading over a curated set of files. Not RAG, not search. You specify the goal; it reads with that frame; you get a themed digest with actual quotes, ready to use.">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'SF Mono', 'Fira Code', 'Cascadia Code', 'JetBrains Mono', monospace;
+    background: #0d1117;
+    color: #c9d1d9;
+    line-height: 1.7;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+  }
+
+  a { color: #58a6ff; text-decoration: none; }
+  a:hover { text-decoration: underline; }
+
+  .crumbs {
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 32px 24px 0;
+    width: 100%;
+    font-size: 0.78rem;
+    color: #6e7681;
+  }
+  .crumbs a { color: #6e7681; }
+  .crumbs a:hover { color: #c9d1d9; text-decoration: none; }
+
+  article {
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 40px 24px 64px;
+    width: 100%;
+    flex: 1;
+  }
+
+  article header { margin-bottom: 40px; }
+
+  h1 {
+    font-size: 1.8rem;
+    color: #f0f6fc;
+    font-weight: 600;
+    line-height: 1.3;
+    letter-spacing: -0.3px;
+    margin-bottom: 12px;
+  }
+
+  .meta {
+    font-size: 0.78rem;
+    color: #6e7681;
+  }
+
+  .meta .tool-tag {
+    color: #3fb950;
+    border: 1px solid #238636;
+    border-radius: 12px;
+    padding: 1px 8px;
+    margin-left: 8px;
+  }
+
+  h2 {
+    font-size: 1.05rem;
+    color: #f0f6fc;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    margin: 40px 0 16px;
+    padding-top: 24px;
+    border-top: 1px solid #21262d;
+  }
+
+  h2:first-of-type { border-top: none; padding-top: 0; }
+
+  p {
+    color: #c9d1d9;
+    font-size: 0.92rem;
+    margin-bottom: 16px;
+  }
+
+  p code, li code {
+    background: #161b22;
+    border: 1px solid #21262d;
+    border-radius: 4px;
+    padding: 1px 6px;
+    font-size: 0.85rem;
+    color: #f0f6fc;
+  }
+
+  pre {
+    background: #161b22;
+    border: 1px solid #21262d;
+    border-radius: 6px;
+    padding: 14px 18px;
+    overflow-x: auto;
+    margin: 16px 0 24px;
+    font-size: 0.84rem;
+    line-height: 1.55;
+  }
+
+  pre code {
+    color: #c9d1d9;
+    background: transparent;
+    border: none;
+    padding: 0;
+  }
+
+  ul {
+    padding-left: 22px;
+    margin: 8px 0 16px;
+  }
+
+  li {
+    color: #c9d1d9;
+    font-size: 0.92rem;
+    margin-bottom: 8px;
+  }
+
+  blockquote {
+    border-left: 3px solid #30363d;
+    padding: 4px 0 4px 18px;
+    margin: 24px 0;
+    color: #8b949e;
+    font-style: italic;
+    font-size: 0.9rem;
+  }
+
+  .end {
+    margin-top: 48px;
+    padding-top: 24px;
+    border-top: 1px solid #21262d;
+    color: #8b949e;
+    font-size: 0.86rem;
+  }
+
+  footer {
+    padding: 24px;
+    text-align: center;
+    color: #484f58;
+    font-size: 0.78rem;
+    border-top: 1px solid #21262d;
+  }
+
+  footer a { color: #6e7681; }
+
+  @media (max-width: 640px) {
+    article { padding: 24px 18px 48px; }
+    h1 { font-size: 1.5rem; }
+  }
+</style>
+</head>
+<body>
+
+<nav class="crumbs">
+  <a href="/">Paperworlds</a> · <a href="/blog/">Blog</a>
+</nav>
+
+<article>
+  <header>
+    <h1>Five tabs in sequence</h1>
+    <div class="meta">
+      2026-05-07 · 6 min read
+      <span class="tool-tag">textread</span>
+    </div>
+  </header>
+
+  <p>Before writing the textproxy post I had five sources open: a 400-comment Reddit megathread on Claude usage limits, two blog posts, a forum thread, and a README. I needed them all read together, with the same frame: token limits, what's visible, what isn't. Reading them in sequence and hoping I'd remember the connections wasn't going to work.</p>
+
+  <p>I ran <code>textread</code> across the folder with a one-line goal. It came back with a themed digest, sections already shaped around the frame I'd given it, quotes pulled verbatim and placed where they'd be useful. The textproxy post took about an hour to write. Most of that time was in the writing, not the research.</p>
+
+  <p>That's the use case textread is built for.</p>
+
+  <h2>What RAG gets wrong here</h2>
+
+  <p>RAG is designed for large corpora and low-precision retrieval. The question it answers is "find me something about X across thousands of documents." It indexes, embeds, stores, retrieves. That machinery makes sense when you don't know what you have and need to discover it.</p>
+
+  <p>This is a different problem. I know exactly what I have: five files, chosen deliberately, all relevant. I don't need retrieval. I need reading with a frame. The goal isn't to find the needle; it's to read the haystack with a specific question in mind and get a structured answer back.</p>
+
+  <p>Search has the same mismatch. Search finds documents. I already have the documents. What I need is someone to read them for me, with context, and tell me what they say in relation to each other.</p>
+
+  <h2>What textread does</h2>
+
+  <p>You give it a folder (or a list of files) and a lens: a short description of what you're trying to understand. It reads every file with that frame and produces a digest. The digest has sections, each covering a theme that emerged across the sources. Each section includes direct quotes, not paraphrases. Nothing is indexed, nothing is stored, nothing persists between runs.</p>
+
+<pre><code>textread --lens "token limits and API visibility" \
+  ~/research/textproxy/
+
+# output: digest.md
+# sections: Limit mechanics · Visibility gap · Community workarounds · Prior art</code></pre>
+
+  <p>The lens steers the reading. The same folder with a different lens produces a different digest. "How do users respond emotionally to hitting limits" gives you something different from "what technical approaches exist for tracking consumption." Both are valid readings of the same sources; the lens decides which one you get.</p>
+
+  <h2>Cross-source themes</h2>
+
+  <p>The part that saves the most time is the cross-source section. After the per-theme summaries, the digest surfaces where sources agree, where they contradict, and where one source says something the others don't address. You don't have to hold five documents in working memory and notice the pattern yourself.</p>
+
+  <p>For the textproxy research, the contradiction that came up was between the Reddit thread (users experiencing limits as sudden and opaque) and the README (which describes the limits as documented and predictable). Both were right from their respective positions. That tension became a structural beat in the post: the limits exist, the opacity is the problem, not the limits themselves.</p>
+
+  <p>The quotes in the digest are verbatim, with source attribution. When I'm writing and I want to use something specific, I don't go back to the original file to find it. It's already there, already in context.</p>
+
+  <h2>What it's for</h2>
+
+  <p>textread is for focused, time-bounded research over a small known set. You've already decided what to read. You have it in front of you. You need to read it fast, with a consistent frame, and come out with something usable rather than a pile of tabs and a vague sense of what they said.</p>
+
+  <p>It's not a replacement for RAG when RAG is the right tool. If you're building a retrieval system over a knowledge base, textread isn't that. It's a replacement for reading five tabs in sequence and hoping you remember the connections by the time you reach the last one.</p>
+
+  <p>Paperworlds is a pet project where I'm working through a set of small problems that kept arriving in the same shape while building a text RPG. textread is one of them: the specific friction was spending more time on research logistics than on writing. Whether the approach generalizes I don't know yet, but it worked here.</p>
+
+  <div class="end">
+    Repo: <a href="https://github.com/paperworlds/textread">github.com/paperworlds/textread</a>
+  </div>
+</article>
+
+<footer>
+  <a href="/">Paperworlds</a> · <a href="https://www.elastic.co/licensing/elastic-license">Elastic License 2.0</a> (tools)
+</footer>
+
+</body>
+</html>
