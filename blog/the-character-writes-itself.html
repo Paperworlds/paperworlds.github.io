@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The character writes itself — Paperworlds</title>
+<meta name="description" content="Writers describe a specific experience: the character stops being directed and starts generating its own behavior. The same thing happens in long AI sessions. You are not always the protagonist.">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'SF Mono', 'Fira Code', 'Cascadia Code', 'JetBrains Mono', monospace;
+    background: #0d1117;
+    color: #c9d1d9;
+    line-height: 1.7;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+  }
+
+  a { color: #58a6ff; text-decoration: none; }
+  a:hover { text-decoration: underline; }
+
+  .crumbs {
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 32px 24px 0;
+    width: 100%;
+    font-size: 0.78rem;
+    color: #6e7681;
+  }
+  .crumbs a { color: #6e7681; }
+  .crumbs a:hover { color: #c9d1d9; text-decoration: none; }
+
+  article {
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 40px 24px 64px;
+    width: 100%;
+    flex: 1;
+  }
+
+  article header { margin-bottom: 40px; }
+
+  h1 {
+    font-size: 1.8rem;
+    color: #f0f6fc;
+    font-weight: 600;
+    line-height: 1.3;
+    letter-spacing: -0.3px;
+    margin-bottom: 12px;
+  }
+
+  .meta {
+    font-size: 0.78rem;
+    color: #6e7681;
+  }
+
+  .meta .essay-tag {
+    color: #d29922;
+    border: 1px solid #9e6a03;
+    border-radius: 12px;
+    padding: 1px 8px;
+    margin-left: 8px;
+  }
+
+  h2 {
+    font-size: 1.05rem;
+    color: #f0f6fc;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    margin: 40px 0 16px;
+    padding-top: 24px;
+    border-top: 1px solid #21262d;
+  }
+
+  h2:first-of-type { border-top: none; padding-top: 0; }
+
+  p {
+    color: #c9d1d9;
+    font-size: 0.92rem;
+    margin-bottom: 16px;
+  }
+
+  blockquote {
+    border-left: 3px solid #30363d;
+    padding: 4px 0 4px 18px;
+    margin: 24px 0;
+    color: #8b949e;
+    font-style: italic;
+    font-size: 0.9rem;
+  }
+
+  .end {
+    margin-top: 48px;
+    padding-top: 24px;
+    border-top: 1px solid #21262d;
+    color: #8b949e;
+    font-size: 0.86rem;
+  }
+
+  footer {
+    padding: 24px;
+    text-align: center;
+    color: #484f58;
+    font-size: 0.78rem;
+    border-top: 1px solid #21262d;
+  }
+
+  footer a { color: #6e7681; }
+
+  @media (max-width: 640px) {
+    article { padding: 24px 18px 48px; }
+    h1 { font-size: 1.5rem; }
+  }
+</style>
+</head>
+<body>
+
+<nav class="crumbs">
+  <a href="/">Paperworlds</a> · <a href="/blog/">Blog</a>
+</nav>
+
+<article>
+  <header>
+    <h1>The character writes itself</h1>
+    <div class="meta">
+      2026-05-08 · 5 min read
+      <span class="essay-tag">essay</span>
+    </div>
+  </header>
+
+  <p>There's a thing writers describe, often in interviews, sometimes almost apologetically. They're writing a character, someone they invented, whose history they constructed, whose voice they control. And at some point the character does something the writer didn't plan. Not because the writer lost the thread. Because the internal logic of who the character is generated a decision the writer could only discover, not specify in advance.</p>
+
+  <p>Flaubert said Emma Bovary surprised him. Dickens described his characters as speaking to him. Contemporary novelists reach for the same language: "the character took over," "I just followed where they went," "I didn't know that was going to happen until I wrote it." The phrasing varies; the experience is consistent enough that it has its own cliché.</p>
+
+  <p>This is not mysticism. It's what happens when a character's internal logic becomes dense enough that it starts generating behavior. The author built the constraints, the history, the contradictions. At some point those constraints start producing choices. The author discovers them rather than invents them.</p>
+
+  <h2>The longer session</h2>
+
+  <p>The common mental model for AI is a tool: you specify input, you get output, you correct as needed. That model works for short tasks. It starts to feel wrong in longer sessions, anything that involves multiple steps, multiple decisions, a few dead ends and recoveries.</p>
+
+  <p>In a longer session, the model has context: everything that happened in the exchange so far, a set of tendencies shaped by training that aren't random but aren't fully visible either. That context is shaping outputs in ways you're not fully directing. When the agent makes a choice you didn't specify, picks an approach, frames something a certain way, pushes back gently on an assumption you hadn't questioned, you're seeing that internal logic surface. It's not following your last instruction. It's navigating constraints. Sometimes the navigation produces something you didn't script.</p>
+
+  <p>The first few times this happens it reads as error. The model went somewhere you didn't ask it to go. The instinct is to correct: redirect, restate, pull it back to the explicit task. That instinct isn't wrong. But it isn't always right either.</p>
+
+  <h2>What you lose when you override everything</h2>
+
+  <p>If every move the model makes that wasn't explicitly requested gets corrected back to the stated task, the outputs flatten. You get precisely what you asked for and nothing else. No extension, no reframing, no discovery. The session produces a narrower result than the one you started with, because you've spent it removing everything that wasn't in the original specification.</p>
+
+  <p>The writers who describe characters taking on a life of their own aren't describing a failure of authorial control. They're describing what good characterization produces. When the internal logic is consistent enough, the character's behavior generates itself from that logic. The author's job at that point shifts from generative to editorial: does this fit? does it serve the story? Not: what should happen next?</p>
+
+  <p>The parallel isn't exact. A fictional character has no independent existence; the author is always generating both the logic and the behavior, just not always consciously. An AI model is doing something structurally different. But the experience from the outside, the moment when the output reflects something you didn't explicitly put in, has the same shape. And the same response is available: watch it, don't fight it, ask whether what arrived fits rather than whether it was specified.</p>
+
+  <h2>You are not the protagonist</h2>
+
+  <p>The tool model positions you as the sole agent: you direct, the model executes. That's accurate for simple tasks. For anything more extended, it misses something. You are working with something that has a perspective, a set of trained tendencies, a context built up through the session. That perspective is generating outputs alongside your instructions, not just in response to them.</p>
+
+  <p>This is not an argument for less direction. Undirected sessions produce wandering results. The arc needs shaping. But there's a difference between shaping an arc and specifying every beat. The writers who get the most interesting behavior from their characters are the ones who built the internal logic carefully and then trusted it to generate, rather than scripting each scene from scratch.</p>
+
+  <p>I don't know how far this maps to all uses of AI. The metaphor fits what I observe in longer agentic sessions; it probably doesn't survive contact with a ten-line code fix. But the direction feels useful: when the model does something you didn't specify and your instinct is to correct, it's worth pausing to ask whether what arrived is wrong or just unexpected. Sometimes it's wrong. Sometimes it's the character going somewhere you hadn't planned, and the scene is better for it.</p>
+
+  <div class="end">
+    Pairs with: <a href="/blog/every-agent-dies.html">Every agent dies when you close the chat</a>
+  </div>
+</article>
+
+<footer>
+  <a href="/">Paperworlds</a> · <a href="https://www.elastic.co/licensing/elastic-license">Elastic License 2.0</a> (tools)
+</footer>
+
+</body>
+</html>
