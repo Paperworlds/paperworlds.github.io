@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The curation layer — Paperworlds</title>
+<meta name="description" content="Raindrop as the step before textread: save links as you find them, pull the collection as a source set, read with a lens. The loop from discovery to digest.">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'SF Mono', 'Fira Code', 'Cascadia Code', 'JetBrains Mono', monospace;
+    background: #0d1117;
+    color: #c9d1d9;
+    line-height: 1.7;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+  }
+
+  a { color: #58a6ff; text-decoration: none; }
+  a:hover { text-decoration: underline; }
+
+  .crumbs {
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 32px 24px 0;
+    width: 100%;
+    font-size: 0.78rem;
+    color: #6e7681;
+  }
+  .crumbs a { color: #6e7681; }
+  .crumbs a:hover { color: #c9d1d9; text-decoration: none; }
+
+  article {
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 40px 24px 64px;
+    width: 100%;
+    flex: 1;
+  }
+
+  article header { margin-bottom: 40px; }
+
+  h1 {
+    font-size: 1.8rem;
+    color: #f0f6fc;
+    font-weight: 600;
+    line-height: 1.3;
+    letter-spacing: -0.3px;
+    margin-bottom: 12px;
+  }
+
+  .meta {
+    font-size: 0.78rem;
+    color: #6e7681;
+  }
+
+  .meta .tool-tag {
+    color: #3fb950;
+    border: 1px solid #238636;
+    border-radius: 12px;
+    padding: 1px 8px;
+    margin-left: 8px;
+  }
+
+  h2 {
+    font-size: 1.05rem;
+    color: #f0f6fc;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    margin: 40px 0 16px;
+    padding-top: 24px;
+    border-top: 1px solid #21262d;
+  }
+
+  h2:first-of-type { border-top: none; padding-top: 0; }
+
+  p {
+    color: #c9d1d9;
+    font-size: 0.92rem;
+    margin-bottom: 16px;
+  }
+
+  p code, li code {
+    background: #161b22;
+    border: 1px solid #21262d;
+    border-radius: 4px;
+    padding: 1px 6px;
+    font-size: 0.85rem;
+    color: #f0f6fc;
+  }
+
+  pre {
+    background: #161b22;
+    border: 1px solid #21262d;
+    border-radius: 6px;
+    padding: 14px 18px;
+    overflow-x: auto;
+    margin: 16px 0 24px;
+    font-size: 0.84rem;
+    line-height: 1.55;
+  }
+
+  pre code {
+    color: #c9d1d9;
+    background: transparent;
+    border: none;
+    padding: 0;
+  }
+
+  ul {
+    padding-left: 22px;
+    margin: 8px 0 16px;
+  }
+
+  li {
+    color: #c9d1d9;
+    font-size: 0.92rem;
+    margin-bottom: 8px;
+  }
+
+  .end {
+    margin-top: 48px;
+    padding-top: 24px;
+    border-top: 1px solid #21262d;
+    color: #8b949e;
+    font-size: 0.86rem;
+  }
+
+  footer {
+    padding: 24px;
+    text-align: center;
+    color: #484f58;
+    font-size: 0.78rem;
+    border-top: 1px solid #21262d;
+  }
+
+  footer a { color: #6e7681; }
+
+  @media (max-width: 640px) {
+    article { padding: 24px 18px 48px; }
+    h1 { font-size: 1.5rem; }
+  }
+</style>
+</head>
+<body>
+
+<nav class="crumbs">
+  <a href="/">Paperworlds</a> · <a href="/blog/">Blog</a>
+</nav>
+
+<article>
+  <header>
+    <h1>The curation layer</h1>
+    <div class="meta">
+      2026-05-07 · 3 min read
+      <span class="tool-tag">textread</span>
+    </div>
+  </header>
+
+  <p><a href="/blog/textread.html">The textread post</a> described a moment: five sources open, read them together with a frame, get a digest back. What it didn't describe is how those five sources got there. That part has its own friction.</p>
+
+  <p>The usual pattern is a browser graveyard. Tabs open as you find things, pinned or left open so you don't lose them, multiplying over days until the session gets closed and half of them are gone. By the time you sit down to write, reconstructing what you actually wanted to read is its own task.</p>
+
+  <p>The integration with Raindrop closes that gap. Raindrop is a bookmarking tool with collections and tags. The textread integration treats a Raindrop collection as a source set: it fetches the URLs, reads the pages, and feeds them into the lens pass the same way a local folder would. You save as you find; you read when you're ready.</p>
+
+  <h2>The workflow</h2>
+
+  <p>While you're researching, you save to a named Raindrop collection. No friction at discovery time: one click, tagged, done. When you're ready to write, you point textread at the collection instead of a folder:</p>
+
+<pre><code>textread --raindrop "textproxy-research" \
+  --lens "token limits and API visibility"
+
+# fetches each saved URL, reads with the lens
+# output: digest.md, same format as a folder run</code></pre>
+
+  <p>The output is the same digest format: sections shaped around the lens, verbatim quotes with source attribution, cross-source themes at the end. The only difference is the source set came from Raindrop instead of a local directory.</p>
+
+  <p>It also composes with local files. If you have saved URLs plus a PDF or two that aren't online, you can pass both:</p>
+
+<pre><code>textread --raindrop "textproxy-research" \
+  --files ~/notes/internal-limits.md \
+  --lens "token limits and API visibility"</code></pre>
+
+  <h2>Why this pairing</h2>
+
+  <p>textread as a standalone tool assumes the curation has already happened. You've chosen your sources; it reads them. The Raindrop integration moves the curation step earlier, into the discovery phase, where it takes almost no time. By the time you're ready to write, the collection has been building in the background.</p>
+
+  <p>The loop from "I found something" to "I have a digest ready to write from" closes without an intermediate reorganization step. Whether that matters depends on how you work; for research that spans a few days of intermittent reading, it's the difference between having the sources and having to find them again.</p>
+
+  <div class="end">
+    Pairs with: <a href="/blog/textread.html">Five tabs in sequence</a> · Repo: <a href="https://github.com/paperworlds/textread">github.com/paperworlds/textread</a>
+  </div>
+</article>
+
+<footer>
+  <a href="/">Paperworlds</a> · <a href="https://www.elastic.co/licensing/elastic-license">Elastic License 2.0</a> (tools)
+</footer>
+
+</body>
+</html>
