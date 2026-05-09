@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Self(ish) diff — Paperworlds</title>
+<meta name="description" content="What I'm testing with code review and AI. Not asking the AI to review the PR. Reading the diff line by line, narrating to the AI as I go. A note on what I'm finding more rewarding, not a prescription.">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'SF Mono', 'Fira Code', 'Cascadia Code', 'JetBrains Mono', monospace;
+    background: #0d1117;
+    color: #c9d1d9;
+    line-height: 1.7;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+  }
+
+  a { color: #58a6ff; text-decoration: none; }
+  a:hover { text-decoration: underline; }
+
+  .crumbs {
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 32px 24px 0;
+    width: 100%;
+    font-size: 0.78rem;
+    color: #6e7681;
+  }
+  .crumbs a { color: #6e7681; }
+  .crumbs a:hover { color: #c9d1d9; text-decoration: none; }
+
+  article {
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 40px 24px 64px;
+    width: 100%;
+    flex: 1;
+  }
+
+  article header { margin-bottom: 40px; }
+
+  h1 {
+    font-size: 1.8rem;
+    color: #f0f6fc;
+    font-weight: 600;
+    line-height: 1.3;
+    letter-spacing: -0.3px;
+    margin-bottom: 12px;
+  }
+
+  .meta {
+    font-size: 0.78rem;
+    color: #6e7681;
+  }
+
+  .meta .essay-tag {
+    color: #d29922;
+    border: 1px solid #9e6a03;
+    border-radius: 12px;
+    padding: 1px 8px;
+    margin-left: 8px;
+  }
+
+  h2 {
+    font-size: 1.05rem;
+    color: #f0f6fc;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    margin: 40px 0 16px;
+    padding-top: 24px;
+    border-top: 1px solid #21262d;
+  }
+
+  h2:first-of-type { border-top: none; padding-top: 0; }
+
+  p {
+    color: #c9d1d9;
+    font-size: 0.92rem;
+    margin-bottom: 16px;
+  }
+
+  p code, li code {
+    background: #161b22;
+    border: 1px solid #21262d;
+    border-radius: 4px;
+    padding: 1px 6px;
+    font-size: 0.85rem;
+    color: #f0f6fc;
+  }
+
+  .end {
+    margin-top: 48px;
+    padding-top: 24px;
+    border-top: 1px solid #21262d;
+    color: #8b949e;
+    font-size: 0.86rem;
+  }
+
+  footer {
+    padding: 24px;
+    text-align: center;
+    color: #484f58;
+    font-size: 0.78rem;
+    border-top: 1px solid #21262d;
+  }
+
+  footer a { color: #6e7681; }
+
+  @media (max-width: 640px) {
+    article { padding: 24px 18px 48px; }
+    h1 { font-size: 1.5rem; }
+  }
+</style>
+</head>
+<body>
+
+<nav class="crumbs">
+  <a href="/">Paperworlds</a> · <a href="/blog/">Blog</a>
+</nav>
+
+<article>
+  <header>
+    <h1>Self(ish) diff</h1>
+    <div class="meta">
+      2026-05-09 · 4 min read
+      <span class="essay-tag">essay</span>
+    </div>
+  </header>
+
+  <p>The first thing I tried, when I started reviewing pull requests with an AI in the loop, was the obvious move: ask it to review the PR. Paste the diff, ask for issues, read the list. It felt productive. Six bullet points came back. I'd send a few of them as comments. Done in fifteen minutes.</p>
+
+  <p>What I noticed, after a few weeks of doing this, is that I couldn't really remember the changes I'd reviewed. I had read the AI's summary of them, not the changes themselves. When I later had to debug something in code I had nominally reviewed, it was unfamiliar. The review had happened; the reading hadn't.</p>
+
+  <p>The other thing I noticed is that the bullets weren't always real. Sometimes the AI flagged an issue that wasn't an issue, because it didn't know the surrounding code. Sometimes it missed something obvious because the obvious thing was three files away in context the diff didn't show. I was approving comments without verifying them, then sending them as if they were mine. That felt off. I think technology makes that kind of sloppy easy: it gives you a fast way to ship the appearance of the work, and you don't notice you've crossed over.</p>
+
+  <h2>Exploring the differences</h2>
+
+  <p>For the last few weeks I've been doing it more creatively. Slower, but it feels more like the thing I thought I was doing the whole time.</p>
+
+  <p>I read the diff myself. Line by line, byte by byte if it's small enough. While I read, I narrate to the AI: what I'm seeing, what I'm uncertain about, what assumption I'd want to check. The AI's job is not to review. The AI's job is to validate or push back on the specific thing I just said, fill in context I'm missing, surface a related file I might want to look at next.</p>
+
+  <p>The conversation is different. Instead of "here are the issues," it's "I'm looking at this function and I'm not sure why it's catching this exception silently. Is there a caller that depends on the silent fail?" The AI either tells me ("yes, file X relies on it") or tells me it's not sure ("I don't see one in the diff, but I haven't seen the rest of the package"). Either answer keeps me in the seat. The first one helps me; the second one prompts me to go look myself.</p>
+
+  <h2>Running it in context</h2>
+
+  <p>The other piece is asking the AI to run small snippets against the change, inside the context the change actually lives in. The test suite runs in CI; that's not what this is for. This is about seeing the specific behavior the diff describes happen in real conditions: a handful of lines that exercise the path I'm uncertain about. If the diff says X happens when Y, I want to see X actually happen when Y. The snippet runs, the AI shows me the output, I match it against what I expected.</p>
+
+  <p>Sometimes the output matches and the review surfaced something worth a comment anyway. Sometimes it diverges in a way I wouldn't have predicted from reading the diff alone, and the review I'd send without running anything would have missed it entirely. Both outcomes feel like they belong in a review, and only one of them is reachable through reading.</p>
+
+  <h2>Notes that compound</h2>
+
+  <p>The third thing I'm testing is asking the AI to take notes of the comments I'm making as I go. At the end of the week I sit with that collection alongside whatever else I've been jotting down through the days. Most of the notes are local to the PR they came from and don't generalize. The ones that recur are the interesting ones.</p>
+
+  <p>The point isn't to log every observation. It's to keep the ones that compound. A review I do today might surface a pattern I only recognize three weeks later, when I see the same shape somewhere else. If the comment lives only in the PR, the recognition doesn't happen. If it lives in a notes layer I'm rereading weekly, it does. There's something I've been using to hold this kind of capture; a post on it is coming soon. Any structured notes layer would probably do the same job in the meantime.</p>
+
+  <h2>What I'm finding</h2>
+
+  <p>I don't know if this is the right way to review code. I'm not sure that question has an answer. What I can say is that for me, right now, this is more rewarding. I'm reading the code instead of reading a summary of it. The AI conversation goes deeper because it's responding to specific things I'm noticing, not generating a generic review I have to filter. And when I send comments, they're actually mine, with the kind of context that makes them land.</p>
+
+  <p>It's slower. A review that took fifteen minutes the old way takes forty-five this way. The trade-off feels worth it for the kinds of reviews I do, which are usually small to medium changes in code I half-know. I don't know how it scales to a 200-file PR or to a codebase you've never seen. Probably it doesn't, or probably it changes shape.</p>
+
+  <p>The thing that pushed me to try this was a small observation: I was getting through more reviews per week and remembering fewer of them. That's not a metric I want to optimize. So this is what I'm testing. If you're feeling something similar, it might be worth trying.</p>
+
+  <div class="end">
+    Pairs with: <a href="/blog/the-character-writes-itself.html">The character writes itself</a>
+  </div>
+</article>
+
+<footer>
+  <a href="/">Paperworlds</a> · <a href="https://www.elastic.co/licensing/elastic-license">Elastic License 2.0</a> (tools)
+</footer>
+
+</body>
+</html>
