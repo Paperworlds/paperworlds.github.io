@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>What survives the chat — Paperworlds</title>
+<meta name="description" content="A note on what I'm testing for memory across AI conversations. A small graph of plain markdown nodes, queryable from the next session. The agent still dies; what it noticed doesn't have to.">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'SF Mono', 'Fira Code', 'Cascadia Code', 'JetBrains Mono', monospace;
+    background: #0d1117;
+    color: #c9d1d9;
+    line-height: 1.7;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+  }
+
+  a { color: #58a6ff; text-decoration: none; }
+  a:hover { text-decoration: underline; }
+
+  .crumbs {
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 32px 24px 0;
+    width: 100%;
+    font-size: 0.78rem;
+    color: #6e7681;
+  }
+  .crumbs a { color: #6e7681; }
+  .crumbs a:hover { color: #c9d1d9; text-decoration: none; }
+
+  article {
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 40px 24px 64px;
+    width: 100%;
+    flex: 1;
+  }
+
+  article header { margin-bottom: 40px; }
+
+  h1 {
+    font-size: 1.8rem;
+    color: #f0f6fc;
+    font-weight: 600;
+    line-height: 1.3;
+    letter-spacing: -0.3px;
+    margin-bottom: 12px;
+  }
+
+  .meta {
+    font-size: 0.78rem;
+    color: #6e7681;
+  }
+
+  .meta .tool-tag {
+    color: #3fb950;
+    border: 1px solid #238636;
+    border-radius: 12px;
+    padding: 1px 8px;
+    margin-left: 8px;
+  }
+
+  h2 {
+    font-size: 1.05rem;
+    color: #f0f6fc;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    margin: 40px 0 16px;
+    padding-top: 24px;
+    border-top: 1px solid #21262d;
+  }
+
+  h2:first-of-type { border-top: none; padding-top: 0; }
+
+  p {
+    color: #c9d1d9;
+    font-size: 0.92rem;
+    margin-bottom: 16px;
+  }
+
+  p code, li code {
+    background: #161b22;
+    border: 1px solid #21262d;
+    border-radius: 4px;
+    padding: 1px 6px;
+    font-size: 0.85rem;
+    color: #f0f6fc;
+  }
+
+  pre {
+    background: #161b22;
+    border: 1px solid #21262d;
+    border-radius: 6px;
+    padding: 14px 18px;
+    overflow-x: auto;
+    margin: 16px 0 24px;
+    font-size: 0.84rem;
+    line-height: 1.55;
+  }
+
+  pre code {
+    color: #c9d1d9;
+    background: transparent;
+    border: none;
+    padding: 0;
+  }
+
+  .end {
+    margin-top: 48px;
+    padding-top: 24px;
+    border-top: 1px solid #21262d;
+    color: #8b949e;
+    font-size: 0.86rem;
+  }
+
+  footer {
+    padding: 24px;
+    text-align: center;
+    color: #484f58;
+    font-size: 0.78rem;
+    border-top: 1px solid #21262d;
+  }
+
+  footer a { color: #6e7681; }
+
+  @media (max-width: 640px) {
+    article { padding: 24px 18px 48px; }
+    h1 { font-size: 1.5rem; }
+  }
+</style>
+</head>
+<body>
+
+<nav class="crumbs">
+  <a href="/">Paperworlds</a> · <a href="/blog/">Blog</a>
+</nav>
+
+<article>
+  <header>
+    <h1>What survives the chat</h1>
+    <div class="meta">
+      2026-05-09 · 6 min read
+      <span class="tool-tag">textmap</span>
+    </div>
+  </header>
+
+  <p>A while ago I wrote an essay called "<a href="/blog/every-agent-dies.html">Every agent dies when you close the chat</a>." It was about a condition: AI conversations don't persist, and the things you figure out inside them tend to die with the session. The essay diagnosed the trace I wished existed, the kind of receipt that would let next week's me read what last week's me learned. I didn't say what I was doing about it, partly because I wasn't sure yet. I'm a little surer now, so this is that piece.</p>
+
+  <p>I want to be careful about overclaiming. What I've been testing isn't a solution to the condition. The agent still dies when I close the chat; that hasn't changed. What's changed, for me, is what survives.</p>
+
+  <h2>The Obsidian-shaped answer</h2>
+
+  <p>The closest thing to what I wanted was Obsidian. A folder of markdown notes, backlinks between them, plugins, a community of people who think about this. I tried it. I keep some notes there still. What it didn't do for me is the part I most wanted: be readable by the next AI session in a way the AI could actually navigate.</p>
+
+  <p>Obsidian is markdown plus backlinks. That works beautifully for human reading: you wander, you follow a link, you discover. It's the digital garden shape. What it isn't is a typed graph. There's no schema for what a node is, no relations beyond "this links to that," no way to ask "show me all the open decisions" or "what protocols apply to system X." The graph is undifferentiated. For me, working with it, every search felt like I was hoping the AI would intuit what I meant.</p>
+
+  <p>I wanted something with a little more shape. Lighter than wikis (so I'd actually write the notes). More typed than markdown-with-backlinks (so the AI could traverse them with intent). Readable from the next session without my having to remember which file it was in.</p>
+
+  <h2>Schema and traversal</h2>
+
+  <p>For the last few months I've been keeping notes in a small typed graph. Each note is a plain markdown file with a YAML frontmatter: a type (decision, problem, system, convention, intent, and a few others), an id, a one-line description, and optional named connections to other nodes. The files sit in a folder. No database, no service, no index to rebuild.</p>
+
+  <p>The two pieces that change the experience: types and relations. Types mean a node is something specific — a decision is a different shape than a problem, and the AI knows the difference. Relations mean the connections between nodes carry meaning — `applies_to`, `motivated_by`, `belongs_to`, not just an unmarked link. In a markdown-and-backlinks tool, the graph is undifferentiated and the AI has to guess what it's looking at. With types and named relations, the AI can ask precisely: list all the open decisions, show me the protocols that apply to this system, walk the motivation chain from this intent up to the goal it serves.</p>
+
+  <p>The piece that makes the whole thing land is the small MCP server in front of the graph. The next AI session can search it, traverse it, list nodes of a type. When I ask something I've already thought about, the past thinking surfaces without my having to remember it's there. I don't recall the filename. I don't even recall that I once wrote about this at all. The model finds it because it knows what shape to look for.</p>
+
+  <h2>The curator pattern</h2>
+
+  <p>One thing I want to flag, because it changes the texture of the practice: the AI doesn't write into the graph. It proposes. There's a `propose_node` tool that drops a candidate node into an inbox; I review it later and accept, edit, or reject. The AI never mutates the graph directly.</p>
+
+  <p>This sounds like a small detail and it isn't. Letting an AI write freely into your long-term memory means your memory drifts toward whatever the model is confident about, which isn't always what you'd have written. Curation keeps me in the loop where it matters, and keeps the graph mine. It's slower. It's also the reason I trust the graph six months in.</p>
+
+  <h2>The part that surprises me</h2>
+
+  <p>The recursive thing is what I keep coming back to. Paperworlds itself is documented in this graph. The tools are nodes. The decisions are nodes. The conventions, the open problems, the things I'm intentionally not building yet, all nodes. When I write a new post, I add entries for any new terms it introduces. When I change my mind about a design choice, the old node gets a status change and the new reasoning gets its own node next to it. The project documents itself in its own tool. I didn't plan it that way; it just kept being the easiest place to put each thing.</p>
+
+  <p>The compound effect, after a few months, is that conversations start somewhere different. I'm not re-explaining the project to myself every time I open a session. The model has read the relevant nodes before it answers. The session begins already informed.</p>
+
+  <h2>The engine and the fuel</h2>
+
+  <p>Honest moment. The graph isn't as useful as the structure suggests it could be, and the reason is density. I ran an audit recently: 626 nodes, 596 edges, 0.95 edges per node. Sounds healthy. The shape underneath is less so. Twenty-six percent of the nodes are isolated, with no edges to anything else — captured fast, never wired to a parent. The decisions count, the place where rationale behind choices should accumulate, sits at twelve. For a graph that's been growing for months, that's low.</p>
+
+  <p>Translated: I have a catalogue, not a network. The schema and the traversal work. The fuel they need to be useful — the wired connections, the decision rationales that should compound across sessions — I haven't written enough of either. The engine exists; the tank is mostly empty in the ways that matter most for the use case I care about.</p>
+
+  <p>I'm calling this out because it's the part most easily missed when reading about a tool like this. The architecture is the easy part. The practice of capturing the right kinds of nodes consistently, and wiring them to the rest of the graph as you go, is the hard part. The audit was the first time I had numbers on that gap.</p>
+
+  <h2>What I don't know yet</h2>
+
+  <p>I don't know if this scales past a single author. The practice depends on me writing nodes consistently, and consistency depends on the friction staying low. If two more people were adding nodes, the graph would need conventions I haven't worked out. If I stopped writing nodes for a month, the graph would still be useful but wouldn't grow, and conversations would slowly drift back to flat-in-time.</p>
+
+  <p>I also don't know if the YAML-and-markdown shape is the right one. It's the shape that has the lowest friction for me right now. Something denser might be better long-term. Something sparser might survive my own attention drops better. I'm not sure.</p>
+
+  <h2>What's working, hedged</h2>
+
+  <p>What I can say is narrower than a recommendation. When I'm in a session now, the things I noticed in earlier sessions are accessible to the model without my effort. The conversation isn't flat in time anymore. The patterns that took weeks to emerge are visible without my having to remember them. The "every agent dies" condition is still real; it just lands differently when there's something the next agent can read.</p>
+
+  <p>That's the small thing I'm testing. The thing the previous post was teasing. A graph that's mostly mine, written slowly, read constantly.</p>
+
+  <p>The follow-up I want to write next is about two things: how I ended up testing this instead of going to Obsidian like most people would (and a little on tool discovery in AI generally — the recommendation surface is narrow, and the tools that fit your specific case are often the ones nobody reposts), and what a structured ingest sprint looks like to take this graph from catalogue to network. Numbers before, numbers after. Coming once I've done it.</p>
+
+  <div class="end">
+    Pairs with: <a href="/blog/every-agent-dies.html">Every agent dies when you close the chat</a> · <a href="/blog/selfish-diff.html">Self(ish) diff</a>
+  </div>
+</article>
+
+<footer>
+  <a href="/">Paperworlds</a> · <a href="https://www.elastic.co/licensing/elastic-license">Elastic License 2.0</a> (tools)
+</footer>
+
+</body>
+</html>
