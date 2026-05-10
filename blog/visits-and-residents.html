@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Agents are not all the same — Paperworlds</title>
+<meta name="description" content="A note on a distinction I keep finding useful. Two things I'd been calling 'agents' turned out to be very different. One morning made the difference visible.">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'SF Mono', 'Fira Code', 'Cascadia Code', 'JetBrains Mono', monospace;
+    background: #0d1117;
+    color: #c9d1d9;
+    line-height: 1.7;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+  }
+
+  a { color: #58a6ff; text-decoration: none; }
+  a:hover { text-decoration: underline; }
+
+  .crumbs {
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 32px 24px 0;
+    width: 100%;
+    font-size: 0.78rem;
+    color: #6e7681;
+  }
+  .crumbs a { color: #6e7681; }
+  .crumbs a:hover { color: #c9d1d9; text-decoration: none; }
+
+  article {
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 40px 24px 64px;
+    width: 100%;
+    flex: 1;
+  }
+
+  article header { margin-bottom: 40px; }
+
+  h1 {
+    font-size: 1.8rem;
+    color: #f0f6fc;
+    font-weight: 600;
+    line-height: 1.3;
+    letter-spacing: -0.3px;
+    margin-bottom: 12px;
+  }
+
+  .meta {
+    font-size: 0.78rem;
+    color: #6e7681;
+  }
+
+  .meta .essay-tag {
+    color: #d29922;
+    border: 1px solid #9e6a03;
+    border-radius: 12px;
+    padding: 1px 8px;
+    margin-left: 8px;
+  }
+
+  h2 {
+    font-size: 1.05rem;
+    color: #f0f6fc;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    margin: 40px 0 16px;
+    padding-top: 24px;
+    border-top: 1px solid #21262d;
+  }
+
+  h2:first-of-type { border-top: none; padding-top: 0; }
+
+  p {
+    color: #c9d1d9;
+    font-size: 0.92rem;
+    margin-bottom: 16px;
+  }
+
+  p code, li code {
+    background: #161b22;
+    border: 1px solid #21262d;
+    border-radius: 4px;
+    padding: 1px 6px;
+    font-size: 0.85rem;
+    color: #f0f6fc;
+  }
+
+  pre {
+    background: #161b22;
+    border: 1px solid #21262d;
+    border-radius: 6px;
+    padding: 14px 18px;
+    overflow-x: auto;
+    margin: 16px 0 24px;
+    font-size: 0.84rem;
+    line-height: 1.55;
+  }
+
+  pre code {
+    color: #c9d1d9;
+    background: transparent;
+    border: none;
+    padding: 0;
+  }
+
+  .end {
+    margin-top: 48px;
+    padding-top: 24px;
+    border-top: 1px solid #21262d;
+    color: #8b949e;
+    font-size: 0.86rem;
+  }
+
+  footer {
+    padding: 24px;
+    text-align: center;
+    color: #484f58;
+    font-size: 0.78rem;
+    border-top: 1px solid #21262d;
+  }
+
+  footer a { color: #6e7681; }
+
+  @media (max-width: 640px) {
+    article { padding: 24px 18px 48px; }
+    h1 { font-size: 1.5rem; }
+  }
+</style>
+</head>
+<body>
+
+<nav class="crumbs">
+  <a href="/">Paperworlds</a> · <a href="/blog/">Blog</a>
+</nav>
+
+<article>
+  <header>
+    <h1>Agents are not all the same</h1>
+    <div class="meta">
+      2026-05-10 · 5 min read
+      <span class="essay-tag">essay</span>
+    </div>
+  </header>
+
+  <p>I was reading a book in a chair when the distinction first surfaced. Not a book about software. Something slower, the kind that lets your mind drift to the things you've been carrying without finishing. I don't remember which sentence did it. I remember closing my finger over the page, looking up, and noticing that two things I'd been giving the same name weren't really the same thing at all.</p>
+
+  <p>I'd been writing one of each that week. A small script that drafts release notes when I cut a tag, and a long-running session that helps me triage proposed entries to my notes graph. Both fit the word "agent." Neither, when I sat with them, felt like the same kind of object.</p>
+
+  <h2>Visits</h2>
+
+  <p>The thing about a visit is the artifact comes first. Before I write the prompt, I know what I want to exist at the end. A six-line changelog. A renamed folder. A digest of a long thread. The prompt is reverse-engineered from the artifact: what does the model need to read, what does it need to produce, what shape should the answer take. Visits get easier the clearer I am about that endpoint. They get worse when I'm vague about it.</p>
+
+  <p>What a visit can't do is help me figure out what I want. If I haven't decided on the artifact, the visit will still produce something, and what it produces will be a confident guess at what I'd have wanted if I'd known. The guess is often plausible and almost always slightly off. It's hard to course-correct from inside, because the conversation is already closed by the time I'm reading the output. Either I rerun with a sharper spec or I keep the slightly-off thing.</p>
+
+  <p>The failure modes in a visit are visible at the moment of running it. The artifact is the wrong shape, the input was insufficient, the model picked up on the wrong cue from the prompt. All three I notice immediately, because there's a thing in front of me to read and either accept or reject. The cost of getting it wrong is bounded. Forty seconds, a rerun, a tighter prompt.</p>
+
+  <p>Visits are also where I'm willing to be ambitious about what I delegate. I know what I'm going to receive back, so I'll let one do something I wouldn't trust a person to do unsupervised: scan the diff of a thirty-file refactor for migration risks, draft three variants of a release note in different tones, generate a fixture from a schema. The artifact bounds the blast radius. If it's wrong, it's wrong on the page where I can see.</p>
+
+  <h2>Residents</h2>
+
+  <p>A resident is shaped backwards from a visit. There's no artifact in mind when I start. What's there is a kind of presence I want next to me. Something that knows what I'm working on, notices when a particular shape comes up, asks me about it when it becomes relevant. The prompt isn't a spec for an output; it's a description of how the thing should comport itself while it lives in the session with me.</p>
+
+  <p>Writing a resident prompt is harder than writing a visit prompt. I keep wanting to specify what it produces, and residents don't produce one thing. They produce a string of small interruptions and answers, shaped by what just happened. The prompt has to describe what to pay attention to, what to stay quiet about, when to speak up, what tone to interrupt in. It reads closer to character notes than to a function signature.</p>
+
+  <p>What residents are good for is anything where the right move depends on the immediate surrounding context. Catching me using vague hedging while I write. Noticing I'm about to capture a duplicate node. Asking whether a flag I just added has a counterpart in the test fixtures. None of these can be packaged as a visit because the trigger isn't a fixed input; it's whatever I just said or did, and whether the resident recognised it.</p>
+
+  <p>The failure mode is also different. A resident doesn't crash; it drifts. After ninety minutes the thing that started as a sharp inbox reviewer is suddenly philosophising about category theory, because forty turns ago I asked it a tangent question and the conversation has been pulling in that direction ever since. I don't notice until I look up and realise the last three exchanges have been off-topic. The fix isn't to correct it inside the session (the drift will keep compounding); it's to start a fresh session and edit the resident prompt to anchor it more firmly to what it should ignore.</p>
+
+  <p>Residents are also where I'm careful about what I delegate. The blast radius is broader: a resident that's drifted has been silently shaping decisions for an hour before I caught it. I won't put a resident in charge of anything irreversible. Visits I let act; residents I let watch. Some days I just think of them as hands and eyes, which is closer to how it feels even if it doesn't help me write the prompts.</p>
+
+  <p>The cost of getting the classification wrong shows up most clearly going the other direction. A resident invoked as a visit (the prompt that wants to accompany me, spawned as a one-shot subprocess) exits cleanly and produces a transcript that asks for a reply. There is nobody sitting in the conversation to give one. The output looks fine. The work doesn't land. I read it later and realise the role was speaking to a room I wasn't in.</p>
+
+  <h2>The in-betweens</h2>
+
+  <p>There are shapes that sit in between, and I don't have clean names for them. The schedule-driven thing that wakes up every six hours to scan for stale tags is visit-shaped (one artifact per run) but cron-bounded rather than artifact-bounded, and that gives it some of the drift hazards a resident has. The resident that mostly sleeps but wakes when a specific tool gets called is resident-shaped, but with a near-visit lifecycle inside each waking. Maybe these are visits with a wrapper around them and residents with a filter, and the two underlying shapes are still the right partition. I haven't sat with it long enough.</p>
+
+  <p>What I'm fairly sure of is that calling all of them "agent" stopped being useful for me once I had more than two going at once. The naming changed where the prompt budget went. Visits now spend most of their prompt on the artifact. Residents spend most of theirs on character. Once that landed, the things I built started failing less often and in more useful ways. That seems like enough to write down before I get to the tool I've been using to actually run both shapes, which is the next piece.</p>
+
+  <div class="end">
+    Pairs with: <a href="/blog/the-character-writes-itself.html">The character writes itself</a> · <a href="/blog/what-survives-the-chat.html">What survives the chat</a>
+  </div>
+</article>
+
+<footer>
+  <a href="/">Paperworlds</a> · <a href="https://www.elastic.co/licensing/elastic-license">Elastic License 2.0</a> (tools)
+</footer>
+
+</body>
+</html>

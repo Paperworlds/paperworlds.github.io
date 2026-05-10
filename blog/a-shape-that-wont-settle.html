@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>A shape that won't settle — Paperworlds</title>
+<meta name="description" content="A note on a tool I've been building in five or six different forms, none of which I've ended up using consistently. The not-sticking is the post. I'm not finished with it; I'm sitting with the friction.">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'SF Mono', 'Fira Code', 'Cascadia Code', 'JetBrains Mono', monospace;
+    background: #0d1117;
+    color: #c9d1d9;
+    line-height: 1.7;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+  }
+
+  a { color: #58a6ff; text-decoration: none; }
+  a:hover { text-decoration: underline; }
+
+  .crumbs {
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 32px 24px 0;
+    width: 100%;
+    font-size: 0.78rem;
+    color: #6e7681;
+  }
+  .crumbs a { color: #6e7681; }
+  .crumbs a:hover { color: #c9d1d9; text-decoration: none; }
+
+  article {
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 40px 24px 64px;
+    width: 100%;
+    flex: 1;
+  }
+
+  article header { margin-bottom: 40px; }
+
+  h1 {
+    font-size: 1.8rem;
+    color: #f0f6fc;
+    font-weight: 600;
+    line-height: 1.3;
+    letter-spacing: -0.3px;
+    margin-bottom: 12px;
+  }
+
+  .meta {
+    font-size: 0.78rem;
+    color: #6e7681;
+  }
+
+  .meta .tool-tag {
+    color: #3fb950;
+    border: 1px solid #238636;
+    border-radius: 12px;
+    padding: 1px 8px;
+    margin-left: 8px;
+  }
+
+  h2 {
+    font-size: 1.05rem;
+    color: #f0f6fc;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    margin: 40px 0 16px;
+    padding-top: 24px;
+    border-top: 1px solid #21262d;
+  }
+
+  h2:first-of-type { border-top: none; padding-top: 0; }
+
+  p {
+    color: #c9d1d9;
+    font-size: 0.92rem;
+    margin-bottom: 16px;
+  }
+
+  p code, li code {
+    background: #161b22;
+    border: 1px solid #21262d;
+    border-radius: 4px;
+    padding: 1px 6px;
+    font-size: 0.85rem;
+    color: #f0f6fc;
+  }
+
+  .end {
+    margin-top: 48px;
+    padding-top: 24px;
+    border-top: 1px solid #21262d;
+    color: #8b949e;
+    font-size: 0.86rem;
+  }
+
+  footer {
+    padding: 24px;
+    text-align: center;
+    color: #484f58;
+    font-size: 0.78rem;
+    border-top: 1px solid #21262d;
+  }
+
+  footer a { color: #6e7681; }
+
+  @media (max-width: 640px) {
+    article { padding: 24px 18px 48px; }
+    h1 { font-size: 1.5rem; }
+  }
+</style>
+</head>
+<body>
+
+<nav class="crumbs">
+  <a href="/">Paperworlds</a> · <a href="/blog/">Blog</a>
+</nav>
+
+<article>
+  <header>
+    <h1>A shape that won't settle</h1>
+    <div class="meta">
+      2026-05-10 · 6 min read
+      <span class="tool-tag">textprompts</span>
+    </div>
+  </header>
+
+  <p>Of all the small tools I've been writing, this one is the one I've rebuilt the most. Five or six times, depending on what I count. Each rebuild fixes a real friction. None of them have produced the version I keep using. I'm writing about it now not because I've found the form, but because I haven't, and the not-finding feels like part of the work.</p>
+
+  <p>The itch is recognisable enough to keep returning to. I want to coordinate Claude agents across more than one step, in a way that doesn't bury me in their state. Numbered prompt files, dependencies between them, parallel runs that don't step on each other, named roles I can re-use. The shape on paper is clear. The shape in my actual week keeps slipping.</p>
+
+  <h2>Drafts and dodges</h2>
+
+  <p>The first form was a directory of numbered prompt files with a <code>depends_on</code> field, walked as a graph in dependency order. It still works exactly as intended. What I noticed about myself, after building it, was that I'd start a chain, run the first prompt, end up in a follow-on conversation about its output, and never run the second prompt through the tool at all. The graph was correct. My way of working with it wasn't.</p>
+
+  <p>The second form added named personas with scoped tools and an explicit system prompt. The idea was that the parts of my work that recur could become re-usable subagents. What I noticed was that the personas I most wanted to keep were the ones I wanted alongside me while I worked, not spawned as a subprocess. The tool could emit them as host-session prompts (one of <a href="/blog/visits-and-residents.html">two invocations</a>), but at that point the value was mostly in the file, not in the runtime. The clearest sign of that came later, when I added a <code>mode:</code> field to the persona contract: a role-shaped persona invoked as a one-shot subprocess would silently produce a transcript asking for a reply nobody was sitting there to give. The fix was a few lines of YAML and a guard rail. The runtime around the file kept shifting; the file shape stayed stable enough to be worth annotating.</p>
+
+  <p>The third form added shallow-clone profiles so parallel runs could be isolated without me having to spin up fresh Claude config dirs by hand. Solved a real problem. What I noticed was that most of my parallel work happens through tmux panes with hand-started Claude sessions anyway: one main, a couple of throwaways. The garbage-collected ephemeral profiles are over-engineered for what I actually do most days.</p>
+
+  <p>The fourth form added terse mode, a compression instruction that holds the agent's output tight on long runs. Useful when you're running a long pipeline. I rarely run a long pipeline, because I'm rarely running pipelines through the tool to begin with. The optimisation is real. The use is what's missing.</p>
+
+  <p>There are smaller forms I've tried alongside these (a feature-and-project workspace layer, a global daemon for notifications, a lead-session entry point). Each adds a piece. Each fits a real shape of work. None of them are the shape that turns the tool into something I open by default.</p>
+
+  <h2>The deeper miss</h2>
+
+  <p>What I notice, looking across all of these, is that each form fixes the friction it set out to fix and doesn't move the deeper one. The deeper friction is that the work I most want a tool like this for is also the work I most want to be in. I keep designing the tool to take me out of the loop, and I keep wanting to be in the loop. The other recent <a href="/blog/selfish-diff.html">post</a> here was about that exact thing in a different domain. The orchestration tool runs into it from the other side.</p>
+
+  <p>The work that genuinely fits the tool's shape (release notes, inbox triage, scheduled background passes) is real, but it isn't enough of my week to drive the design. I keep building features for the cases I wish I had more of, and ignoring the case I actually have more of, which is one prompt at a time inside a single session.</p>
+
+  <h2>Again and again and again</h2>
+
+  <p>I keep coming back to it for a couple of reasons. The underlying urge hasn't gone away, even after several rebuilds. There's a class of work where I want orchestration and don't want to be present, and that class is going to grow if I let it. The tool I'd want for that work doesn't exist yet, even in my own attempts.</p>
+
+  <p>I also notice that each rebuild has produced one piece worth keeping. The numbered-prompt format is good. The persona file is good. The shallow-clone integration is good. They don't add up to a tool I open daily, but each one is a primitive I'd pull off the shelf if I found the right work to point them at. I haven't given up on the integration; I've just stopped pretending I'm close.</p>
+
+  <p>What I'm sitting with now is the possibility that the right form is much smaller than what I've built, or much larger, or doesn't look like a CLI at all. Maybe a recipe pattern, maybe a daemon I never invoke directly, maybe a thing my host session calls into without me thinking about it. I don't know. I'm willing to rebuild it a sixth time and a seventh if that's what it takes, because I'd rather sit with the not-finding than declare a form I don't actually use.</p>
+
+  <p>The next post in this arc is about the one piece I do think landed cleanly: the persona file with two invocations. That distinction came after I'd been running both kinds for a while and noticed they were different in a way the tool could name. It's a smaller claim than "here's the orchestration layer," and it might be the only claim worth making about this tool right now.</p>
+
+  <div class="end">
+    Pairs with: <a href="/blog/visits-and-residents.html">Visits and residents</a> · <a href="/blog/selfish-diff.html">Self(ish) diff</a>
+  </div>
+</article>
+
+<footer>
+  <a href="/">Paperworlds</a> · <a href="https://www.elastic.co/licensing/elastic-license">Elastic License 2.0</a> (tools)
+</footer>
+
+</body>
+</html>
