@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The productivity paradox — Paperworlds</title>
+<meta name="description" content="More code is moving past me than before. I'm genuinely glad of it. What I'm less sure about is whether the leverage per line is staying the same.">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'SF Mono', 'Fira Code', 'Cascadia Code', 'JetBrains Mono', monospace;
+    background: #0d1117;
+    color: #c9d1d9;
+    line-height: 1.7;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+  }
+
+  a { color: #58a6ff; text-decoration: none; }
+  a:hover { text-decoration: underline; }
+
+  .crumbs {
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 32px 24px 0;
+    width: 100%;
+    font-size: 0.78rem;
+    color: #6e7681;
+  }
+  .crumbs a { color: #6e7681; }
+  .crumbs a:hover { color: #c9d1d9; text-decoration: none; }
+
+  article {
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 40px 24px 64px;
+    width: 100%;
+    flex: 1;
+  }
+
+  article header { margin-bottom: 40px; }
+
+  h1 {
+    font-size: 1.8rem;
+    color: #f0f6fc;
+    font-weight: 600;
+    line-height: 1.3;
+    letter-spacing: -0.3px;
+    margin-bottom: 12px;
+  }
+
+  .meta {
+    font-size: 0.78rem;
+    color: #6e7681;
+  }
+
+  .meta .essay-tag {
+    color: #d29922;
+    border: 1px solid #9e6a03;
+    border-radius: 12px;
+    padding: 1px 8px;
+    margin-left: 8px;
+  }
+
+  h2 {
+    font-size: 1.05rem;
+    color: #f0f6fc;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    margin: 40px 0 16px;
+    padding-top: 24px;
+    border-top: 1px solid #21262d;
+  }
+
+  h2:first-of-type { border-top: none; padding-top: 0; }
+
+  p {
+    color: #c9d1d9;
+    font-size: 0.92rem;
+    margin-bottom: 16px;
+  }
+
+  p code, li code {
+    background: #161b22;
+    border: 1px solid #21262d;
+    border-radius: 4px;
+    padding: 1px 6px;
+    font-size: 0.85rem;
+    color: #f0f6fc;
+  }
+
+  .end {
+    margin-top: 48px;
+    padding-top: 24px;
+    border-top: 1px solid #21262d;
+    color: #8b949e;
+    font-size: 0.86rem;
+  }
+
+  footer {
+    padding: 24px;
+    text-align: center;
+    color: #484f58;
+    font-size: 0.78rem;
+    border-top: 1px solid #21262d;
+  }
+
+  footer a { color: #6e7681; }
+
+  @media (max-width: 640px) {
+    article { padding: 24px 18px 48px; }
+    h1 { font-size: 1.5rem; }
+  }
+</style>
+</head>
+<body>
+
+<nav class="crumbs">
+  <a href="/">Paperworlds</a> · <a href="/blog/">Blog</a>
+</nav>
+
+<article>
+  <header>
+    <h1>The productivity paradox</h1>
+    <div class="meta">
+      2026-05-12 · 6 min read
+      <span class="essay-tag">essay</span>
+    </div>
+  </header>
+
+  <p>More code is moving past me, way more than before. I'm genuinely glad, feeling a better programmer than before, as features that would have taken a week take a day or two. 
+    Small tools I'd have kept as sketches actually ship, so fast i don't even use them much as i go quickly to the next thing. 
+    </p>
+
+  <p>But we can't ignore the raw reality beneath the surface: 
+    this also means the amount of code moving past me is increasing faster than my cognitive ability to understand it.
+  </p>
+
+  <p>I look at a file I "wrote" recently and I can't reconstruct why it's shaped the way it is, and that's not because i'm not trying hard enough.
+    I'm not even sure what "trying hard enough" means in this context.
+    It's not that i'm not paying attention, or that i'm not trying to understand.
+  </p>
+
+  <p>A few weeks ago I hit a bug in a module I'd worked on with Claude Code across a handful of sessions. Not a dramatic bug. A quiet one, the kind that only surfaces under a specific sequence of inputs. I sat down to debug it and realized I couldn't read my way back to the decision. The code was correct enough that it had shipped. The logic was there. But the understanding of why that logic had taken that particular form hadn't come with it.</p>
+
+  <p>I'd been in the room for every session. I'd reviewed the diffs. Somewhere in the conversation, the understanding had stayed in the chat and the code had come out without it. I fixed the bug. I still don't fully understand that module, and I don't have the time to go back to it to learn it, now.</p>
+
+  <h2>A different material</h2>
+
+  <p>The obvious reaction to all this is: well, stay on top of it. Own the planning. Read the diffs. Keep the mental model. And that's right, but it's also not as obvious as it sounds, because we've never been in this situation before.</p>
+
+  <p>When I was leading a team of engineers, these things weren't practices I had to consciously defend. The pace enforced them. A person can only move so fast. A sprint is two weeks. A review takes the time it takes. The temporal consistency of a normal working week meant that I was automatically in the loop, because the loop ran at human speed. I didn't need a habit for staying oriented because the work couldn't outrun me.</p>
+
+  <p>What's happened now is that the pace has become something else entirely. It's like putting your head into a universe where time is a different material: something you can stop, compress, accelerate. A week of implementation in an afternoon. Three tools in a day that would have taken a quarter. And you're learning the commands for this, figuring out how to use them, and nobody handed you a manual because the manual doesn't exist yet.</p>
+
+  <p>So yes, the answer is to own the planning and stay in the mental model. But that's not a natural response to an environment you've always been in. It's a learned response to an environment that's new, and the learning is still happening.</p>
+
+  <h2>Planning is the thing</h2>
+
+  <p>After a while of paying attention to this, I've landed on one thing that seems to matter: whether I did the planning before handing off the implementation.</p>
+
+  <p>When I write out what a module should do, the shape it should take, where the tricky parts are, I can reconstruct the result even if the code is mostly generated. The decision is mine. The understanding comes with it. When I skip that and just start a session with a vague idea, the code that comes out is fine and the mental model stays in the chat.</p>
+
+  <p>It's not about coding more manually. It's specifically about planning: holding the decomposition, the structure, the why. That part I can't delegate and still feel like I was there. Everything else is negotiable.</p>
+
+  <p>I've started using a small check: before committing something Claude Code produced, I try to explain the change as if writing the commit message from scratch, not editing the one it suggested. When I can do it fluently, I was actually in the room. When I can't, that's the tell. The rate at which I can do it is lower than I'd like.</p>
+
+  <h2>We don't know where this is going</h2>
+
+  <p>There are tools in Paperworlds I would not have shipped without agents. Probably three or four of them. Without Claude Code, those stay as entries in a <code>TODO.md</code> and I return to the day job.</p>
+
+  <p>And I genuinely don't know where this is going. Not in a worried way, or not only in a worried way. There's something here that feels like the early days of learning an instrument: you're playing notes you didn't know you could reach, in combinations you didn't plan, and it's a little chaotic and a little beautiful and you're not sure yet if it's music. The planning habit, the reconstruction check, the deliberate slow-down before the commit — those might be the right responses, or they might be the first clumsy attempts at something that will look completely different in a year.</p>
+
+  <p>It's a problem and an opportunity at the same time. The lovely jazz you didn't know you could play.</p>
+
+  <div class="end">
+    Pairs with: <a href="/blog/selfish-diff.html">Self(ish) diff</a> · <a href="/blog/a-shape-that-wont-settle.html">A shape that won't settle</a>
+  </div>
+</article>
+
+<footer>
+  <a href="/">Paperworlds</a> · <a href="https://www.elastic.co/licensing/elastic-license">Elastic License 2.0</a> (tools)
+</footer>
+
+</body>
+</html>
