@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The fleet that plays war — Paperworlds</title>
+<meta name="description" content="Twelve shell scripts, one per MCP server, each hand-rolling credential injection and Claude registration. textserve replaced all of that with a registry, a fleet CLI, and profiles that converge your servers to what the session actually needs.">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'SF Mono', 'Fira Code', 'Cascadia Code', 'JetBrains Mono', monospace;
+    background: #0d1117;
+    color: #c9d1d9;
+    line-height: 1.7;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+  }
+
+  a { color: #58a6ff; text-decoration: none; }
+  a:hover { text-decoration: underline; }
+
+  .crumbs {
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 32px 24px 0;
+    width: 100%;
+    font-size: 0.78rem;
+    color: #6e7681;
+  }
+  .crumbs a { color: #6e7681; }
+  .crumbs a:hover { color: #c9d1d9; text-decoration: none; }
+
+  article {
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 40px 24px 64px;
+    width: 100%;
+    flex: 1;
+  }
+
+  article header { margin-bottom: 40px; }
+
+  h1 {
+    font-size: 1.8rem;
+    color: #f0f6fc;
+    font-weight: 600;
+    line-height: 1.3;
+    letter-spacing: -0.3px;
+    margin-bottom: 12px;
+  }
+
+  .meta {
+    font-size: 0.78rem;
+    color: #6e7681;
+  }
+
+  .meta .tool-tag {
+    color: #3fb950;
+    border: 1px solid #238636;
+    border-radius: 12px;
+    padding: 1px 8px;
+    margin-left: 8px;
+  }
+
+  h2 {
+    font-size: 1.05rem;
+    color: #f0f6fc;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    margin: 40px 0 16px;
+    padding-top: 24px;
+    border-top: 1px solid #21262d;
+  }
+
+  h2:first-of-type { border-top: none; padding-top: 0; }
+
+  p {
+    color: #c9d1d9;
+    font-size: 0.92rem;
+    margin-bottom: 16px;
+  }
+
+  p code, li code {
+    background: #161b22;
+    border: 1px solid #21262d;
+    border-radius: 4px;
+    padding: 1px 6px;
+    font-size: 0.85rem;
+    color: #f0f6fc;
+  }
+
+  pre {
+    background: #161b22;
+    border: 1px solid #21262d;
+    border-radius: 6px;
+    padding: 14px 18px;
+    overflow-x: auto;
+    margin: 16px 0 24px;
+    font-size: 0.84rem;
+    line-height: 1.55;
+  }
+
+  pre code {
+    color: #c9d1d9;
+    background: transparent;
+    border: none;
+    padding: 0;
+  }
+
+  .end {
+    margin-top: 48px;
+    padding-top: 24px;
+    border-top: 1px solid #21262d;
+    color: #8b949e;
+    font-size: 0.86rem;
+  }
+
+  footer {
+    padding: 24px;
+    text-align: center;
+    color: #484f58;
+    font-size: 0.78rem;
+    border-top: 1px solid #21262d;
+  }
+
+  footer a { color: #6e7681; }
+
+  @media (max-width: 640px) {
+    article { padding: 24px 18px 48px; }
+    h1 { font-size: 1.5rem; }
+  }
+</style>
+</head>
+<body>
+
+<nav class="crumbs">
+  <a href="/">Paperworlds</a> · <a href="/blog/">Blog</a>
+</nav>
+
+<article>
+  <header>
+    <h1>The fleet that plays war</h1>
+    <div class="meta">
+      2026-05-12 · 5 min read
+      <span class="tool-tag">textserve</span>
+    </div>
+  </header>
+
+  <p>MCP is a standard for how agents access tools, which is genuinely useful, but it doesn't tell you anything about how to manage the servers that expose those tools — how to catalogue them, label them, order them, wrap them in credentials, or decide which ones should even be running in a given session. Before textserve I had twelve shell scripts, one per server, each hand-rolling the same lifecycle: pull secrets from 1Password, start the container, write the registration into <code>~/.claude.json</code>. Each script slightly different from the others, each accumulating small divergences over time, so that when a credential rotated you'd update most of them and the fourth one would quietly fail two weeks later when you actually needed it. You had a standard for access and no standard for anything around it.</p>
+
+  <p>The pain wasn't dramatic. It was the usual kind: a credential rotates, you update three of the twelve scripts, and the fourth one silently fails two weeks later when you actually need it. Or you start a server manually during a session and forget to register it, so Claude doesn't see it. Or you register it but skip the health wait and Claude tries to call a tool that isn't ready yet.</p>
+
+  <p>textserve replaced all of that with a single registry and a fleet CLI.</p>
+
+  <h2>How it works</h2>
+
+  <p>Every server has an entry in <code>registry.yaml</code>: image or binary, transport, port, tags, health probe. Credentials stay in 1Password and are injected at start time. Registration with Claude Code happens automatically, gated on the health probe passing first.</p>
+
+  <p>The two commands I use most are <code>up</code> and <code>down</code>: converge a server (or a tagged group) to running-and-registered, or stop-and-deregistered. They're idempotent — already-running servers are skipped, already-stopped servers don't error.</p>
+
+<pre><code>textserve up --tag knowledge    # start all knowledge-tagged servers, skip healthy ones
+textserve down grafana          # stop and deregister grafana
+textserve status                # see what's running and healthy across the fleet
+</code></pre>
+
+  <p><code>doctor</code> runs a full diagnostic when something feels wrong: checks the registry, active Claude config, port conflicts, missing dependencies. Saves a lot of blind <code>docker ps</code> spelunking.</p>
+
+  <h2>The context problem profiles solve</h2>
+
+  <p>Running all your MCP servers all the time has a cost that isn't obvious until you have more than three or four of them. Every registered server injects its tool descriptions into Claude's system prompt on every message, whether or not those tools are relevant to what you're doing. A session writing a blog post doesn't need Grafana, Snowflake, and Jenkins tool descriptions in its context. They're just noise, and they're not free.</p>
+
+  <p>Profiles are the answer. You define a named set of servers in <code>registry.yaml</code> and converge the fleet to that set in one command:</p>
+
+<pre><code>textserve profile use minimal   # knowledge graph only — blog writing, notes
+textserve profile use coding    # sentry, jenkins, textmap — code review sessions
+textserve profile use data      # grafana, snowflake, loki — observability work
+</code></pre>
+
+  <p><code>profile use</code> brings up servers in the profile that aren't running, and brings down servers that aren't in the profile. One command to reshape the tool surface for the session you're actually in.</p>
+
+  <h2>With textaccounts</h2>
+
+  <p>textserve respects <code>$CLAUDE_CONFIG_DIR</code>, so it coordinates cleanly with <a href="/blog/textaccounts.html">textaccounts</a> profile switching. Switching accounts and switching your MCP surface are two commands:</p>
+
+<pre><code>textaccounts use work
+textserve profile use coding
+</code></pre>
+
+  <p>That's the pattern I'm using now: textaccounts handles which Claude identity is active, textserve handles which tools are registered for that identity. Together with <a href="/blog/textsessions.html">textsessions</a> for session triage, the three tools cover the full multi-context Claude Code surface — auth, sessions, MCP — without any of them stepping on each other.</p>
+
+  <div class="end">
+    Part of Paperworlds. Pairs with: <a href="/blog/textaccounts.html">Two Claude accounts, one config directory</a> · <a href="/blog/textsessions.html">Sessions pile up</a>
+  </div>
+</article>
+
+<footer>
+  <a href="/">Paperworlds</a> · <a href="https://www.elastic.co/licensing/elastic-license">Elastic License 2.0</a> (tools)
+</footer>
+
+</body>
+</html>
