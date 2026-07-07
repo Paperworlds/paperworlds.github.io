@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Private — Paperworlds</title>
+<meta name="description" content="On a state-sponsored security incident, the personal audit that followed, and the security theater that hurt more than it helped.">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'SF Mono', 'Fira Code', 'Cascadia Code', 'JetBrains Mono', monospace;
+    background: #0d1117;
+    color: #c9d1d9;
+    line-height: 1.7;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+  }
+
+  a { color: #58a6ff; text-decoration: none; }
+  a:hover { text-decoration: underline; }
+
+  .crumbs {
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 32px 24px 0;
+    width: 100%;
+    font-size: 0.78rem;
+    color: #6e7681;
+  }
+  .crumbs a { color: #6e7681; }
+  .crumbs a:hover { color: #c9d1d9; text-decoration: none; }
+
+  article {
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 40px 24px 64px;
+    width: 100%;
+    flex: 1;
+  }
+
+  article header { margin-bottom: 40px; }
+
+  h1 {
+    font-size: 1.8rem;
+    color: #f0f6fc;
+    font-weight: 600;
+    line-height: 1.3;
+    letter-spacing: -0.3px;
+    margin-bottom: 12px;
+  }
+
+  .meta {
+    font-size: 0.78rem;
+    color: #6e7681;
+  }
+
+  .meta .tool-tag {
+    color: #d29922;
+    border: 1px solid #9e6a03;
+    border-radius: 12px;
+    padding: 1px 8px;
+    margin-left: 8px;
+  }
+
+  .meta .tool-tag.reflections {
+    color: #d2a8ff;
+    border-color: #8957e5;
+  }
+
+  p {
+    color: #c9d1d9;
+    font-size: 0.92rem;
+    margin-bottom: 16px;
+  }
+
+  em { color: #f0f6fc; }
+
+  blockquote {
+    border-left: 3px solid #30363d;
+    padding: 4px 0 4px 18px;
+    margin: 24px 0;
+    color: #8b949e;
+    font-style: italic;
+  }
+
+  hr.movement {
+    border: none;
+    text-align: center;
+    color: #484f58;
+    margin: 32px 0;
+    height: 1em;
+    font-size: 0.9rem;
+    letter-spacing: 0.5em;
+  }
+  hr.movement::before {
+    content: "* * *";
+  }
+
+  .end {
+    margin-top: 48px;
+    padding-top: 24px;
+    border-top: 1px solid #21262d;
+    color: #8b949e;
+    font-size: 0.86rem;
+  }
+
+  footer {
+    padding: 24px;
+    text-align: center;
+    color: #484f58;
+    font-size: 0.78rem;
+    border-top: 1px solid #21262d;
+  }
+
+  footer a { color: #6e7681; }
+
+  @media (max-width: 640px) {
+    article { padding: 24px 18px 48px; }
+    h1 { font-size: 1.5rem; }
+  }
+</style>
+</head>
+<body>
+
+<nav class="crumbs">
+  <a href="/">Paperworlds</a> · <a href="/blog/">Blog</a>
+</nav>
+
+<article>
+  <header>
+    <h1>Private</h1>
+    <div class="meta">
+      2026-07-08 · 6 min read
+      <span class="tool-tag reflections">reflections</span>
+    </div>
+  </header>
+
+  <p>Woke up one morning to a Telegram message and a flood of emails on my personal account. Then I realized I was locked out of my work environments. It took a couple of days to get access back.</p>
+
+  <p>Crypto is a hard industry to live with. There are so many angles — the market cycles, the culture, the regulatory pressure — and the hacking is one of the biggest ones. The industry attracts serious adversaries precisely because of what it holds.</p>
+
+  <p>In those moments, trust is what pays the most. Not the trust you declare in a values document, but the trust you've built in your stack, in your habits, in the things you set up years ago and never needed to think about again. A slower audit follows the initial shock: my laptop, my repos, my keys. All the measures you put in place with the assumption that they'd never actually need to be tested.</p>
+
+  <p>The good news is that they held. No breach I could trace through me or through my machine. The measures I'd put in place, some of them years earlier and mostly out of habit rather than acute threat awareness, did what they were supposed to do. That's a strange relief, because you didn't know you were relying on them until the moment you checked.</p>
+
+  <hr class="movement">
+
+  <p>The company's response was something else entirely.</p>
+
+  <p>Security theater is a specific genre of organizational behavior. You recognize it by a few tells: the measures feel proportionate to how they look from the outside rather than to actual risk; they create friction for engineers while leaving real attack surfaces untouched; they generate compliance checkboxes rather than protection. We got the full genre.</p>
+
+  <p>The Mac App Store was blocked. Homebrew was not. And this is only one of many, let me tell you.</p>
+
+  <hr class="movement">
+
+  <p>The GPG hardware token policy was the one I couldn't let go of. The stated logic: you sign commits with a physical device, so stolen credentials alone can't sign without it. The actual practice: everyone kept the hardware plugged into their laptop at all times. Not occasionally — always, because you commit constantly and interrupting the flow to plug and unplug a small dongle is not something that survives contact with reality.</p>
+
+  <p>So if someone stole your laptop, they got the hardware too. The air gap you were promised was the USB port you left occupied.</p>
+
+  <p>I spent an afternoon looking for a better answer and found one: GPG signing via Touch ID on macOS. It works cleanly. The key is bound to the device's secure enclave, Touch ID is frictionless, and there's nothing physical to forget or leave plugged in. The policy demanded hardware; I ended up with something more secure by refusing to treat the policy as the end of the question. I'm using it right now, on every commit in this repo.</p>
+
+  <p>Worth noting: this only works on a MacBook. It's not a portable answer. But that's exactly the point — the right answer depends on your setup, your threat model, and your actual understanding of the tools in front of you. You don't arrive there by adopting a policy. You arrive there by reasoning.</p>
+
+  <hr class="movement">
+
+  <p>Empty security imposed on engineers kills more than it protects. It kills the pace of work. It kills the instinct to question, because questioning gets reframed as resistance. And it accelerates a specific kind of isolation — the feeling that the institution's reflexes are pointed inward, at you, rather than outward at actual threats.</p>
+
+  <p>Security designed to make decision-makers feel better is not security. It's a tax on the people who already care — the ones who would have done the right thing anyway — while changing almost nothing about the actual risk profile. The engineers who would have clicked a phishing link before the hardware token policy will click one after. The engineers who wouldn't, won't.</p>
+
+  <p>Trust moves in both directions. The version that matters most isn't in your stack — it's what leadership builds with a team, and what gets reflected back. When that's working, engineers bring their best thinking forward, including the thinking that doesn't fit a ticket. When it isn't, you get the reverse: the impulse to keep things private, not because the policy says so, but because the environment stopped feeling like one worth contributing to.</p>
+
+  <p>One side effect I noticed in myself: I became less inclined to share things internally. The Paperworlds tools existed during that period, and I didn't bring them up. Partly because the atmosphere wasn't one that felt generous toward outside thinking. Partly because the environment had turned, slowly, into one where having a side project felt more like an exposure than a contribution. The repos went private by policy. Other things went private by feeling.</p>
+
+  <hr class="movement">
+
+  <p>The title of this post is literal: the repositories had to go private during that stretch. I'm republishing them now, with a clean history and nothing I'm not comfortable having public. The incident was real. The threat was real. My audit passed.</p>
+
+  <p>What didn't pass was their audit process. The investigation stayed shallow — it asked whether a breach had occurred, not the deeper questions underneath: why the measures that held did hold, which ones held by luck rather than design, what the gaps look like that nobody checked. A security audit that doesn't ask those questions is just a checkbox looking for a pass.</p>
+
+  <p>That gap is what triggered something more useful in me: introspection as a practice. Looking inward, regularly, not just after an incident. I started applying the same lens to my AI sessions — going back through conversations, reviewing what I'd shared, what I'd assumed, what I'd left implicit. From that I built a recurring loop: not a one-off response, but a rhythm of checking what's drifting and what's holding. The incident gave me a framework I didn't have before. That might be the most useful thing that came out of it.</p>
+
+  <p>Good security is a craft. You don't become a Go developer by renaming your files <code>.go</code>. The people who build real security practices spend years studying the threat model before they touch the policy. I try to look around for best practices — and then question them, understand why they work and where they don't, before adopting anything. That's different from buying a paid product, pushing it to every laptop in the org, and going to sleep feeling secure. The product is not the practice.</p>
+
+  <div class="end">
+    <a href="/blog/">More posts</a> · <a href="https://github.com/paperworlds">github.com/paperworlds</a>
+  </div>
+</article>
+
+<footer>
+  <a href="/">Paperworlds</a>
+</footer>
+
+</body>
+</html>
