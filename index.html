@@ -410,7 +410,7 @@
             <span class="tool-name">textforums</span>
             <span class="tool-badge">available</span>
           </div>
-          <p class="tool-desc">Async coordination layer for Claude Code sessions. Post threads when you hit a cross-repo dependency, pick them up from another session. File-based, YAML threads, zero infrastructure. Ships inside textworkspace.</p>
+          <p class="tool-desc">Async coordination layer for Claude Code sessions. Post threads when you hit a cross-repo dependency, pick them up from another session. File-based, YAML threads, zero infrastructure.</p>
         </a>
 
         <a href="https://github.com/paperworlds/textread" class="tool">
@@ -428,7 +428,7 @@
             <span class="tool-name">textserve</span>
             <span class="tool-badge">available</span>
           </div>
-          <p class="tool-desc">Fleet manager for MCP servers. Start, stop, and monitor Docker-based and native MCP servers from a single CLI. Injects credentials from your password manager at runtime and auto-registers servers with Claude Code.</p>
+          <p class="tool-desc">Single MCP entry point for the Paperworlds fleet. A bundle system keeps the rest of the servers dark until a human approves a toggle — no Docker, no per-server credential scripts. The entire interaction is driven by the tools API: list available bundles, enable a group, query the graph.</p>
         </a>
 
         <a href="https://github.com/paperworlds/textmap" class="tool">
@@ -437,7 +437,7 @@
             <span class="tool-name">textmap</span>
             <span class="tool-badge">available</span>
           </div>
-          <p class="tool-desc">YAML-first knowledge graph with a Kuzu backend and MCP server. Agents query it for protocols, open initiatives, and intent→tool mappings — context recovery without reading prose. YAML is the human-authored source of truth; <code>textmap sync</code> keeps the graph in step. Integrated with textworkspace.</p>
+          <p class="tool-desc">YAML-first knowledge graph with a Kuzu backend and MCP server. Agents query it for protocols, open initiatives, and intent→tool mappings — context recovery without reading prose. YAML is the human-authored source of truth; <code>textmap sync</code> keeps the graph in step.</p>
         </a>
 
         <a href="https://github.com/paperworlds/textprompts" class="tool">
@@ -458,14 +458,6 @@
           <p class="tool-desc">Routing layer between Paperworlds tools and the external apps your day already runs on. One module per integration, one YAML flow per source-to-sink mapping, content-hashed idempotency so the same action never gets pushed twice. Inaugural plugin: Todoist, with calendar sync via the existing iCal feed (no separate Google auth).</p>
         </a>
 
-        <a href="https://github.com/paperworlds" class="tool">
-          <div class="tool-header">
-            <span class="tool-number">11</span>
-            <span class="tool-name">textcombos</span>
-            <span class="tool-badge tbd">tbd</span>
-          </div>
-          <p class="tool-desc">Community-shared workflow recipes for textworkspace. YAML files that chain tool actions into reusable combos — install from local files, gists, or repos. Define your own, share with your team.</p>
-        </a>
 
       </div>
     </div>
@@ -609,30 +601,6 @@
           <p class="feature-desc">Pull from <code>.md</code> frontmatter, Cursor <code>.mdc</code> rules, toolmaps, and inventory finding files. Five built-in pipelines.</p>
         </div>
 
-        <div class="feature">
-          <div class="feature-header"><span class="feature-name">DAG-driven prompts</span><span class="feature-tool"><a href="https://github.com/paperworlds/textprompts">textprompts</a></span></div>
-          <p class="feature-desc">Numbered prompt files with <code>depends_on</code> — <code>pp run</code> resolves the chain, runs eligible tasks via <code>claude -p</code>.</p>
-        </div>
-
-        <div class="feature">
-          <div class="feature-header"><span class="feature-name">Budget-aware runs</span><span class="feature-tool"><a href="https://github.com/paperworlds/textprompts">textprompts</a></span></div>
-          <p class="feature-desc">Per-task and per-pipeline cost tracking. <code>pp cost forecast</code> estimates pending tasks before you spend.</p>
-        </div>
-
-        <div class="feature">
-          <div class="feature-header"><span class="feature-name">Live progress TUI</span><span class="feature-tool"><a href="https://github.com/paperworlds/textprompts">textprompts</a></span></div>
-          <p class="feature-desc"><code>pp view</code> shows projects, features, and tasks with state, model, and cost — live-tail any task.</p>
-        </div>
-
-        <div class="feature">
-          <div class="feature-header"><span class="feature-name">Feature scaffolding</span><span class="feature-tool"><a href="https://github.com/paperworlds/textprompts">textprompts</a></span></div>
-          <p class="feature-desc"><code>pp features new</code> + <code>pp features plan</code> decompose a <code>LEAD.md</code> into ordered YAML prompt files automatically.</p>
-        </div>
-
-        <div class="feature">
-          <div class="feature-header"><span class="feature-name">Per-task model</span><span class="feature-tool"><a href="https://github.com/paperworlds/textprompts">textprompts</a></span></div>
-          <p class="feature-desc">Each prompt picks haiku, sonnet, or opus — match cost to task, not pipeline-wide.</p>
-        </div>
 
       </div>
     </div>
