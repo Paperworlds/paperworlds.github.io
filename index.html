@@ -237,6 +237,8 @@
   .tool-badge.revisiting { color: #bc8cff; border-color: #8b5cf6; }
   .tool-badge.alpha   { color: #f97583; border-color: #da3633; }
   .tool-badge.tbd     { color: #6e7681; border-color: #30363d; }
+  .tool-badge.preview { color: #79c0ff; border-color: #1f6feb; }
+  .tool-badge.retired { color: #484f58; border-color: #21262d; }
   .tool-badge.manager { color: #58a6ff; border-color: #388bfd; }
 
   .tool-desc {
@@ -370,7 +372,7 @@
           <div class="tool-header">
             <span class="tool-number">01</span>
             <span class="tool-name">textworkspace</span>
-            <span class="tool-badge manager">manager</span>
+            <span class="tool-badge preview">preview</span>
           </div>
           <p class="tool-desc">One install, one CLI for the entire text- stack. Onboards you through the tools in dependency order, bootstraps Go binaries from GitHub releases, and exposes custom combo commands that chain actions across tools. The package manager for Paperworlds.</p>
         </a>
@@ -402,7 +404,7 @@
           <p class="tool-desc">TUI for Claude Code session management. Browse, search, tag, and resume sessions across repos and profiles. Built for heavy users who lose track of dozens of parallel conversations.</p>
         </a>
 
-        <a href="https://github.com/paperworlds/textworkspace" class="tool">
+        <a href="https://github.com/paperworlds/textforums" class="tool">
           <div class="tool-header">
             <span class="tool-number">05</span>
             <span class="tool-name">textforums</span>
@@ -442,9 +444,9 @@
           <div class="tool-header">
             <span class="tool-number">09</span>
             <span class="tool-name">textprompts</span>
-            <span class="tool-badge">available</span>
+            <span class="tool-badge retired">retired</span>
           </div>
-          <p class="tool-desc">Lightweight DAG runner for AI coding agents. Reads numbered prompt files with YAML frontmatter, resolves <code>depends_on</code> chains, runs eligible tasks via <code>claude -p</code>, and surfaces live progress in a TUI. Decompose features into ordered prompts, track progress and cost.</p>
+          <p class="tool-desc">Retired. A DAG runner for AI coding agents — numbered prompt files, <code>depends_on</code> chains, per-task model selection, live TUI. The form never stuck. The reasoning is in a forthcoming post.</p>
         </a>
 
         <a href="https://github.com/paperworlds/textbridge" class="tool">
