@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Outro-spection — Paperworlds</title>
+<meta name="description" content="Introspection tells you what's missing. Outro-spection looks outward to find what already exists to fill it. A word I made up for a loop I've been running.">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'SF Mono', 'Fira Code', 'Cascadia Code', 'JetBrains Mono', monospace;
+    background: #0d1117;
+    color: #c9d1d9;
+    line-height: 1.7;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+  }
+
+  a { color: #58a6ff; text-decoration: none; }
+  a:hover { text-decoration: underline; }
+
+  .crumbs {
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 32px 24px 0;
+    width: 100%;
+    font-size: 0.78rem;
+    color: #6e7681;
+  }
+  .crumbs a { color: #6e7681; }
+  .crumbs a:hover { color: #c9d1d9; text-decoration: none; }
+
+  article {
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 40px 24px 64px;
+    width: 100%;
+    flex: 1;
+  }
+
+  article header { margin-bottom: 40px; }
+
+  h1 {
+    font-size: 1.8rem;
+    color: #f0f6fc;
+    font-weight: 600;
+    line-height: 1.3;
+    letter-spacing: -0.3px;
+    margin-bottom: 12px;
+  }
+
+  .meta {
+    font-size: 0.78rem;
+    color: #6e7681;
+  }
+
+  .meta .tool-tag {
+    color: #d29922;
+    border: 1px solid #9e6a03;
+    border-radius: 12px;
+    padding: 1px 8px;
+    margin-left: 8px;
+  }
+
+  p {
+    color: #c9d1d9;
+    font-size: 0.92rem;
+    margin-bottom: 16px;
+  }
+
+  em { color: #f0f6fc; }
+
+  blockquote {
+    border-left: 3px solid #30363d;
+    padding: 4px 0 4px 18px;
+    margin: 24px 0;
+    color: #8b949e;
+    font-style: italic;
+  }
+
+  hr.movement {
+    border: none;
+    text-align: center;
+    color: #484f58;
+    margin: 32px 0;
+    height: 1em;
+    font-size: 0.9rem;
+    letter-spacing: 0.5em;
+  }
+  hr.movement::before {
+    content: "* * *";
+  }
+
+  .end {
+    margin-top: 48px;
+    padding-top: 24px;
+    border-top: 1px solid #21262d;
+    color: #8b949e;
+    font-size: 0.86rem;
+  }
+
+  footer {
+    padding: 24px;
+    text-align: center;
+    color: #484f58;
+    font-size: 0.78rem;
+    border-top: 1px solid #21262d;
+  }
+
+  footer a { color: #6e7681; }
+
+  @media (max-width: 640px) {
+    article { padding: 24px 18px 48px; }
+    h1 { font-size: 1.5rem; }
+  }
+</style>
+</head>
+<body>
+
+<nav class="crumbs">
+  <a href="/">Paperworlds</a> · <a href="/blog/">Blog</a>
+</nav>
+
+<article>
+  <header>
+    <h1>Outro-spection</h1>
+    <div class="meta">
+      2026-07-08 · 5 min read
+      <span class="tool-tag">essay</span>
+    </div>
+  </header>
+
+  <p>There's a word I've been looking for. Introspection is one I love — from Python, where it means looking inside an object at runtime, and from myself, where it means roughly the same thing. Whatever happens I tend to turn it inward. There's always something in that internal mirror. But lately I've been expanding the mirror outward — not looking inside myself but inside other systems, other people, other tools. And I needed a word for that direction. The one I landed on is outro-spection.</p>
+
+  <p>I run an introspection pass at the end of most weeks. A persona I call <em>memory-steward</em> goes through what happened in recent sessions: what changed, what didn't land, what the agents noticed that nobody followed up on. The output is a file I call <code>GAPS.yaml</code>. A structured list of things I know are missing — gaps in the toolset, patterns that keep arriving without a home, things I wish existed and haven't built yet.</p>
+
+  <p><code>GAPS.yaml</code> is the inward-facing artifact. For a while that's where it stopped. The file grew. Gaps accumulated. I could name what was missing; I couldn't always say what to do about it.</p>
+
+  <hr class="movement">
+
+  <p>Outro-spection is the second loop. It takes what the introspection found and turns outward — looks at what exists in the open-source world that might already fill a gap, vets one candidate at a time, and either adopts or discards. The shared artifact, the hinge between the two directions, is the same file. The same <code>GAPS.yaml</code> feeds both loops.</p>
+
+  <p>What I've found: the recommendation surface for tools is narrow. What comes up in reposts and newsletters is what's well-marketed, not what fits a specific case. The tool that fits your actual situation is often the one nobody is writing about. Outro-spection is a systematic attempt to scan more than the visible layer.</p>
+
+  <hr class="movement">
+
+  <p>The agent structure that makes this concrete: one persona scans <code>GAPS.yaml</code> and searches for candidates. Another goes deep on one candidate — reads the source, runs the code, writes a verdict. If the verdict is adopt, a third writes the integration spec. The integration lands in <a href="https://github.com/paperworlds/textserve">textserve</a> as a dark bundle — off by default, enabled per session when needed.</p>
+
+  <p>This is the ingest sprint <a href="/blog/what-survives-the-chat.html">What survives the chat</a> was pointing toward when it mentioned tool discovery. That post was about building the memory engine. This is about what fills it from the outside.</p>
+
+  <hr class="movement">
+
+  <p>Outro is not a Latin prefix. Introspection has the clean etymology — <em>intro</em>, within, <em>spicere</em>, to look. I borrowed the direction and made up the word. It felt like the right thing to reach for when the concept arrived before the vocabulary did.</p>
+
+  <p>The pair: introspection tells you what you're missing. Outro-spection finds what might already exist to fill it. Together they're a cadence — inward, then outward, then inward again. The same rhythm I'd use for any gap between what I have and what I need. The loop doesn't close by itself; you have to run both halves deliberately.</p>
+
+  <hr class="movement">
+
+  <p>There's a framing from Geoffrey Litt that I keep coming back to: <a href="https://www.geoffreylitt.com/2026/07/02/understanding-is-the-new-bottleneck.html">understanding is the new bottleneck</a>. When code generation gets cheap, the constraint shifts to comprehension — not of what to build next, but of what already exists. He calls skipping that step "cognitive debt." The compounding is real: the faster the loop runs, the more you lose the mental model of what the loop produced.</p>
+
+  <p>That's what GAPS.yaml is, in one reading. Not a task list — a comprehension artifact. The introspection pass forces you to account for what exists, what's missing, and why. The outward loop forces you to look at what fills those gaps seriously rather than by drift. Both halves are a tax on speed, deliberately. The alternative is running faster into a system you no longer understand.</p>
+
+  <hr class="movement">
+
+  <p>I don't know yet whether this generalizes beyond my own setup. It might only work cleanly when you're building your own tools and know the gaps precisely enough to state them in a file. But I think the underlying move is transferable: maintain a list of known gaps, and look outward against that list deliberately rather than waiting for something to drift into your feed.</p>
+
+  <p>The failure mode I'm watching for: discovery agents that search for tools have an obvious shortcut available to them. They find the well-known things, because that's what training data knows, and call it a search. The only way I know to test against that is to run the loop and compare the results against what I already knew — and see whether anything surfaces that I wouldn't have found on my own. That's the part I haven't measured yet.</p>
+
+  <div class="end">
+    <a href="/blog/">More posts</a> · <a href="https://github.com/paperworlds">github.com/paperworlds</a>
+  </div>
+</article>
+
+<footer>
+  <a href="/">Paperworlds</a>
+</footer>
+
+</body>
+</html>
