@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Inside an electron — Paperworlds</title>
+<meta name="description" content="Liu Cixin's fourth dimension is a bubble you fly through with a spaceship. Real string theory is something quieter — vibrations on a geometry smaller than anything you've ever held.">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'SF Mono', 'Fira Code', 'Cascadia Code', 'JetBrains Mono', monospace;
+    background: #0d1117;
+    color: #c9d1d9;
+    line-height: 1.7;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+  }
+
+  a { color: #58a6ff; text-decoration: none; }
+  a:hover { text-decoration: underline; }
+
+  .crumbs {
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 32px 24px 0;
+    width: 100%;
+    font-size: 0.78rem;
+    color: #6e7681;
+  }
+  .crumbs a { color: #6e7681; }
+  .crumbs a:hover { color: #c9d1d9; text-decoration: none; }
+
+  article {
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 40px 24px 64px;
+    width: 100%;
+    flex: 1;
+  }
+
+  article header { margin-bottom: 40px; }
+
+  h1 {
+    font-size: 1.8rem;
+    color: #f0f6fc;
+    font-weight: 600;
+    line-height: 1.3;
+    letter-spacing: -0.3px;
+    margin-bottom: 12px;
+  }
+
+  .meta {
+    font-size: 0.78rem;
+    color: #6e7681;
+  }
+
+  .meta .tool-tag {
+    color: #d29922;
+    border: 1px solid #9e6a03;
+    border-radius: 12px;
+    padding: 1px 8px;
+    margin-left: 8px;
+  }
+
+  p {
+    color: #c9d1d9;
+    font-size: 0.92rem;
+    margin-bottom: 16px;
+  }
+
+  p code, li code {
+    background: #161b22;
+    border: 1px solid #21262d;
+    border-radius: 4px;
+    padding: 1px 6px;
+    font-size: 0.85rem;
+    color: #f0f6fc;
+  }
+
+  em { color: #f0f6fc; }
+
+  blockquote {
+    border-left: 3px solid #30363d;
+    padding: 8px 0 8px 22px;
+    margin: 28px 0;
+    color: #8b949e;
+    font-style: italic;
+    font-size: 0.95rem;
+    line-height: 1.65;
+  }
+
+  blockquote.lang-it {
+    color: #c9d1d9;
+    font-style: italic;
+  }
+
+  blockquote .src {
+    display: block;
+    font-style: normal;
+    font-size: 0.78rem;
+    color: #6e7681;
+    margin-top: 10px;
+  }
+
+  .end {
+    margin-top: 48px;
+    padding-top: 24px;
+    border-top: 1px solid #21262d;
+    color: #8b949e;
+    font-size: 0.86rem;
+  }
+
+  footer {
+    padding: 24px;
+    text-align: center;
+    color: #484f58;
+    font-size: 0.78rem;
+    border-top: 1px solid #21262d;
+  }
+
+  footer a { color: #6e7681; }
+
+  @media (max-width: 640px) {
+    article { padding: 24px 18px 48px; }
+    h1 { font-size: 1.5rem; }
+  }
+</style>
+</head>
+<body>
+
+<nav class="crumbs">
+  <a href="/">Paperworlds</a> · <a href="/blog/">Blog</a>
+</nav>
+
+<article>
+  <header>
+    <h1>Inside an electron</h1>
+    <div class="meta">
+      2026-07-10 · 4 min read
+      <span class="tool-tag">essay</span>
+    </div>
+  </header>
+
+  <p>Liu Cixin's fourth dimension is a bubble. You fly through it with a spaceship. It's a macro-space, a cinematic license — geometric, comic-book, the kind of strangeness you can point at on a screen. It belongs to the same family as the wormholes and the Dyson spheres: vast, navigable, somewhere else.</p>
+
+  <p>Real string theory hypothesizes something much quieter. The extra dimensions, if they exist, are not <em>somewhere else</em>. They're here. They're nested in the cores of the atoms in your hand. You can't fly through them. You can't even see them. They are curled, at every point in space, into geometries smaller than anything you have ever held.</p>
+
+  <p>The image physicists keep using is a garden hose. From far away the hose looks like a line — one dimension, just a length. Walk up to it with a microscope and the surface reveals itself: there is a second dimension wrapped around the first, a circle a tiny insect could crawl along. The line was always a tube. You just couldn't see the wrap.</p>
+
+  <p>String theory says the universe is like that, only more so. Not three spatial dimensions plus time, but ten, or eleven, or twenty-six, depending on which model is talking. Most of them are <em>compactified</em> — rolled up at the Planck length, around $10^{-35}$ metres, on geometries called Calabi-Yau manifolds. Not great rooms you can enter. Infinitesimal shapes in which strings vibrate. And the way a string vibrates, in this hidden geometry no microscope will ever reach, is supposedly what decides whether the thing we measure becomes an electron, a quark, or a photon.</p>
+
+  <p>That, if you sit with it for a second, is a strange and beautiful claim. The absurdity is not in some distant point in space. It is nested inside every atom of your own skin. Invisible. Fundamental. The thing that makes the floor solid under your feet.</p>
+
+  <p>But probability is not the same as proof, and the two halves of modern physics have very different relationships to reality.</p>
+
+  <p>Standard quantum mechanics — the older, weirder layer — is the most precisely tested theory in the history of human thought. The accuracy is hard to overstate. Physicists have predicted certain quantities and measured them against experiment with a margin equivalent to measuring the distance from New York to Los Angeles to within the width of a single human hair. The atom behaves like a madman, but it behaves exactly as the math says it will. The transistors in your phone work because of quantum tunnelling. The lasers in your supermarket scanner work because of quantized energy levels. The MRI machines in hospitals work because of nuclear spin. None of this is metaphor. The proof is the world.</p>
+
+  <p>String theory is the opposite. It is a beautiful and internally consistent mathematics — perhaps the most elegant edifice physics has ever built — and it has, so far, no empirical evidence at all. To test it directly, to see a vibrating string or unwind a compactified dimension, you would need a particle accelerator the size of the galaxy. With the technology that exists on Earth, you cannot get close. Some physicists have begun to argue that this disqualifies the whole enterprise — that a theory which cannot, in principle, be disproven is not science but a kind of mathematical philosophy. A vertiginously high probability with zero physical footprint.</p>
+
+  <p>Sit between the two and you get a strange position. The deeper physics goes, the more it has to relinquish what your eyes can confirm. Probability, asynchrony, hidden geometry. The microscopic world is not a rigid clockwork of causes and effects. It's a fog of likelihoods. The grand structure underneath, if string theory is right, is something we may never measure.</p>
+
+  <p>And yet — this is the part that stays with me — there is more strangeness in the proven layer than any novelist has ever invented. Tunnelling. Superposition. Entanglement. The collapse of a wavefunction the moment you ask. None of this is speculative. None of this is hidden behind a galaxy-sized accelerator. It's running, right now, inside the device you're reading this on.</p>
+
+  <p>The cliché about science is that it kills wonder. Replaces the mystery with a mechanism. The cliché is wrong. What science has done is replace the mystery with a deeper, weirder mystery, one that turns out to be true.</p>
+
+  <blockquote class="lang-it">
+    La natura intima della realtà è molto più bizzarra, fluida e misteriosa di qualsiasi romanzo di fantascienza. Non abbiamo bisogno di inventare la magia; basta guardare dentro un elettrone.
+  </blockquote>
+
+  <p>The intimate nature of reality is much stranger, more fluid, more mysterious than any science fiction novel. We don't need to invent magic. We only need to look inside an electron.</p>
+
+  <div class="end">
+    <a href="/blog/">More posts</a> · <a href="https://github.com/paperworlds">github.com/paperworlds</a>
+  </div>
+</article>
+
+<footer>
+  <a href="/">Paperworlds</a>
+</footer>
+
+</body>
+</html>
