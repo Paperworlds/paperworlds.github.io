@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Proven vs elegant — Paperworlds</title>
+<meta name="description" content="Two physics theories, two epistemic statuses. Apply the same lens to AI and the strongest claims start to look less like quantum mechanics and more like string theory.">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'SF Mono', 'Fira Code', 'Cascadia Code', 'JetBrains Mono', monospace;
+    background: #0d1117;
+    color: #c9d1d9;
+    line-height: 1.7;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+  }
+
+  a { color: #58a6ff; text-decoration: none; }
+  a:hover { text-decoration: underline; }
+
+  .crumbs {
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 32px 24px 0;
+    width: 100%;
+    font-size: 0.78rem;
+    color: #6e7681;
+  }
+  .crumbs a { color: #6e7681; }
+  .crumbs a:hover { color: #c9d1d9; text-decoration: none; }
+
+  article {
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 40px 24px 64px;
+    width: 100%;
+    flex: 1;
+  }
+
+  article header { margin-bottom: 40px; }
+
+  h1 {
+    font-size: 1.8rem;
+    color: #f0f6fc;
+    font-weight: 600;
+    line-height: 1.3;
+    letter-spacing: -0.3px;
+    margin-bottom: 12px;
+  }
+
+  .meta {
+    font-size: 0.78rem;
+    color: #6e7681;
+  }
+
+  .meta .tool-tag {
+    color: #d29922;
+    border: 1px solid #9e6a03;
+    border-radius: 12px;
+    padding: 1px 8px;
+    margin-left: 8px;
+  }
+
+  p {
+    color: #c9d1d9;
+    font-size: 0.92rem;
+    margin-bottom: 16px;
+  }
+
+  p code, li code {
+    background: #161b22;
+    border: 1px solid #21262d;
+    border-radius: 4px;
+    padding: 1px 6px;
+    font-size: 0.85rem;
+    color: #f0f6fc;
+  }
+
+  em { color: #f0f6fc; }
+  strong { color: #f0f6fc; }
+
+  blockquote {
+    border-left: 3px solid #30363d;
+    padding: 8px 0 8px 22px;
+    margin: 28px 0;
+    color: #8b949e;
+    font-style: italic;
+    font-size: 0.95rem;
+    line-height: 1.65;
+  }
+
+  .end {
+    margin-top: 48px;
+    padding-top: 24px;
+    border-top: 1px solid #21262d;
+    color: #8b949e;
+    font-size: 0.86rem;
+  }
+
+  footer {
+    padding: 24px;
+    text-align: center;
+    color: #484f58;
+    font-size: 0.78rem;
+    border-top: 1px solid #21262d;
+  }
+
+  footer a { color: #6e7681; }
+
+  @media (max-width: 640px) {
+    article { padding: 24px 18px 48px; }
+    h1 { font-size: 1.5rem; }
+  }
+</style>
+</head>
+<body>
+
+<nav class="crumbs">
+  <a href="/">Paperworlds</a> · <a href="/blog/">Blog</a>
+</nav>
+
+<article>
+  <header>
+    <h1>Proven vs elegant</h1>
+    <div class="meta">
+      2026-07-10 · 3 min read
+      <span class="tool-tag">essay</span>
+    </div>
+  </header>
+
+  <p>The <a href="/blog/inside-an-electron.html">previous post</a> ended in physics. This one starts where it left off and turns the lens.</p>
+
+  <p>Two theories. Same field. Wildly different epistemic statuses.</p>
+
+  <p><strong>Quantum mechanics</strong> is bizarre and totally proven. Tunnelling, superposition, entanglement — every part of it offends common sense, and every part of it has survived experiment for a century. Transistors work because of it. Lasers work because of it. MRI machines work because of it. The accuracy of the predictions is measured in fractions of a hair. The atom behaves like a madman, but exactly as the math says.</p>
+
+  <p><strong>String theory</strong> is elegant and, so far, unproven. Ten dimensions, eleven, twenty-six, depending on which model. Compactified on Calabi-Yau manifolds at the Planck length. Internally consistent. Mathematically beautiful. To test it directly you would need a particle accelerator the size of the galaxy. Some physicists have started arguing that a theory which cannot, in principle, be falsified is not science — it is mathematical philosophy in scientific dress.</p>
+
+  <p>Now apply the lens.</p>
+
+  <p>The parts of AI that <em>work</em> right now — the parts you can ship, point at, predict, debug — look a lot like quantum mechanics. Weird, counter-intuitive, but observably real. In-context learning. Tool use. Retrieval. Supervised loops with a human in the seat. The behaviour offends a lot of priors people had about how thinking is supposed to look. It also runs, today, on machines that exist, producing outputs you can grade against reality. The strangeness is in the proven layer.</p>
+
+  <p>The parts of AI that get the loudest press look a lot more like string theory. Fully autonomous agents. Self-improving systems. Alignment-by-design. Recursive capability ramps. The diagrams are beautiful. The internal coherence is real. The arguments are tight. And the empirical footprint, the part that has actually run on a real machine and produced a real result under conditions a sceptic could repeat, is much thinner than the confidence around it suggests. The strongest claims would, if true, require an accelerator of supervision and capability we don't currently know how to build.</p>
+
+  <p>This isn't an argument that the elegant claims are wrong. String theory might be right too. The argument is about <em>where to spend reverence</em>.</p>
+
+  <p>It is very easy, in a field this young, to confuse mathematical beauty for empirical truth. To watch a diagram resolve into a clean recursive loop and feel that the loop has been demonstrated rather than drawn. The history of physics is partly a history of correcting that mistake — every era has had its elegant unfalsifiable, and every era has had to learn the discipline of preferring the ugly tested thing over the beautiful untested one.</p>
+
+  <p>The discipline is not glamorous. It says: build on what works empirically, even when it is unpretty. Ship the small reliable loop. Trust the part you can measure. Reserve reverence for theories that have survived contact with reality, and treat the theories that haven't with the same affectionate scepticism the physicists trained on string theory.</p>
+
+  <p>The Paperworlds tools are, in this sense, quantum-mechanical rather than string-theoretical. Each one is small, weird, observably useful. None of them assume an autonomy that hasn't been demonstrated. None of them stake their value on a future capability ramp. They are the transistor, not the multiverse. They work because the parts work, and the parts have been measured.</p>
+
+  <p>There is a temptation to want more. To want the elegant theory of everything that resolves the field. It is a real temptation and I feel it too. But the lesson the physicists keep relearning is the one I want to keep close: the universe rewards the patient measurer, and a beautiful idea is not the same as a true one.</p>
+
+  <blockquote>
+    Reserve reverence for theories that survive contact with reality.
+  </blockquote>
+
+  <div class="end">
+    <a href="/blog/inside-an-electron.html">← Inside an electron</a> · <a href="/blog/">More posts</a> · <a href="https://github.com/paperworlds">github.com/paperworlds</a>
+  </div>
+</article>
+
+<footer>
+  <a href="/">Paperworlds</a>
+</footer>
+
+</body>
+</html>
