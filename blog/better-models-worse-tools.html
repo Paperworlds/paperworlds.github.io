@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Better but worse · Paperworlds</title>
+<meta name="description" content="The better the model gets, the stronger its opinions about how tools should work. And its opinions were trained on one harness.">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'SF Mono', 'Fira Code', 'Cascadia Code', 'JetBrains Mono', monospace;
+    background: #0d1117;
+    color: #c9d1d9;
+    line-height: 1.7;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+  }
+
+  a { color: #58a6ff; text-decoration: none; }
+  a:hover { text-decoration: underline; }
+
+  .crumbs {
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 32px 24px 0;
+    width: 100%;
+    font-size: 0.78rem;
+    color: #6e7681;
+  }
+  .crumbs a { color: #6e7681; }
+  .crumbs a:hover { color: #c9d1d9; text-decoration: none; }
+
+  article {
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 40px 24px 64px;
+    width: 100%;
+    flex: 1;
+  }
+
+  article header { margin-bottom: 40px; }
+
+  h1 {
+    font-size: 1.8rem;
+    color: #f0f6fc;
+    font-weight: 600;
+    line-height: 1.3;
+    letter-spacing: -0.3px;
+    margin-bottom: 12px;
+    text-wrap: balance;
+  }
+
+  .meta {
+    font-size: 0.78rem;
+    color: #6e7681;
+  }
+
+  .meta .essay-tag {
+    color: #d29922;
+    border: 1px solid #9e6a03;
+    border-radius: 12px;
+    padding: 1px 8px;
+    margin-left: 8px;
+  }
+
+  h2 {
+    font-size: 1.05rem;
+    color: #f0f6fc;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    margin: 40px 0 16px;
+    padding-top: 24px;
+    border-top: 1px solid #21262d;
+    text-wrap: balance;
+  }
+
+  h2:first-of-type { border-top: none; padding-top: 0; }
+
+  p {
+    color: #c9d1d9;
+    font-size: 0.92rem;
+    margin-bottom: 16px;
+  }
+
+  article ul {
+    list-style: none;
+    padding: 0;
+    margin-bottom: 16px;
+  }
+
+  article ul li {
+    font-size: 0.88rem;
+    color: #8b949e;
+    padding: 5px 0;
+    border-bottom: 1px solid #161b22;
+  }
+
+  article ul li:last-child { border-bottom: none; }
+
+  article ul li a {
+    color: #58a6ff;
+  }
+
+  article ul li span {
+    display: inline-block;
+    min-width: 180px;
+    color: #6e7681;
+    font-size: 0.82rem;
+  }
+
+  p code, li code {
+    background: #161b22;
+    border: 1px solid #21262d;
+    border-radius: 4px;
+    padding: 1px 6px;
+    font-size: 0.85rem;
+    color: #f0f6fc;
+  }
+
+  .end {
+    margin-top: 48px;
+    padding-top: 24px;
+    border-top: 1px solid #21262d;
+    color: #8b949e;
+    font-size: 0.86rem;
+  }
+
+  footer {
+    padding: 24px;
+    text-align: center;
+    color: #484f58;
+    font-size: 0.78rem;
+    border-top: 1px solid #21262d;
+  }
+
+  footer a { color: #6e7681; }
+
+  @media (max-width: 640px) {
+    article { padding: 24px 18px 48px; }
+    h1 { font-size: 1.5rem; }
+  }
+</style>
+</head>
+<body>
+
+<nav class="crumbs">
+  <a href="/">Paperworlds</a> · <a href="/blog/">Blog</a>
+</nav>
+
+<article>
+  <header>
+    <h1>Better but worse</h1>
+    <div class="meta">
+      2026-07-20 · 6 min read
+      <span class="essay-tag">essay</span>
+    </div>
+  </header>
+
+  <p>Armin Ronacher noticed something uncomfortable. Newer Claude models, more capable on every benchmark he could point at, were worse at following his custom tool schemas. Not dramatically. Not enough to file a bug report. Just harder to steer into the shape he wanted. More insistent on the conventions of Claude Code's own harness, less amenable to anything else.</p>
+
+  <p>He titled the post a question, but it read like a diagnosis: the better the model gets, the stronger its opinions about how tools should work. And its opinions were trained on one harness.</p>
+
+  <p>The mechanism isn't hard to see. RL on usage patterns doesn't improve quality in the abstract: it shapes the model toward the distribution it trained on. If that distribution is heavily weighted toward Claude Code (which it is, because Claude Code has millions of users and generates a significant training signal), then stronger optimization means a stronger prior toward that one shape. More opinionated. Which means worse compliance with alternatives. The better the model gets at the thing it's optimizing for, the harder it is to use outside that frame.</p>
+
+  <p>That's not a flaw. That's the optimization working exactly as designed.</p>
+
+  <h2>The harness is the variable</h2>
+
+  <p>While Ronacher's post was still open in a tab, a benchmark result from Semgrep came through: GLM 5.2, with minimal prompting, beat Claude on IDOR vulnerability detection. Their summary was careful: "harness design matters most." The model that won the benchmark wasn't the one winning the headline model rankings. It was the one running in the harness that fit the problem.</p>
+
+  <p>The conclusion I keep coming back to from both data points is the same. We treat model capability as the primary variable: which model, which tier, which version to upgrade to. The harness we treat as plumbing. Neutral infrastructure that passes traffic. But model capability is less variable than the harness around it. The inner loop is where the inference happens. The outer loop is what shaped what the inner loop learned to do. We tune the inner loop constantly. The outer loop we mostly inherit.</p>
+
+  <p>No-code pipeline builders promise to solve this by abstracting the harness away. Drag-and-drop nodes for LLMs, retrievers, vector DBs: you connect, you don't write a schema. But the abstraction just relocates the problem. The canvas has to compress every underlying tool into a shape it can render. That's a harness too, with the same failure mode: when the tool you need doesn't fit the shape the canvas supports, you hit the same wall Ronacher hit, one layer up. More scaffolding on top of a weak prior doesn't fix the prior. It moves where the friction shows up.</p>
+
+  <h2>One vote, not two</h2>
+
+  <p>There's a related problem on the verification side that the same logic explains.</p>
+
+  <p>If you ask a model to check its own tool call, within the same context, you're not getting a second opinion. You're getting the same prior folded over once. An agent agreeing with itself is one vote, not two. Trustworthiness scales with the independence of whoever confirmed a finding. A browser test is physically independent. It can't be argued into agreeing. A second prompt to the same model through the same harness, trained on the same distribution, is not a second judge.</p>
+
+  <p>What taking independence seriously looks like in practice isn't "ask the model to review itself with a stricter prompt." Bun's recent Zig-to-Rust rewrite was executed via parallel Claude agent loops: an implementer and an adversarial reviewer running as structurally separate processes. Not differently prompted. Structurally separate. The reviewer couldn't share context with the writer because it wasn't in the same context window. That's a different architecture, not a different system message.</p>
+
+  <h2>The recursive case</h2>
+
+  <p>The sharpest edge: harness optimization actually works. That's precisely what makes the failure modes real.</p>
+
+  <p>A recent experiment: an autoresearch system was given access to its own harness code. After eight days of recursive self-improvement, it beat the hand-tuned version. The inner loop got better by the outer loop rewriting itself. Lilian Weng's escalation ladder (instruction prompts, structured context, workflow, harness code, optimizer code) turns out not to be theoretical. Systems climb it.</p>
+
+  <p>Which means the failure modes she names, reward hacking, weak evaluators, abstraction-boundary breaking, aren't hypothetical either. A self-editing harness needs external checks it can't grant itself. The permission controls have to come from outside the thing being optimized. Humans move up the stack, not out of the loop: elevated to where the harness can't self-authorize. The check doesn't go away. It moves up a level.</p>
+
+  <h2>What the paradox is pointing at</h2>
+
+  <p>Better models, worse tools is only a paradox if you assumed the model was the variable. If capability is what you optimize, and capability means fitting the harness you were trained on, then more capability means more harness. The inner loop gets stronger; what it gets stronger at is whatever the outer loop taught it.</p>
+
+  <p>Ronacher's observation is about MCP schemas, but the pattern runs wider. Every benchmark measures the inner loop in the conditions where it was tuned. Every no-code pipeline relocates the harness without redesigning it. Every same-model verification loop produces a confidence score that isn't quite confidence.</p>
+
+  <p>The paradox isn't unique to models. Habit and institutional incentives are their own outer loop. A senior engineer who's spent five years in one codebase gets more opinionated about the right way to structure things. That's called experience. It's the same mechanism: stronger prior toward the distribution trained on, worse compliance with alternatives. We notice it as a regression in AI because we have benchmarks. In people we call it expertise and wonder why the migration keeps stalling.</p>
+
+  <p>The lever is the outer loop. The interesting question isn't which model. It's what harness, and who checks the harness.</p>
+
+  <h2>References</h2>
+  <ul>
+    <li><span>Ronacher</span> <a href="https://lucumr.pocoo.org/2026/7/4/better-models-worse-tools/">Better models, worse tools</a></li>
+    <li><span>Semgrep</span> <a href="https://semgrep.dev/blog/2026/we-have-mythos-at-home-glm-52-beats-claude-in-our-cyber-benchmarks/">GLM 5.2 beats Claude in our cyber benchmarks</a></li>
+    <li><span>Klaassen</span> <a href="https://thinkroom.kieranklaassen.com/d/njrS5TJhis">Closing the verification loop</a></li>
+    <li><span>Bun</span> <a href="https://bun.com/blog/bun-in-rust">Bun in Rust</a></li>
+    <li><span>Weng</span> <a href="https://lilianweng.github.io/posts/2026-07-04-harness/">Harness engineering for self-improvement</a></li>
+    <li><span>Autoresearch</span> <a href="https://threadreaderapp.com/thread/2077079778793042425.html">The first experimental evidence of recursive self-improvement</a></li>
+  </ul>
+
+  <div class="end">
+    Pairs with: <a href="/blog/proven-vs-elegant.html">Proven vs elegant</a> · <a href="/blog/selfish-diff.html">Self(ish) diff</a>
+  </div>
+</article>
+
+<footer>
+  <a href="/">Paperworlds</a> · <a href="https://www.elastic.co/licensing/elastic-license">Elastic License 2.0</a> (tools)
+</footer>
+
+</body>
+</html>
