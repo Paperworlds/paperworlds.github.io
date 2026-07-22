@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Accountability debt · Paperworlds</title>
+<meta name="description" content="Velocity is real. Anthropic's own number: over 80% of their commits are AI-generated. What accumulates isn't technical debt. It's a gap in who understands what's in the codebase.">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'SF Mono', 'Fira Code', 'Cascadia Code', 'JetBrains Mono', monospace;
+    background: #0d1117;
+    color: #c9d1d9;
+    line-height: 1.7;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+  }
+
+  a { color: #58a6ff; text-decoration: none; }
+  a:hover { text-decoration: underline; }
+
+  .crumbs {
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 32px 24px 0;
+    width: 100%;
+    font-size: 0.78rem;
+    color: #6e7681;
+  }
+  .crumbs a { color: #6e7681; }
+  .crumbs a:hover { color: #c9d1d9; text-decoration: none; }
+
+  article {
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 40px 24px 64px;
+    width: 100%;
+    flex: 1;
+  }
+
+  article header { margin-bottom: 40px; }
+
+  h1 {
+    font-size: 1.8rem;
+    color: #f0f6fc;
+    font-weight: 600;
+    line-height: 1.3;
+    letter-spacing: -0.3px;
+    margin-bottom: 12px;
+    text-wrap: balance;
+  }
+
+  .meta {
+    font-size: 0.78rem;
+    color: #6e7681;
+  }
+
+  .meta .tag {
+    border-radius: 12px;
+    padding: 1px 8px;
+    margin-left: 8px;
+    color: #d29922;
+    border: 1px solid #9e6a03;
+  }
+
+  h2 {
+    font-size: 1.05rem;
+    color: #f0f6fc;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    margin: 40px 0 16px;
+    padding-top: 24px;
+    border-top: 1px solid #21262d;
+    text-wrap: balance;
+  }
+
+  h2:first-of-type { border-top: none; padding-top: 0; }
+
+  p {
+    color: #c9d1d9;
+    font-size: 0.92rem;
+    margin-bottom: 16px;
+  }
+
+  em { color: #f0f6fc; }
+  strong { color: #f0f6fc; }
+
+  article ul {
+    list-style: none;
+    padding: 0;
+    margin-bottom: 16px;
+  }
+
+  article ul li {
+    font-size: 0.88rem;
+    color: #8b949e;
+    padding: 5px 0;
+    border-bottom: 1px solid #161b22;
+  }
+
+  article ul li:last-child { border-bottom: none; }
+
+  article ul li a { color: #58a6ff; }
+
+  article ul li span {
+    display: inline-block;
+    min-width: 120px;
+    color: #6e7681;
+    font-size: 0.82rem;
+  }
+
+  blockquote {
+    border-left: 3px solid #30363d;
+    padding: 8px 0 8px 22px;
+    margin: 28px 0;
+    color: #8b949e;
+    font-style: italic;
+    font-size: 0.95rem;
+    line-height: 1.65;
+  }
+
+  .end {
+    margin-top: 48px;
+    padding-top: 24px;
+    border-top: 1px solid #21262d;
+    color: #8b949e;
+    font-size: 0.86rem;
+  }
+
+  footer {
+    padding: 24px;
+    text-align: center;
+    color: #484f58;
+    font-size: 0.78rem;
+    border-top: 1px solid #21262d;
+  }
+
+  footer a { color: #6e7681; }
+
+  @media (max-width: 640px) {
+    article { padding: 24px 18px 48px; }
+    h1 { font-size: 1.5rem; }
+  }
+</style>
+</head>
+<body>
+
+<nav class="crumbs">
+  <a href="/">Paperworlds</a> · <a href="/blog/">Blog</a>
+</nav>
+
+<article>
+  <header>
+    <h1>Accountability debt</h1>
+    <div class="meta">
+      2026-07-22 · 7 min read
+      <span class="tag">essay</span>
+    </div>
+  </header>
+
+  <p>Anthropic published the number: over 80% of their commits are now AI-generated. Not a projection. Not a goal for next year. The current rate, at the company that builds the model. The inner loop has won. Velocity is no longer the constraint.</p>
+
+  <p>What accumulates in the gap is not technical debt. Technical debt is visible in the code, fixable by a refactor, addressable in principle by anyone who reads the relevant file. What accumulates here is something different: a gap in who understands what's in the codebase, and who is responsible for it when something goes wrong. Call it accountability debt. Unlike technical debt, it's invisible while it builds. It shows up all at once, and suddenly.</p>
+
+  <h2>The tower keeps rising</h2>
+
+  <p><a href="https://lucumr.pocoo.org/2026/7/13/the-tower-keeps-rising/">Armin Ronacher</a> put the sharpest frame on this I've read. The original Tower of Babel story turns on language: the builders were stopped not by a failure of skill or materials, but by the loss of mutual comprehension. Ronacher's inversion is that agents remove the friction that used to force that comprehension. When someone new joined a codebase and changed something, the social cost of the change, reading the unfamiliar code, asking who owned a piece, having someone explain why an invariant existed, produced a side effect: shared understanding. "Your understanding became mine."</p>
+
+  <p>Multiple people directing agents at the same system removes that friction. Each change is locally coherent. Tests pass. Nobody is required to consult, because nobody has to write the code themselves. The tower keeps rising. Not because nobody can communicate: because nobody needs to. The danger isn't a visible collapse. It's invisible drift, a codebase going incoherent while it keeps functioning and growing, which is precisely why no one notices until it's expensive.</p>
+
+  <h2>The review gap</h2>
+
+  <p>The numbers on adoption don't resolve this. 42% of commits are AI-assisted across the industry, but 96% of developers say they don't fully trust AI-generated code, and 48% say they always verify before committing. The trust gap hasn't closed as adoption rose. Those two trends running in parallel are the accountability debt accruing: more shipping, same amount of doubt, fixed review bandwidth.</p>
+
+  <p><a href="https://medium.com/bits-and-behavior/know-thine-enemy-a-critical-engagement-with-ai-assisted-software-development-e41d9b058ab1">Amy J. Ko</a> spent three months using Claude Code on real open-source projects specifically to test the claims from the inside. Her finding: code was usable about 90% of the time, but only with meticulous upfront specs. The remaining 10% contained deeply buried defects, flawed performance or usability assumptions, the kind that don't surface in tests and take exhaustive review to catch. She called the experience a telephone game, not craftsmanship.</p>
+
+  <blockquote>
+    <em>The 10% problem isn't a rate you can batch away by shipping faster. It's the problem that matters most, hiding behind the 90% that ships fine.</em>
+  </blockquote>
+
+  <h2>Speed of light</h2>
+
+  <p>Human cognition has a speed limit. Not a soft one that training and tooling gradually improve. A hard one, the kind that doesn't move. The rate at which a person can genuinely absorb code, meaning understand it deeply enough to own it, explain it, catch the subtle wrong thing three months later, is roughly what it was a decade ago. We are not getting faster.</p>
+
+  <p>AI is. Not at a constant rate: accelerating. Each generation of models produces more, faster, with fewer prompts. The inner loop isn't just ahead of the outer loop. It's pulling away. If you imagine this as two objects moving through space, the human cognitive limit is the speed of light: a constant you can observe but cannot change. The AI is the object receding from you. The faster it goes, the longer the delay between what it produces and what you can receive and understand. That delay is not a temporary lag. It is a physical property of the system, and it only increases.</p>
+
+  <p>There is a game design problem from the early history of personal computers that maps exactly onto this. Games written for a specific CPU ran at that CPU's clock speed. When faster hardware arrived, the games sped up with it: characters moved too fast to control, physics broke, the experience became unplayable. The machines had gotten better; the game had gotten worse. The fix was not to make players faster. It was to decouple the game's logic from the hardware clock, impose a frame rate cap, pace the experience to the human on the other side of the screen. The hardware could run as fast as it wanted internally. The interface with the human ran at human speed.</p>
+
+  <p>That is the design problem now. The AI can generate at whatever rate the hardware allows. The interface with the human, the review, the understanding, the accountability, has to run at human speed. Not because humans are the bottleneck to be apologized for. Because human speed is the constant the rest of the system has to be designed around.</p>
+
+  <h2>Cognitive debt</h2>
+
+  <p><a href="https://addyo.substack.com/p/own-the-outer-loop">Addy Osmani</a> named the mechanism: cognitive debt. Not the bugs you merged. The understanding you stopped building. When the agent writes the code, you review a summary of what it did rather than building the model in your head of why it does it. You can accept or reject. You can read the diff. But the deep familiarity, the kind that lets you explain to a new hire why a particular boundary exists, or notice that a change three months later is subtly wrong, doesn't transfer in a review of output. It transfers in the process of writing.</p>
+
+  <p>At high enough velocity, the humans stop being able to audit the outer loop, not because they've been removed from it, but because the outer loop requires understanding they no longer have time to build. The agent ships more than a human can review at the depth the review needs to happen. That's not a resourcing problem. That's the accountability debt compounding.</p>
+
+  <h2>Billing is not accountability</h2>
+
+  <p>The billing models that have emerged, token usage, completion counts, seats times usage, measure the inner loop precisely. They tell you how much was generated. They don't tell you who understood it, who owns it, who will explain it when it fails. There's a temptation to treat cost visibility as a proxy for accountability. It isn't. You can know exactly what you spent and have no idea what you bought.</p>
+
+  <p><a href="https://antirez.com/news/169">antirez</a>, rebuilding a local inference engine, said the thing plainly: "you can't just say 'implement XYZ' and see it working." The DwarfStar project required deep design understanding at every step, not because he distrusts agents, but because the decisions that mattered were design decisions, and design decisions can't be delegated to something that doesn't hold the full model. He proposed DESIGN.md files per data structure so that contributors, human or agent, build the right mental model before touching anything. Control the ideas, not the code. Same move as Osmani's outer loop: human direction elevated to where it actually matters, rather than distributed across a thousand review clicks that add up to nothing.</p>
+
+  <h2>What the proven layer requires</h2>
+
+  <p>The <a href="/blog/proven-vs-elegant.html">previous post</a> in this sequence argued for trusting the proven layer: the small, weird, observably useful things over the beautiful unfalsifiable ones. Ship the small reliable loop. The Paperworlds tools were the example: each one small, each one testable, each one grounded in what can be measured.</p>
+
+  <p>Accountability debt is what that discipline is actually protecting against. The reason to build small and measurable isn't aesthetic. It's that small things can be owned. One person can hold the whole model of what a 400-line tool does. When it breaks, someone knows why. When it needs to change, someone can explain what the change means. That's not a feature of the size. It's a consequence of the discipline that keeps things small: preferring the ugly tested thing, building only what you understand, treating your own understanding as a constraint rather than an obstacle.</p>
+
+  <p>The inner loop can ship anything now. What the outer loop has to provide, the part that can't be automated, is the understanding that makes shipping mean something. Accountability isn't a feature you add at the end. It's the residue of having actually built the thing yourself, at a scale where "yourself" still means something.</p>
+
+  <blockquote>
+    The tower keeps rising. The question is whether anyone inside it knows what it's for.
+  </blockquote>
+
+  <h2>References</h2>
+  <ul>
+    <li><span>Ronacher</span> <a href="https://lucumr.pocoo.org/2026/7/13/the-tower-keeps-rising/">The tower keeps rising</a></li>
+    <li><span>Osmani</span> <a href="https://addyo.substack.com/p/own-the-outer-loop">Own the outer loop</a></li>
+    <li><span>Ko</span> <a href="https://medium.com/bits-and-behavior/know-thine-enemy-a-critical-engagement-with-ai-assisted-software-development-e41d9b058ab1">Know thine enemy: A critical engagement with AI-assisted software development</a></li>
+    <li><span>antirez</span> <a href="https://antirez.com/news/169">Control the ideas, not the code</a></li>
+    <li><span>Sonar</span> 2026 State of Code — 42% AI-assisted commits, 96% trust gap</li>
+  </ul>
+
+  <div class="end">
+    Closes the triptych. Pairs with: <a href="/blog/proven-vs-elegant.html">Proven vs elegant</a> · <a href="/blog/inside-an-electron.html">Inside an electron</a>
+  </div>
+</article>
+
+<footer>
+  <a href="/">Paperworlds</a>
+</footer>
+
+</body>
+</html>
