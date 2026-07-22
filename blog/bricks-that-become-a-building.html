@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Bricks that become a building · Paperworlds</title>
+<meta name="description" content="I didn't plan a suite. I planned a fix. Three separate tools, one shared seam, and why that composes better than a platform.">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'SF Mono', 'Fira Code', 'Cascadia Code', 'JetBrains Mono', monospace;
+    background: #0d1117;
+    color: #c9d1d9;
+    line-height: 1.7;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+  }
+
+  a { color: #58a6ff; text-decoration: none; }
+  a:hover { text-decoration: underline; }
+
+  .crumbs {
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 32px 24px 0;
+    width: 100%;
+    font-size: 0.78rem;
+    color: #6e7681;
+  }
+  .crumbs a { color: #6e7681; }
+  .crumbs a:hover { color: #c9d1d9; text-decoration: none; }
+
+  article {
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 40px 24px 64px;
+    width: 100%;
+    flex: 1;
+  }
+
+  article header { margin-bottom: 40px; }
+
+  h1 {
+    font-size: 1.8rem;
+    color: #f0f6fc;
+    font-weight: 600;
+    line-height: 1.3;
+    letter-spacing: -0.3px;
+    margin-bottom: 12px;
+    text-wrap: balance;
+  }
+
+  .meta {
+    font-size: 0.78rem;
+    color: #6e7681;
+  }
+
+  .meta .tag {
+    border-radius: 12px;
+    padding: 1px 8px;
+    margin-left: 8px;
+    color: #d29922;
+    border: 1px solid #9e6a03;
+  }
+
+  h2 {
+    font-size: 1.05rem;
+    color: #f0f6fc;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    margin: 40px 0 16px;
+    padding-top: 24px;
+    border-top: 1px solid #21262d;
+    text-wrap: balance;
+  }
+
+  h2:first-of-type { border-top: none; padding-top: 0; }
+
+  p {
+    color: #c9d1d9;
+    font-size: 0.92rem;
+    margin-bottom: 16px;
+  }
+
+  p code, li code {
+    background: #161b22;
+    border: 1px solid #21262d;
+    border-radius: 4px;
+    padding: 1px 6px;
+    font-size: 0.85rem;
+    color: #f0f6fc;
+  }
+
+  pre {
+    background: #161b22;
+    border: 1px solid #21262d;
+    border-radius: 6px;
+    padding: 16px;
+    overflow-x: auto;
+    margin-bottom: 16px;
+  }
+
+  pre code {
+    background: none;
+    border: none;
+    padding: 0;
+    font-size: 0.85rem;
+    color: #e6edf3;
+  }
+
+  .comment { color: #6e7681; }
+
+  .layer-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 24px;
+    font-size: 0.86rem;
+    overflow-x: auto;
+    display: block;
+  }
+
+  .layer-table th {
+    text-align: left;
+    color: #6e7681;
+    font-weight: 400;
+    padding: 8px 12px 8px 0;
+    border-bottom: 1px solid #21262d;
+    white-space: nowrap;
+  }
+
+  .layer-table td {
+    padding: 10px 12px 10px 0;
+    border-bottom: 1px solid #161b22;
+    color: #c9d1d9;
+    vertical-align: top;
+  }
+
+  .layer-table td:first-child {
+    color: #58a6ff;
+    white-space: nowrap;
+    padding-right: 24px;
+  }
+
+  .end {
+    margin-top: 48px;
+    padding-top: 24px;
+    border-top: 1px solid #21262d;
+    color: #8b949e;
+    font-size: 0.86rem;
+  }
+
+  footer {
+    padding: 24px;
+    text-align: center;
+    color: #484f58;
+    font-size: 0.78rem;
+    border-top: 1px solid #21262d;
+  }
+
+  footer a { color: #6e7681; }
+
+  @media (max-width: 640px) {
+    article { padding: 24px 18px 48px; }
+    h1 { font-size: 1.5rem; }
+  }
+</style>
+</head>
+<body>
+
+<nav class="crumbs">
+  <a href="/">Paperworlds</a> · <a href="/blog/">Blog</a>
+</nav>
+
+<article>
+  <header>
+    <h1>Bricks that become a building</h1>
+    <div class="meta">
+      2026-07-22 · 7 min read
+      <span class="tag">essay</span>
+    </div>
+  </header>
+
+  <p>I didn't plan a suite. I planned a fix.</p>
+
+  <p><a href="/blog/textaccounts.html">textaccounts</a> came first. I had a work account and a personal account for Claude Code, and they shared <code>~/.claude/</code>: sessions, memory, MCP registrations, auth tokens, settings. The fix was straightforward once I noticed that Claude Code reads <code>CLAUDE_CONFIG_DIR</code>. Register separate directories as named profiles, switch between them by setting the variable. A few hundred lines of Python, a fish function to mutate the parent shell's environment, done.</p>
+
+  <p><a href="/blog/textserve.html">textserve</a> came next, for a different problem. I had twelve shell scripts, one per MCP server, each hand-rolling credential injection and registration with Claude. A credential rotated; I updated three scripts; the fourth failed silently two weeks later. The fix: a registry, a fleet CLI, idempotent start and stop commands, health probes before registration. Profiles for grouping servers by context.</p>
+
+  <p><a href="/blog/textsessions.html">textsessions</a> came after that. Sessions accumulated across repos and accounts: hundreds of JSONL files, no cross-repo view, no triage. The fix: index everything, build a TUI, treat the pile as an inbox.</p>
+
+  <p>Three tools. Three separate problems. Three separate months. I didn't set out to build a suite.</p>
+
+  <h2>The seam</h2>
+
+  <p>What I noticed, somewhere during the third tool, is that they all respect the same constraint. textserve reads <code>$CLAUDE_CONFIG_DIR</code> to know which account's Claude registration it's managing. textsessions reads it to know which profile a session belongs to. textaccounts sets it. Switch accounts with textaccounts, and textserve and textsessions both follow automatically: they're all looking at the same variable.</p>
+
+  <p>The seam is <code>CLAUDE_CONFIG_DIR</code>. Every tool that respects it composes for free.</p>
+
+  <p>This wasn't planned. It emerged from each tool being built correctly for its own scope. A fleet manager that doesn't know which account it's managing is half a tool. A session browser that doesn't distinguish sessions by profile is confusing. They each needed the seam. The fact that they share it means they stack.</p>
+
+  <h2>Three layers</h2>
+
+  <p>The three tools cover independent layers. You can install any one without the others.</p>
+
+  <table class="layer-table">
+    <thead>
+      <tr>
+        <th>Tool</th>
+        <th>Layer</th>
+        <th>What it manages</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>textaccounts</td>
+        <td>auth</td>
+        <td>which Claude identity is active; sets <code>CLAUDE_CONFIG_DIR</code></td>
+      </tr>
+      <tr>
+        <td>textserve</td>
+        <td>tools</td>
+        <td>which MCP servers are running and registered for that identity</td>
+      </tr>
+      <tr>
+        <td>textsessions</td>
+        <td>sessions</td>
+        <td>cross-repo session triage and navigation, scoped to the active profile</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h2>Why three CLIs</h2>
+
+  <p>The alternative is a platform: one big tool with subcommands for accounts, MCP, and sessions, maybe a dashboard. Coherent on the day it ships, incoherent six months later when one piece needs to evolve faster than the others, or someone only needs one layer, or a fourth tool comes along that doesn't fit the taxonomy.</p>
+
+  <p>Each brick is complete on its own. You can use textaccounts with no textserve. You can use textserve with no MCP servers configured yet. The integration is opt-in and needs no glue code, because there's no glue: there's a seam, and they all fit it. textaccounts doesn't know textserve exists. The coordination happens at the OS level, not in the code.</p>
+
+  <h2>No roadmap</h2>
+
+  <p>The bricks approach is possible here because it's a personal project. Pitch "three separate CLIs" in a company design review and you lose the room on slide two. There's no sprint estimate for three separate tools when one dashboard would close the ticket. No stakeholder wants to approve a seam they can't see on a diagram. The usual forces compress everything toward a single surface that can be demoed, versioned, and handed to a team.</p>
+
+  <p>Personal projects don't have that gravity. You can ship a fix instead of a product. You can add a second tool that doesn't know the first exists, because there's no roadmap that requires them to be coherent from the start. The experimental direction is available by default: not because you planned for it, but because no one else needed to agree.</p>
+
+  <p>That's the part of this kind of work I like most. Not the freedom to build badly, but the freedom to find out what shape a thing actually wants to be, before locking it into the shape that's easiest to explain in a meeting.</p>
+
+  <h2>Install</h2>
+
+  <p>textaccounts and textsessions are Python tools, installable from GitHub:</p>
+
+<pre><code>uv tool install git+https://github.com/paperworlds/textaccounts
+uv tool install git+https://github.com/paperworlds/textsessions</code></pre>
+
+  <p>textserve is a Go binary. Clone and build:</p>
+
+<pre><code>git clone https://github.com/paperworlds/textserve
+cd textserve && bash install.sh</code></pre>
+
+  <p><code>install.sh</code> builds the binary and symlinks it to <code>~/.local/bin/textserve</code>.</p>
+
+  <h2>The commands</h2>
+
+  <p><strong>textaccounts</strong> registers config directories as named profiles and switches between them. Register your existing Claude directories:</p>
+
+<pre><code>textaccounts adopt work ~/.claude-work
+textaccounts adopt personal ~/.claude-personal</code></pre>
+
+  <p>Switch profiles. On fish, source the companion function once in <code>config.fish</code> so the switch can mutate the parent shell's environment:</p>
+
+<pre><code>textaccounts install fish | source  <span class="comment"># add to config.fish</span>
+textaccounts switch work</code></pre>
+
+  <p>Verify isolation is working:</p>
+
+<pre><code>textaccounts status
+<span class="comment"># active: work (~/.claude-work)
+# claude: v2.x — per-profile keychain isolation: yes</span></code></pre>
+
+  <p><strong>textserve</strong> manages the MCP servers Claude Code sees. Declare servers and profile groupings in <code>~/.textserve/registry.yaml</code>, then converge to a profile in one command:</p>
+
+<pre><code><span class="comment"># ~/.textserve/registry.yaml</span>
+profiles:
+  work:
+    servers: [github, linear, snowflake]
+  personal:
+    servers: [github, obsidian]
+
+servers:
+  github:
+    image: ghcr.io/paperworlds/mcp-github:latest
+    transport: stdio
+    credentials:
+      GITHUB_TOKEN: op://Personal/GitHub/token
+  <span class="comment"># ...</span></code></pre>
+
+<pre><code>textserve bundle use work
+<span class="comment"># starting: linear, snowflake (github already running)
+# registered: 3 servers</span></code></pre>
+
+  <p><code>bundle use</code> brings up servers in the profile that aren't running and brings down servers that aren't in the profile. One command to reshape the full tool surface. (<code>textserve profile use</code> is a kept alias if that's already in your muscle memory.)</p>
+
+  <p><strong>textsessions</strong> indexes the JSONL files Claude writes and gives you a cross-repo TUI for triage. First run:</p>
+
+<pre><code>textsessions init     <span class="comment"># discover repos under ~/.claude*/projects/</span>
+textsessions reindex  <span class="comment"># walk every .jsonl and build the index</span>
+textsessions view     <span class="comment"># open the TUI</span></code></pre>
+
+  <h2>The two-command switch</h2>
+
+  <p>Align your textserve bundle names with your textaccounts profile names. Then changing context is two commands:</p>
+
+<pre><code>textaccounts switch work
+textserve bundle use work</code></pre>
+
+  <p>The first sets <code>CLAUDE_CONFIG_DIR</code> for the shell: auth, memory, and settings all shift. The second converges the MCP surface to the servers for that profile. Open <code>textsessions view</code> and the session list reflects the active profile automatically.</p>
+
+  <p>If you want a single command, a fish function handles it:</p>
+
+<pre><code><span class="comment"># in config.fish</span>
+function ctx
+  textaccounts switch $argv[1]
+  textserve bundle use $argv[1]
+end</code></pre>
+
+<pre><code>ctx work</code></pre>
+
+  <h2>The building</h2>
+
+  <p>I use the three together now. A new session in a fresh context starts like this:</p>
+
+<pre><code>textaccounts switch work
+textserve bundle use work
+textsessions view</code></pre>
+
+  <p>Auth, tools, sessions. Each command handles one layer, knows nothing about the other two, and leaves the environment in exactly the right state for the next command to follow from.</p>
+
+  <p>Something I noticed from using these in agent loops: the interface that's fast for a human at 9am is the same interface an AI tool calls well. <code>textaccounts switch work</code> is one operation, one input, one observable effect. No flags to negotiate, no schema to infer. When you're three levels deep in a Claude session and need to change context, that matters: a small, sharp command is unambiguous in a way that a config file or a multi-field API call isn't. The tool that's intuitive to type is also the tool an agent can reason about reliably. That convergence surprised me. I built these for myself, not for agents. They ended up being good for both for the same reason: they do one thing.</p>
+
+  <p>The thing I didn't expect is that the composition feels more stable than a platform would. Each brick was made to do one thing correctly. The architecture of the whole is just: same seam, right shape.</p>
+
+  <div class="end">
+    Part of Paperworlds. Pairs with: <a href="/blog/textserve.html">The fleet that plays war</a> · <a href="/blog/textaccounts.html">Two Claude accounts, one config directory</a> · <a href="/blog/textsessions.html">Sessions pile up</a>
+  </div>
+</article>
+
+<footer>
+  <a href="/">Paperworlds</a> · <a href="https://www.elastic.co/licensing/elastic-license">Elastic License 2.0</a> (tools)
+</footer>
+
+</body>
+</html>
