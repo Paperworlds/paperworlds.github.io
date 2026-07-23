@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Binary interface · Paperworlds</title>
+<meta name="description" content="Agents need handles. So do humans under pressure. The interface that doesn't require checking the docs is the interface an agent calls correctly. Same constraint. Same shape.">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'SF Mono', 'Fira Code', 'Cascadia Code', 'JetBrains Mono', monospace;
+    background: #0d1117;
+    color: #c9d1d9;
+    line-height: 1.7;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+  }
+
+  a { color: #58a6ff; text-decoration: none; }
+  a:hover { text-decoration: underline; }
+
+  .crumbs {
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 32px 24px 0;
+    width: 100%;
+    font-size: 0.78rem;
+    color: #6e7681;
+  }
+  .crumbs a { color: #6e7681; }
+  .crumbs a:hover { color: #c9d1d9; text-decoration: none; }
+
+  article {
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 40px 24px 64px;
+    width: 100%;
+    flex: 1;
+  }
+
+  article header { margin-bottom: 40px; }
+
+  h1 {
+    font-size: 1.8rem;
+    color: #f0f6fc;
+    font-weight: 600;
+    line-height: 1.3;
+    letter-spacing: -0.3px;
+    margin-bottom: 12px;
+    text-wrap: balance;
+  }
+
+  .meta {
+    font-size: 0.78rem;
+    color: #6e7681;
+  }
+
+  .meta .tag {
+    border-radius: 12px;
+    padding: 1px 8px;
+    margin-left: 8px;
+    color: #d29922;
+    border: 1px solid #9e6a03;
+  }
+
+  .meta .tag.tool {
+    color: #3fb950;
+    border-color: #238636;
+  }
+
+  h2 {
+    font-size: 1.05rem;
+    color: #f0f6fc;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    margin: 40px 0 16px;
+    padding-top: 24px;
+    border-top: 1px solid #21262d;
+    text-wrap: balance;
+  }
+
+  h2:first-of-type { border-top: none; padding-top: 0; }
+
+  p {
+    color: #c9d1d9;
+    font-size: 0.92rem;
+    margin-bottom: 16px;
+  }
+
+  em { color: #f0f6fc; }
+
+  p code, li code {
+    background: #161b22;
+    border: 1px solid #21262d;
+    border-radius: 4px;
+    padding: 1px 6px;
+    font-size: 0.85rem;
+    color: #f0f6fc;
+  }
+
+  pre {
+    background: #161b22;
+    border: 1px solid #21262d;
+    border-radius: 6px;
+    padding: 16px;
+    overflow-x: auto;
+    margin-bottom: 16px;
+  }
+
+  pre code {
+    background: none;
+    border: none;
+    padding: 0;
+    font-size: 0.85rem;
+    color: #e6edf3;
+  }
+
+  blockquote {
+    border-left: 3px solid #30363d;
+    padding: 8px 0 8px 22px;
+    margin: 28px 0;
+    color: #8b949e;
+    font-style: italic;
+    font-size: 0.95rem;
+    line-height: 1.65;
+  }
+
+  article ul {
+    list-style: none;
+    padding: 0;
+    margin-bottom: 16px;
+  }
+
+  article ul li {
+    font-size: 0.88rem;
+    color: #8b949e;
+    padding: 5px 0;
+    border-bottom: 1px solid #161b22;
+  }
+
+  article ul li:last-child { border-bottom: none; }
+  article ul li a { color: #58a6ff; }
+
+  article ul li span {
+    display: inline-block;
+    min-width: 120px;
+    color: #6e7681;
+    font-size: 0.82rem;
+  }
+
+  .end {
+    margin-top: 48px;
+    padding-top: 24px;
+    border-top: 1px solid #21262d;
+    color: #8b949e;
+    font-size: 0.86rem;
+  }
+
+  footer {
+    padding: 24px;
+    text-align: center;
+    color: #484f58;
+    font-size: 0.78rem;
+    border-top: 1px solid #21262d;
+  }
+
+  footer a { color: #6e7681; }
+
+  @media (max-width: 640px) {
+    article { padding: 24px 18px 48px; }
+    h1 { font-size: 1.5rem; }
+  }
+</style>
+</head>
+<body>
+
+<nav class="crumbs">
+  <a href="/">Paperworlds</a> · <a href="/blog/">Blog</a>
+</nav>
+
+<article>
+  <header>
+    <h1>Binary interface</h1>
+    <div class="meta">
+      2026-07-23 · 5 min read
+      <span class="tag">essay</span>
+      <span class="tag tool">textserve</span>
+    </div>
+  </header>
+
+  <p>An agent needs something to grip. A command, an endpoint, an operation with a defined surface and a predictable output. The handle has to be narrow enough that there aren't many ways to hold it wrong. And when you look at what that requires, it turns out to be the same thing a human needs at 9am when they're switching context and don't want to think: one command, one input, one observable effect.</p>
+
+  <p>This convergence is not obvious. The instinct is to design differently for the two audiences. Humans get ergonomic CLIs with friendly flags. Agents get JSON payloads and programmatic APIs, because agents are code, and code speaks JSON. But that instinct is wrong, and Microsoft measured it.</p>
+
+  <h2>The numbers</h2>
+
+  <p><a href="https://developer.microsoft.com/blog/dont-rewrite-your-cli-for-agents">Their test</a> was straightforward: the same task, the same five models, two interface shapes. One was a conventional flat-args CLI. One was a JSON-payload API. On the flat CLI, every model hit perfect correctness, including the weakest one tested (Haiku 4.5). On the JSON interface, only the three strongest models matched that. Haiku 4.5 got two out of five right.</p>
+
+  <p>The cost difference was larger than the correctness difference. JSON ran 4 to 11 times more expensive per task, almost entirely from retries: 7 to 14 times more output tokens. Add a shell-escaping tax on top, 9 times the cost premium on PowerShell, 1.5 times on Bash, same model and task. The JSON interface wasn't just harder to call correctly. It was dramatically more expensive to fail at.</p>
+
+  <blockquote>
+    Narrowing the valid input space compensates for gaps in model capability.
+  </blockquote>
+
+  <p>That's their summary. It's also a precise description of what a well-designed human interface does. You narrow the input space so the user doesn't have to hold the full schema in their head. The model and the human are hitting the same constraint from different directions: the model has capability gaps under pressure, the human has attention gaps under pressure. A narrow interface compensates for both.</p>
+
+  <h2>Same constraint, same shape</h2>
+
+  <p>The Paperworlds tools were not designed with agents in mind. <code>textaccounts switch work</code> was built for a human who switches contexts several times a day and can't afford to remember the exact flag names. One positional argument. One observable effect: <code>CLAUDE_CONFIG_DIR</code> set, shell environment updated, done. <code>textserve bundle use work</code> is the same shape: one operation, one surface, one thing that changes. You can call either from a script, from a Makefile, from an agent loop, without touching a schema or constructing a payload. That's not an accident of design. It's the consequence of designing for a human who doesn't want to think.</p>
+
+  <p>JSON APIs feel more agent-native because they're programmatic. Structured. Parseable. But structured and narrow are different things. A JSON payload can be wide: optional fields, nested objects, multiple valid orderings, enum values that require checking the docs. Each degree of freedom is another way the agent can be wrong and another retry it has to make. The flat CLI compresses all of that. The binary has one calling convention. You can't pass the arguments in the wrong order. You can't accidentally omit a required field from a nested object. The surface is the constraint.</p>
+
+  <h2>Building for both</h2>
+
+  <p>The design discipline is the same whether you're optimizing for a human or an agent: reduce the number of ways to be wrong. Single operation. Explicit positional arguments over optional flags where possible. One success state, one failure mode, one output format. The agent benefits from this because its error budget is small and retries are expensive. The human benefits from this because their attention is finite and documentation is a tax.</p>
+
+  <p>What this rules out is the "programmable surface" instinct: expose everything, let the caller compose what they need. That instinct makes sense for a library used by developers who will read the source and build against it deliberately. It doesn't make sense for a CLI that needs to be called correctly by something that isn't reading the source. The handle has to fit the hand. For an agent, the hand is the model's prior, shaped by training on a distribution of valid commands. For a human, the hand is memory under interruption. Both get the same handle: short, unambiguous, impossible to hold upside down.</p>
+
+  <h2>Protobuf in disguise</h2>
+
+  <p>The parallel to data serialization is exact. JSON became the lingua franca of APIs because it's human-readable: you can inspect a payload in your terminal, fix a field without regenerating a schema, reason about a response without a decoder. Protobuf is binary and opaque, but it wins on reliability: every field has a declared type, every message has an enforced shape, and there's no way to send a payload that violates the contract. Service-to-service communication migrated toward protobuf not because machines prefer binary, but because constraint is reliable. The wider the valid input space, the more ways to be wrong.</p>
+
+  <p>The CLI does the same thing at the interface layer. It looks like something a person typed. It reads as human-native. But the argument parser is the schema: positional arguments enforce ordering, required flags surface immediately as errors, types are validated before the first line of business logic runs. You can't pass a string where an integer is expected. You can't omit a required argument silently. The surface is enforced by the tool itself, not by a contract the caller has to read and remember. The CLI is the protobuf of interfaces: readable like JSON, constrained like a binary format.</p>
+
+  <p>This reframes the surprise in the Microsoft numbers. JSON APIs feel more agent-native because they're programmatic. But programmatic and constrained are different things. JSON is flexible by design, and that flexibility is precisely the failure surface: optional fields, nested structures, multiple valid orderings, enum values that require checking the docs. Each degree of freedom is another way the agent can be wrong and another retry it has to buy. The flat CLI compresses all of that. The shape is the constraint. And the constraint is what makes it work for both callers: the agent that can't afford ambiguity, and the human who won't read the schema at 9am.</p>
+
+  <h2>The inversion</h2>
+
+  <p>There is a version of this argument that sounds like it's about making things simple for less capable systems. Dumb down the interface so the weaker model can handle it. That reading inverts the point. The flat CLI isn't simpler. It's more constrained. Constraint is a design choice, not a concession. The narrow surface isn't there because the agent can't handle complexity: it's there because complexity in a calling interface adds cost that accrues on every call, for every caller, forever. Narrowing isn't a workaround. It's the correct shape for anything that needs to be called reliably at scale.</p>
+
+  <p>The models that failed the JSON test weren't failing because they were incapable. They were failing because the interface gave them room to fail. Remove the room and the failure rate drops to zero. That's not a capability story. It's a surface area story.</p>
+
+  <p>Build the handle. Make it narrow. The agent and the human will grip it the same way, for the same reason: there's only one way to hold it.</p>
+
+  <h2>References</h2>
+  <ul>
+    <li><span>Microsoft</span> <a href="https://developer.microsoft.com/blog/dont-rewrite-your-cli-for-agents">Agents work better with conventional CLIs</a></li>
+  </ul>
+
+  <div class="end">
+    Pairs with: <a href="/blog/bricks-that-become-a-building.html">Bricks that become a building</a> · <a href="/blog/accountability-debt.html">Accountability debt</a>
+  </div>
+</article>
+
+<footer>
+  <a href="/">Paperworlds</a>
+</footer>
+
+</body>
+</html>
