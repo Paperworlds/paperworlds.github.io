@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Postliterate code · Paperworlds</title>
+<meta name="description" content="America isn't illiterate. It's postliterate — still able to decode words, but losing the higher-order capacity for comprehension and synthesis. The same arc is running through code.">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'SF Mono', 'Fira Code', 'Cascadia Code', 'JetBrains Mono', monospace;
+    background: #0d1117;
+    color: #c9d1d9;
+    line-height: 1.7;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+  }
+
+  a { color: #58a6ff; text-decoration: none; }
+  a:hover { text-decoration: underline; }
+
+  .crumbs {
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 32px 24px 0;
+    width: 100%;
+    font-size: 0.78rem;
+    color: #6e7681;
+  }
+  .crumbs a { color: #6e7681; }
+  .crumbs a:hover { color: #c9d1d9; text-decoration: none; }
+
+  article {
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 40px 24px 64px;
+    width: 100%;
+    flex: 1;
+  }
+
+  article header { margin-bottom: 40px; }
+
+  h1 {
+    font-size: 1.8rem;
+    color: #f0f6fc;
+    font-weight: 600;
+    line-height: 1.3;
+    letter-spacing: -0.3px;
+    margin-bottom: 12px;
+    text-wrap: balance;
+  }
+
+  .meta {
+    font-size: 0.78rem;
+    color: #6e7681;
+  }
+
+  .meta .tag {
+    border-radius: 12px;
+    padding: 1px 8px;
+    margin-left: 8px;
+    color: #d2a8ff;
+    border: 1px solid #8957e5;
+  }
+
+  h2 {
+    font-size: 1.05rem;
+    color: #f0f6fc;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    margin: 40px 0 16px;
+    padding-top: 24px;
+    border-top: 1px solid #21262d;
+    text-wrap: balance;
+  }
+
+  h2:first-of-type { border-top: none; padding-top: 0; }
+
+  p {
+    color: #c9d1d9;
+    font-size: 0.92rem;
+    margin-bottom: 16px;
+  }
+
+  em { color: #f0f6fc; }
+
+  blockquote {
+    border-left: 3px solid #30363d;
+    padding: 8px 0 8px 22px;
+    margin: 28px 0;
+    color: #8b949e;
+    font-style: italic;
+    font-size: 0.95rem;
+    line-height: 1.65;
+  }
+
+  .end {
+    margin-top: 48px;
+    padding-top: 24px;
+    border-top: 1px solid #21262d;
+    color: #8b949e;
+    font-size: 0.86rem;
+  }
+
+  footer {
+    padding: 24px;
+    text-align: center;
+    color: #484f58;
+    font-size: 0.78rem;
+    border-top: 1px solid #21262d;
+  }
+
+  footer a { color: #6e7681; }
+
+  @media (max-width: 640px) {
+    article { padding: 24px 18px 48px; }
+    h1 { font-size: 1.5rem; }
+  }
+</style>
+</head>
+<body>
+
+<nav class="crumbs">
+  <a href="/">Paperworlds</a> · <a href="/blog/">Blog</a>
+</nav>
+
+<article>
+  <header>
+    <h1>Postliterate code</h1>
+    <div class="meta">
+      2026-07-24 · 5 min read
+      <span class="tag">reflections</span>
+    </div>
+  </header>
+
+  <p>Reading books is a workout for the attention span. The more you read, the easier it is to read, and the more you're rewarded with new understanding. Eventually the process is more pleasurable than it is challenging. But the converse is true as well: the less you read, the more difficult it is to read, and the rockier the path to acquiring knowledge.</p>
+
+  <p>This is the observation at the center of a recent piece on the reading decline visible across a generation. The argument isn't that people have become illiterate. Decoding words, following a sentence, extracting a fact: those capacities are largely intact. What's eroding is something higher-order. Comprehension. Synthesis. The ability to hold a long argument in working memory and feel where it's going before it arrives. The ability to finish a book.</p>
+
+  <blockquote>
+    Rather, they are losing the higher-order abilities of comprehension and synthesis. America, in other words, isn't illiterate. It's postliterate.
+  </blockquote>
+
+  <p>Postliterate is a precise word. It names a state that comes <em>after</em> literacy, not before it. The capacity was built. The environment stopped requiring it. The brain, optimizing as it always does, let the unused muscle drift. Social media didn't make people stupid. It made sustained reading feel unnecessary, and unnecessary things atrophy.</p>
+
+  <h2>The same arc</h2>
+
+  <p>The reading decline took roughly one generation: the widespread arrival of smartphones and social media in the early 2010s, the measurable drop in reading stamina by the late 2010s, the broad acknowledgment of something lost by the 2020s. The mechanism was not sudden. It was environmental. The new medium optimized for attention in short bursts. The old capacity, which required sustained attention, was no longer being exercised. The signal that something was wrong came quietly: the book left half-finished, the long article skimmed, the sensation of not being able to concentrate that you used to take for granted.</p>
+
+  <p>The arc running through code right now looks the same. Not the ability to read a function or follow a diff. That remains. What's at risk is the higher-order layer: the capacity to hold a system model, to feel the shape of an architecture before you've mapped every file, to know intuitively that a change three files away is going to break something here. That capacity is built through the sustained practice of writing code by hand, making mistakes that cost you something, and developing the model in your head because there is no shortcut. AI assistance doesn't eliminate that practice. It makes it feel unnecessary.</p>
+
+  <h2>The sloppiness</h2>
+
+  <p>I felt it returning to code fully by hand after a period of heavy AI assistance. The right word for what I felt was not inability. It was sloppiness: a resistance to the effort, a preference for the frictionless path, an unwillingness to face the discomfort of rebuilding the model myself when something could do it for me. It's the same sensation as picking up a pen after years of using only a keyboard. The hand still knows how to form letters. The tolerance for the slowness is gone.</p>
+
+  <p><em>You just don't want to face the effort. You'd prefer being happy without it and go on.</em></p>
+
+  <p>Here's what that looks like in practice. I recently let an agent refactor a module that touched caching, retries, and idempotency. The diff was clean. Tests passed. But a system-level invariant, "at most one external side effect per request," was gone. Nothing in the local code looked wrong. No test caught it. You only see it if you're holding the whole flow in your head — the entry point, the retry logic, the downstream effect. That's exactly the capacity that had drifted. The agent produced code that was locally correct and globally broken, and I nearly shipped it because I'd stopped holding the model myself.</p>
+
+  <p>That preference isn't weakness. It's the brain doing exactly what brains do: optimizing for the environment you've been living in. If the environment rewards speed and punishes sustained engagement, sustained engagement is what drifts. The sloppiness is not the problem. It's the signal. The problem is the environment that made it rational.</p>
+
+  <h2>What the workout builds</h2>
+
+  <p>The reason this matters is that what reading builds, the capacity it maintains, is not just reading speed. It's the infrastructure for synthesis: the ability to hold multiple things in relation, to feel when an argument is incomplete, to notice the thing that doesn't fit. Those capacities transfer. A person who reads widely and deeply thinks differently in meetings, in code reviews, in conversations about architecture. Not because they've acquired information, but because the sustained practice has shaped how they process.</p>
+
+  <p>Writing code by hand builds the same infrastructure, and what it builds is exactly what <a href="/blog/accountability-debt.html">accountability debt</a> names as the thing now missing at scale. The system model. The intuition about invariants. The felt sense of what a change means for the whole. These aren't acquired by reviewing AI output. They're acquired by the effortful process of building the thing yourself, making the mistakes that are expensive enough to learn from, and developing the model because there is no other way to proceed.</p>
+
+  <p>AI assistance doesn't remove that possibility. It removes the pressure. And removed pressure, over time, removes the practice. And removed practice, over time, removes the capacity. Not suddenly. Quietly. The way reading stamina went: not with a loud collapse, but with a book left on the nightstand, half-finished, for the third month in a row.</p>
+
+  <h2>Postliterate, not illiterate</h2>
+
+  <p>None of this is an argument against AI assistance. The speed is real. The prototyping leverage is real. The ability to explore a solution space in an afternoon that would have taken a week is genuinely valuable. The issue isn't the tool. It's what happens to the capacity that the tool is augmenting when it stops being exercised.</p>
+
+  <p>The distinction matters because the remedies are different. Illiteracy is addressed by teaching the skill from scratch. Postliteracy is addressed by returning to a practice that was abandoned, which is harder in a different way: you have to choose the discomfort of doing again what the environment has made it easy not to do. You have to pick up the pen. You have to close the tab and write the function by hand. Not because AI assistance is bad, but because the workout is what maintains the capacity that makes the assistance worth anything.</p>
+
+  <p>If you can't hold the system model yourself, you can't evaluate whether what the agent produced is right. If you can't synthesize, you can't catch the 10% with deeply buried defects. The postliterate reader can follow a sentence. The postliterate coder can read a diff. Neither can tell you whether the whole thing holds together.</p>
+
+  <p>That's the capacity that fails silently. Not with an error. With a diff that looks clean, tests that pass, and an invariant that's already gone.</p>
+
+  <div class="end">
+    Pairs with: <a href="/blog/accountability-debt.html">Accountability debt</a> · <a href="/blog/proven-vs-elegant.html">Proven vs elegant</a> · <a href="/blog/wonder.html">Wonder</a>
+  </div>
+</article>
+
+<footer>
+  <a href="/">Paperworlds</a>
+</footer>
+
+</body>
+</html>
