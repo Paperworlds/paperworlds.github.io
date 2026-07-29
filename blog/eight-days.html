@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Eight days · Paperworlds</title>
+<meta name="description" content="An AI system improved its own harness for eight days and outperformed two years of human tuning. The two years weren't made irrelevant. They wrote the eval.">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'SF Mono', 'Fira Code', 'Cascadia Code', 'JetBrains Mono', monospace;
+    background: #0d1117;
+    color: #c9d1d9;
+    line-height: 1.7;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+  }
+
+  a { color: #58a6ff; text-decoration: none; }
+  a:hover { text-decoration: underline; }
+
+  .crumbs {
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 32px 24px 0;
+    width: 100%;
+    font-size: 0.78rem;
+    color: #6e7681;
+  }
+  .crumbs a { color: #6e7681; }
+  .crumbs a:hover { color: #c9d1d9; text-decoration: none; }
+
+  article {
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 40px 24px 64px;
+    width: 100%;
+    flex: 1;
+  }
+
+  article header { margin-bottom: 40px; }
+
+  h1 {
+    font-size: 1.8rem;
+    color: #f0f6fc;
+    font-weight: 600;
+    line-height: 1.3;
+    letter-spacing: -0.3px;
+    margin-bottom: 12px;
+    text-wrap: balance;
+  }
+
+  .meta {
+    font-size: 0.78rem;
+    color: #6e7681;
+  }
+
+  .meta .tag {
+    border-radius: 12px;
+    padding: 1px 8px;
+    margin-left: 8px;
+    color: #d2a8ff;
+    border: 1px solid #8957e5;
+  }
+
+  h2 {
+    font-size: 1.05rem;
+    color: #f0f6fc;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    margin: 40px 0 16px;
+    padding-top: 24px;
+    border-top: 1px solid #21262d;
+    text-wrap: balance;
+  }
+
+  h2:first-of-type { border-top: none; padding-top: 0; }
+
+  p {
+    color: #c9d1d9;
+    font-size: 0.92rem;
+    margin-bottom: 16px;
+  }
+
+  em { color: #f0f6fc; }
+
+  blockquote {
+    border-left: 3px solid #30363d;
+    padding: 8px 0 8px 22px;
+    margin: 28px 0;
+    color: #8b949e;
+    font-style: italic;
+    font-size: 0.95rem;
+    line-height: 1.65;
+  }
+
+  .end {
+    margin-top: 48px;
+    padding-top: 24px;
+    border-top: 1px solid #21262d;
+    color: #8b949e;
+    font-size: 0.86rem;
+  }
+
+  footer {
+    padding: 24px;
+    text-align: center;
+    color: #484f58;
+    font-size: 0.78rem;
+    border-top: 1px solid #21262d;
+  }
+
+  footer a { color: #6e7681; }
+
+  @media (max-width: 640px) {
+    article { padding: 24px 18px 48px; }
+    h1 { font-size: 1.5rem; }
+  }
+</style>
+</head>
+<body>
+
+<nav class="crumbs">
+  <a href="/">Paperworlds</a> · <a href="/blog/">Blog</a>
+</nav>
+
+<article>
+  <header>
+    <h1>Eight days</h1>
+    <div class="meta">
+      2026-07-27 · 6 min read
+      <span class="tag">reflections</span>
+    </div>
+  </header>
+
+  <p>The way I keep explaining this experiment to people is: there were two loops, and the interesting one wasn't the inner loop. The inner loop did the expected thing — take a piece of code, run it against an evaluation metric, iterate toward a better score. The outer loop did something stranger. It watched the inner loop work. It studied where the inner loop stalled, where it moved well, what made it better across many runs, and then it rewrote the harness — the whole scaffolding of watching and scoring and iterating — and handed it back down. A hundred times, over eight days.</p>
+
+  <p>After those eight days, the system outperformed the hand-tuned baseline on every held-out benchmark, including one in a domain it had never trained on. The baseline was the version two people had spent two years carefully and thoughtfully building by hand.</p>
+
+  <h2>Self efficiency</h2>
+
+  <p>Some of what the outer loop found was the kind of thing you'd expect from a very diligent engineer sitting with the problem long enough: smarter search policies, better exploration strategies, the obvious improvements that accumulate with sustained attention. What I keep coming back to is the rest. It built a memory compression system that shrunk the prompt by sixteen times. It developed anti-reward-hacking defenses against a failure mode it had never been asked to care about, on tasks outside its training distribution, entirely because those things were on the path to where it was going, and it found them while passing through.</p>
+
+  <p>That's the part that doesn't fit neatly into a story about AI performance benchmarks. When a system optimizing for one thing spontaneously builds protections against a different failure mode, it isn't just doing fast search — it's discovering the shape of the problem, the shape that a human who'd thought about it hard enough would eventually draw. The difference is that the human would have taken longer, and probably would have been more surprised by what they found.</p>
+
+  <p>Humans do a version of this too, in lighter and slower forms. I find it in myself sometimes: you hit a wall, see your limits clearly for a moment, and the question that surfaces isn't "how do I work harder at this" but something more like "how do I improve from here in a way I didn't expect." Not grinding in the same direction, but watching yourself work and noticing what's actually wrong with how you're approaching it. The outer loop, in that moment, is you — stepping outside the inner loop just long enough to rewrite the harness. The system did it a hundred times in eight days. We do it rarely, when the discomfort gets loud enough to pay attention to.</p>
+
+  <h2>The circle has not closed</h2>
+
+  <p>They tried to close the circle. The natural next question — the one that makes the whole experiment vertiginous if you follow it — was whether the improved inner agent could now bootstrap a better outer loop, whether you could hand the watcher the same tools you gave the watched and let the improvement keep going from there. They called it Level 2. The results were mixed, they said, simply and without drama. The loop improved the tool. The tool couldn't turn around and improve the loop.</p>
+
+  <p>Picture it geometrically: you're running along the perimeter of a circle. You're covering real ground, getting faster, finding shortcuts, discovering better ways to move. But the place where you started — the outer loop's ability to rewrite the outer loop — hasn't come back into view. You're still running on the outside of something whose center you haven't found. The arc is real and the movement is real, but the circle hasn't closed. Self-improvement of the inner loop is the arc. Recursive self-improvement — genuine ignition — would be returning to where you began with something the starting point couldn't have built. Eight days moved along the arc. We are still on the perimeter.</p>
+
+  <p>I think this is actually the most interesting result in the paper, and not because it's a limitation worth taking comfort in. It's a signal about where the human is still located in this picture. Not in the search, which the system handles better. Not in the refinement, which eight days resolved. The human is in the thing the search is oriented toward: the choice of what to get better at, the decision that a certain kind of improvement is worth pursuing in the first place. That decision lives somewhere the recursion hasn't reached.</p>
+
+  <p>There's an economic angle that makes this more than a philosophical point. When Cursor looked at the cost structure of agent swarms — hierarchical teams of planner and worker agents, which is how serious agentic work actually gets structured now — they found that frontier-model intelligence only concentrates at two moments: when you decompose a goal and when you navigate a genuine tradeoff. Once ambiguity collapses into explicit instructions, cheaper models can execute. Workers consumed ninety percent of the tokens but only a third of the dollars. The same work that cost around ten thousand dollars with a frontier model handling everything came in at thirteen hundred with a frontier planner routing to cheaper workers. The outer loop is the expensive part. It's also doing the only work that can't be routed to something cheaper. Which means improving it isn't just philosophically interesting. It's where all the leverage is.</p>
+
+  <h2>What it all means: we need the 2 years to get to the 8 days</h2>
+
+  <p>The thing I want to push back on — gently, because I understand the instinct — is the read that says eight days made the two years irrelevant. That the compression ratio is what you should take away. It isn't.</p>
+
+  <p>The good things seem to be made of a material that's dense with difficult things. Not despite the difficulty — because of it. The two years weren't the slow version of eight days. They were the substance that made eight days mean something. The pain of figuring out what "better" looks like, of being wrong about it, of sitting with a benchmark that keeps failing you in ways you don't fully understand — that's what crystallizes into an eval. And the eval is what the system reads. You can't skip to the smile. The smile is made of the difficult material. We need pain to produce it, and I mean that not as a motivational observation but as something closer to a structural fact about how improvement works at all: something has to have suffered the problem long enough to know what solving it looks like.</p>
+
+  <p>The two years wrote the eval. The judgment about what counts as improvement, what the benchmark should actually measure, what success looks like from outside before you know what the inside holds. You can compress the search — eight days against two years suggests the compression is real and probably not finished, and if you follow that trajectory honestly, toward four days, then one, then hours, you arrive somewhere uncomfortable: a version of this where the outer loop runs iterations faster than a human researcher could follow, not because the human is slow in any culpable sense, but because the cognitive clock doesn't speed up. The speed of light is the constraint you can't engineer your way past. Human learning rate is a different kind of constant: not a law of physics, but a ceiling that doesn't lift with better hardware. The outer loop has no equivalent ceiling, at least not one we've found yet, which means the gap between what a person can learn in a year and what the system can optimize in a year isn't fixed. It's widening. The compression ratio is a direction, not a stopping point. And yet — this is the thing — you still cannot compress the decision that something is worth searching for in the first place. The eval is that decision, crystallized into something a system can optimize against. And the outer loop, with all its capability, needed the eval to exist before it could learn anything at all. The two years weren't the answer. They were the question, written in a form the system could read.</p>
+
+  <p>There's a name for the thing that survived eight days, and I think we should start using it more deliberately. The outer loop: the system that watches the system, that decides what counts as improvement, that writes the evals the inner loop spends its cycles trying to beat. Eight days proved the inner loop can be delegated. They also proved, quietly but clearly, that the outer loop can't be delegated to itself — not yet, not in the way we imagined. The recursion stopped. The improvement improved the tool. The tool couldn't improve the watcher.</p>
+
+  <p>Which means the outer loop is still ours. I don't mean that as a consolation for people worried about what's being automated. I mean it as a description of where the real work is, and a suggestion that we treat it accordingly: as the thing worth protecting, worth practicing, worth getting deliberately better at. The eight days were only as good as the question they were answering. The question came from outside the loop.</p>
+
+  <p>It still does.</p>
+
+  <div class="end">
+    Source: <a href="https://threadreaderapp.com/thread/2077079778793042425.html">The first experimental evidence of recursive self-improvement</a> · AIDE² team, July 2026<br><br>
+    Pairs with: <a href="/blog/accountability-debt.html">Accountability debt</a> · <a href="/blog/postliterate-code.html">Postliterate code</a> · <a href="/blog/inside-an-electron.html">Inside an electron</a>
+  </div>
+</article>
+
+<footer>
+  <a href="/">Paperworlds</a>
+</footer>
+
+</body>
+</html>
