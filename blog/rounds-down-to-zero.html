@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Rounds down to zero · Paperworlds</title>
+<meta name="description" content="The 80/20 rule inverts for agent tooling. Partial workflow coverage doesn't deliver partial value. It delivers none. An agent that can't complete a flow doesn't partially complete it — it fails.">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'SF Mono', 'Fira Code', 'Cascadia Code', 'JetBrains Mono', monospace;
+    background: #0d1117;
+    color: #c9d1d9;
+    line-height: 1.7;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+  }
+
+  a { color: #58a6ff; text-decoration: none; }
+  a:hover { text-decoration: underline; }
+
+  .crumbs {
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 32px 24px 0;
+    width: 100%;
+    font-size: 0.78rem;
+    color: #6e7681;
+  }
+  .crumbs a { color: #6e7681; }
+  .crumbs a:hover { color: #c9d1d9; text-decoration: none; }
+
+  article {
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 40px 24px 64px;
+    width: 100%;
+    flex: 1;
+  }
+
+  article header { margin-bottom: 40px; }
+
+  h1 {
+    font-size: 1.8rem;
+    color: #f0f6fc;
+    font-weight: 600;
+    line-height: 1.3;
+    letter-spacing: -0.3px;
+    margin-bottom: 12px;
+    text-wrap: balance;
+  }
+
+  .meta {
+    font-size: 0.78rem;
+    color: #6e7681;
+  }
+
+  .meta .tag {
+    border-radius: 12px;
+    padding: 1px 8px;
+    margin-left: 8px;
+    color: #d29922;
+    border: 1px solid #9e6a03;
+  }
+
+  h2 {
+    font-size: 1.05rem;
+    color: #f0f6fc;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    margin: 40px 0 16px;
+    padding-top: 24px;
+    border-top: 1px solid #21262d;
+    text-wrap: balance;
+  }
+
+  h2:first-of-type { border-top: none; padding-top: 0; }
+
+  p {
+    color: #c9d1d9;
+    font-size: 0.92rem;
+    margin-bottom: 16px;
+  }
+
+  em { color: #f0f6fc; }
+
+  blockquote {
+    border-left: 3px solid #30363d;
+    padding: 8px 0 8px 22px;
+    margin: 28px 0;
+    color: #8b949e;
+    font-style: italic;
+    font-size: 0.95rem;
+    line-height: 1.65;
+  }
+
+  .end {
+    margin-top: 48px;
+    padding-top: 24px;
+    border-top: 1px solid #21262d;
+    color: #8b949e;
+    font-size: 0.86rem;
+  }
+
+  footer {
+    padding: 24px;
+    text-align: center;
+    color: #484f58;
+    font-size: 0.78rem;
+    border-top: 1px solid #21262d;
+  }
+
+  footer a { color: #6e7681; }
+
+  @media (max-width: 640px) {
+    article { padding: 24px 18px 48px; }
+    h1 { font-size: 1.5rem; }
+  }
+</style>
+</head>
+<body>
+
+<nav class="crumbs">
+  <a href="/">Paperworlds</a> · <a href="/blog/">Blog</a>
+</nav>
+
+<article>
+  <header>
+    <h1>Rounds down to zero</h1>
+    <div class="meta">
+      2026-07-29 · 5 min read
+      <span class="tag">essay</span>
+    </div>
+  </header>
+
+  <p>The 80/20 rule is one of those ideas that spreads because it keeps being right in practice. Eighty percent of your users touch twenty percent of your features. Most bugs cluster in a small part of the code. Ship the important slice and leave the gaps for later; users will work around the edges, and the partial solution is still a solution, just a smaller one. This has been true for long enough that it's stopped feeling like a heuristic and started feeling like a law.</p>
+
+  <p>It doesn't hold for agents running autonomously, and the failure mode is more insidious than the rule suggests.</p>
+
+  <p>The finding is from Sierra's MCP Gateway engineering diary, which is one of the more honest accounts of what actually happens when you build agent tooling at real scale. They were thinking about coverage explicitly, and what they found is that for autonomous completion, the missing 20% tends to dominate the value. Partial workflow coverage doesn't deliver partial results — it often delivers none, because an agent that can't complete a flow doesn't partially complete it. It fails, or worse, it produces output that looks complete and isn't. The eighty percent that works counts for little if the twenty percent that doesn't is sitting somewhere on the path. This doesn't mean partial tools are useless — they're fine for demos, for internal dogfooding, for partially automating low-risk tasks with a human in the loop. What they're not fine for is autonomous deployment, where the gap the tool can't handle is exactly the gap nobody's watching.</p>
+
+  <h2>The friction nobody carries</h2>
+
+  <p>Users can work around gaps because they have something agents don't: context about the gap itself. A user notices when something isn't working, adjusts their approach, finds the alternative path or asks someone who knows it. The gap becomes friction, and friction is annoying but absorbable — the user carries it and keeps going. Most software is built on the assumption that this absorption will happen, and most of the time it does.</p>
+
+  <p>Agents don't carry friction — at least not the ones running in production today. There's no metacognitive layer that notices the gap and decides to route around it, no instinct to find the alternative path or ask for help mid-flow. It stops, or retries the wrong thing until it runs out of attempts, or produces output that looks finished but isn't. The agent was given a goal, it tried to reach it through the interface you provided, and if the interface can't support the full path, the attempt fails in a way that doesn't announce itself as a coverage problem. It just looks like failure. Future agents with stronger planning and recovery loops may absorb some of this — but the tooling most of us are building for and deploying against right now doesn't, and designing as if it does is optimistic to the point of being dangerous.</p>
+
+  <p>A concrete example of how this plays out: a code review agent that handles style, obvious bugs, and test coverage — call it 80% of what a reviewer does. What it can't track is cross-PR invariants: the constraint that module A and module B must always be updated together, or that a certain interface must stay stable across three services. The agent approves the PR because everything it can check looks fine. The invariant breaks. Nobody knows until something fails downstream, because the tool covered everything it could see and the thing it couldn't see was the one that mattered. That's the deceptive part of partial coverage: it doesn't fail loudly. It passes, quietly wrong.</p>
+
+  <h2>Small and whole beats large and broken</h2>
+
+  <p>What this changes is the design question you're trying to answer. For a human-facing tool the question is: what's the most valuable feature set I can ship? For an agent tool it becomes: what's the smallest complete surface I can actually commit to? These produce different answers, and in my experience the second question is much harder to sit with honestly, because "complete" means being willing to leave things out rather than covering them partially and hoping the agent adapts.</p>
+
+  <p>A narrow surface is a trustworthy surface, in the sense that matters for agents: they can form accurate expectations about what they'll get back. Every degree of freedom you remove is a failure mode you've eliminated. Every optional field, every edge case you've half-handled, every tool you've included but not fully wired — those are the places where partial coverage hides, waiting to round down. The Sierra team kept arriving at the same place: constraint is not a limitation. It's the thing that makes the surface reliable enough to build on.</p>
+
+  <blockquote>
+    Ship less, ship whole.
+  </blockquote>
+
+  <p>This is also part of why the flat CLI tends to work better for agent callers than the JSON API — not as a law of nature, but as a useful design instinct. The CLI's argument parser enforces completeness structurally: required arguments are required, the interface surfaces missing inputs immediately, before business logic runs, before the agent has committed to a path it can't finish. It's harder to accidentally ship partial coverage when the tool itself rejects incomplete calls. That's a preference, not a theorem, but it's one that keeps proving itself in practice.</p>
+
+  <h2>The hard cases find you</h2>
+
+  <p>There's a connection here that I keep thinking about, to the accountability-debt argument about the 10% problem — the deeply buried defects that don't surface until something goes wrong in production, at scale, at a bad moment. In normal software the 10% with hidden defects is a risk you manage: it's usually not on the critical path, it fails in contained ways, you discover and fix it over time. The 80% that works reliably tends to absorb and mask the part that doesn't.</p>
+
+  <p>For agent tooling, the broken 10% tends to sit on the critical path, because agents get sent to the hard cases — the ones that happen at volume, in contexts nobody anticipated, at hours when nobody is watching. The hard cases are exactly where coverage gaps live. So the rounding isn't from 80% down to 80%. It's from 80% down to zero, at precisely the moment the result mattered most.</p>
+
+  <p>The answer I keep coming back to is to make completeness a first-class constraint before you ship, and to be honest about what you haven't covered — not as a disclaimer but as design. Name where the circle isn't closed. Because unlike a human user, who will tell you they found the gap, or work around it, or come back and ask how to handle the edge case, the agent won't. It'll just stop. And usually it'll do it quietly enough that you won't know right away that it did.</p>
+
+  <p>The danger is not that agents fail everywhere. It's that they fail at the seam — the one step that connects what came before to what needs to happen next — and the seam is where the whole thing becomes real. A workflow is not a list of mostly-working steps. It is a path, and a path that breaks at the threshold does not lead anywhere. The missing piece, in human work, can be carried by judgment. In agent work, it is the weight-bearing stone.</p>
+
+  <figure style="margin: 48px 0 32px">
+    <svg viewBox="0 0 560 80" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:560px;display:block;margin:0 auto">
+      <!-- solid connections -->
+      <line x1="50" y1="40" x2="150" y2="40" stroke="#30363d" stroke-width="1.5"/>
+      <line x1="170" y1="40" x2="270" y2="40" stroke="#30363d" stroke-width="1.5"/>
+      <line x1="290" y1="40" x2="390" y2="40" stroke="#30363d" stroke-width="1.5"/>
+      <!-- broken connection -->
+      <line x1="410" y1="40" x2="510" y2="40" stroke="#484f58" stroke-width="1.5" stroke-dasharray="10,22"/>
+      <!-- active nodes -->
+      <circle cx="40"  cy="40" r="10" fill="#161b22" stroke="#8b949e" stroke-width="1.5"/>
+      <circle cx="160" cy="40" r="10" fill="#161b22" stroke="#8b949e" stroke-width="1.5"/>
+      <circle cx="280" cy="40" r="10" fill="#161b22" stroke="#8b949e" stroke-width="1.5"/>
+      <circle cx="400" cy="40" r="10" fill="#161b22" stroke="#8b949e" stroke-width="1.5"/>
+      <!-- ghost node — unreachable -->
+      <circle cx="520" cy="40" r="10" fill="#161b22" stroke="#30363d" stroke-width="1.5" opacity="0.3"/>
+    </svg>
+    <figcaption style="text-align:center;font-size:0.75rem;color:#484f58;margin-top:12px;font-family:'SF Mono','Fira Code',monospace">the missing step is not at the end. it is at the seam.</figcaption>
+  </figure>
+
+  <div class="end">
+    Source: <a href="https://blog.persistent.info/2026/07/sierra-mcp-gateway-dev-diary.html">Sierra MCP Gateway Dev Diary</a><br><br>
+    Pairs with: <a href="/blog/binary-interface.html">Binary interface</a> · <a href="/blog/accountability-debt.html">Accountability debt</a>
+  </div>
+</article>
+
+<footer>
+  <a href="/">Paperworlds</a>
+</footer>
+
+</body>
+</html>
