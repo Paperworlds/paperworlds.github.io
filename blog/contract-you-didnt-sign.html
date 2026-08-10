@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The contract you didn't know you signed · Paperworlds</title>
+<meta name="description" content="You pinned a model version. The model updated silently. Your audit trail closes on a component you don't control and can't freeze. On hosted models, behavioral drift, and what you actually signed up for.">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'SF Mono', 'Fira Code', 'Cascadia Code', 'JetBrains Mono', monospace;
+    background: #0d1117;
+    color: #c9d1d9;
+    line-height: 1.7;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+  }
+
+  a { color: #58a6ff; text-decoration: none; }
+  a:hover { text-decoration: underline; }
+
+  .crumbs {
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 32px 24px 0;
+    width: 100%;
+    font-size: 0.78rem;
+    color: #6e7681;
+  }
+  .crumbs a { color: #6e7681; }
+  .crumbs a:hover { color: #c9d1d9; text-decoration: none; }
+
+  article {
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 40px 24px 64px;
+    width: 100%;
+    flex: 1;
+  }
+
+  article header { margin-bottom: 40px; }
+
+  h1 {
+    font-size: 1.8rem;
+    color: #f0f6fc;
+    font-weight: 600;
+    line-height: 1.3;
+    letter-spacing: -0.3px;
+    margin-bottom: 12px;
+    text-wrap: balance;
+  }
+
+  .meta {
+    font-size: 0.78rem;
+    color: #6e7681;
+  }
+
+  .meta .tag {
+    border-radius: 12px;
+    padding: 1px 8px;
+    margin-left: 8px;
+    border: 1px solid;
+  }
+
+  p {
+    color: #c9d1d9;
+    font-size: 0.92rem;
+    margin-bottom: 16px;
+  }
+
+  em { color: #f0f6fc; }
+
+  blockquote {
+    border-left: 3px solid #30363d;
+    padding: 8px 0 8px 22px;
+    margin: 28px 0;
+    color: #8b949e;
+    font-style: italic;
+    font-size: 0.95rem;
+    line-height: 1.9;
+  }
+
+  blockquote .src {
+    display: block;
+    font-style: normal;
+    font-size: 0.78rem;
+    color: #6e7681;
+    margin-top: 10px;
+  }
+
+  .end {
+    margin-top: 48px;
+    padding-top: 24px;
+    border-top: 1px solid #21262d;
+    color: #8b949e;
+    font-size: 0.86rem;
+  }
+
+  footer {
+    padding: 24px;
+    text-align: center;
+    color: #484f58;
+    font-size: 0.78rem;
+    border-top: 1px solid #21262d;
+  }
+
+  footer a { color: #6e7681; }
+
+  @media (max-width: 640px) {
+    article { padding: 24px 18px 48px; }
+    h1 { font-size: 1.5rem; }
+  }
+</style>
+</head>
+<body>
+
+<nav class="crumbs">
+  <a href="/">Paperworlds</a> · <a href="/blog/">Blog</a>
+</nav>
+
+<article>
+  <header>
+    <h1>The contract you didn't know you signed</h1>
+    <div class="meta">
+      2026-08-05 · 6 min read
+      <span class="tag" style="color:#d29922;border-color:#9e6a03">essay</span>
+      <span class="tag" style="color:#79c0ff;border-color:#1f6feb">textmasks</span>
+    </div>
+  </header>
+
+  <p>Pin a library version and you get that version. That is the deal — the foundational agreement of modern software. <em>requests==2.31.0</em> is exactly that. You can audit it, reproduce it, roll it back. The dependency graph is a commitment. When something breaks, you know what changed, because you decided what changed. The entire toolchain of software engineering is built on this: declared dependencies are stable things.</p>
+
+  <p>Now declare a dependency on a hosted model. What you get is not pinned. The weights change. The alignment tuning shifts. The safety configuration updates. The behavioral tendencies that made your prompts work in March are subtly different by June, and nothing in your system tells you this happened. There was no changelog entry. The version string might not have changed at all. You are running on a moving target that presents itself as a fixed coordinate, and you opted in — somewhere in the terms, in the pricing page, in the implicit understanding of what "hosted" means — to exactly this arrangement. The clause was not in fine print. It was in the nature of the thing.</p>
+
+  <p>This is not a complaint about AI providers. It is a structural feature of how hosted models work. Providers improve their models continuously. That is what you are paying for. The improvement is real and the direction is good. But the contract implicit in a pinned dependency — the commitment to behavioral stability — does not transfer. You signed up for <em>the model</em>, not <em>this exact version of the model, frozen in time</em>. Those are different things, and we have spent years building as if they were the same.</p>
+
+  <p>The AI Bill of Materials is an attempt to bring the audit habits of software provenance to AI components — track what was used, what version, under what conditions, so the regulator's question has an answer: what produced this output, and can you reproduce it? The intention is correct. The architecture makes it nearly impossible to honor. A formally correct AI-BOM would require the model to be pinned — not just named, but frozen. You can say "Claude Sonnet 4.6" but you cannot say "the specific weights and alignment configuration that were running on 2026-07-23 at 14:35 UTC." That artifact does not exist as something you can point to, retrieve, or verify against. The provenance chain closes on a component you don't control and can't freeze. The audit trail is valid up to that point and then terminates. Regulators are beginning to ask for something the architecture cannot provide, and we are at an early stage of understanding what that gap will cost.</p>
+
+  <p>Armin Ronacher has written about the way improving models make surrounding tooling assumptions break invisibly. The silent update is the mechanism. The model improves; something that depended on specific model behavior quietly degrades. Nothing throws an error. Nothing raises an exception. The behavior changed, the tooling continued, and the failure is discovered weeks later when someone notices that a response pattern which was correct in March no longer fits what the system was tuned to expect. By then the rollback is not available — you cannot revert to the model you were running on. The improvement that broke you has already been folded into something that produced other improvements elsewhere, and the version you needed is gone.</p>
+
+  <p>The deeper problem is not a single broken integration. It is what happens at the infrastructure level when the component at the center of your system can change without notice. A multi-agent orchestration layer — workflow definitions, persona contracts, behavior specifications calibrated against a specific model disposition — does not fail loudly when the model updates. It drifts. The personas that worked were tuned against something that no longer quite exists. The system runs. It runs differently. Nobody knows why, because the thing that changed left no trace and holds no changelog. Debugging requires you to reconstruct the counterfactual: what was this model doing before, and what is it doing now, and how do I tell the difference? None of those questions have clean answers.</p>
+
+  <p>The response I have been building toward in <a href="https://github.com/Paperworlds/textmasks">textmasks</a> is not to fix the contract you didn't sign — you cannot. The response is to define your own contract above the instability layer. A persona file is not a model pin. It is a behavioral specification that you own and version and can test against. It says: regardless of what this model does or becomes, here is the role, the constraints, the character, the facts this agent should carry. When the model silently updates and the behavior shifts, you have a target. You know what you intended. You can detect the drift, recalibrate, and document the change — not because the provider told you, but because you have something to measure against. The mask does not prevent the substrate from moving. It gives you a fixed point above the movement.</p>
+
+  <p>The structural question nobody has seriously answered: should providers commit to behavioral contracts alongside model versions? Not just a name — "Claude Sonnet 4.6" — but a versioned commitment: this model tends toward X, refuses Y, handles ambiguity with Z. When behavior changes beyond a defined threshold, a new version is issued, the old one is available for some period, and users can pin. Nobody does this today. It is probably a regulatory question eventually. If AI-generated code is required to be auditable, the audit chain needs to close on something stable, and a name without a behavioral specification is not stable enough to close on. We are some distance from compliance frameworks catching up to the architecture — but that distance is not infinite, and the gap is structural, not something better tooling will close on its own.</p>
+
+  <p>The funny thing about the contract you didn't sign is that you have been honoring it all along — building on the assumption that the component is stable because the interface has not changed. It is a reasonable assumption. It is the assumption that built every package registry and lockfile and reproducible build system we have. It just does not apply here, and we are only beginning to understand what it means to build on a foundation that moves quietly beneath everything you put on it.</p>
+
+  <div class="end">
+    Pairs with: <a href="/blog/better-but-worse.html">Better but worse</a> · <a href="/blog/we-are-many-slowly.html">We are many, slowly</a> · <a href="/blog/accountability-debt.html">Accountability debt</a>
+  </div>
+</article>
+
+<footer>
+  <a href="/">Paperworlds</a>
+</footer>
+
+</body>
+</html>
