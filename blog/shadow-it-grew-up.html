@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Shadow IT grew up · Paperworlds</title>
+<meta name="description" content="Shadow IT used to mean a rogue SaaS subscription. Now it means autonomous agents with API access and the ability to act. The Frankenstein problem is organizational, not technical — and the fix isn't a policy memo.">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'SF Mono', 'Fira Code', 'Cascadia Code', 'JetBrains Mono', monospace;
+    background: #0d1117;
+    color: #c9d1d9;
+    line-height: 1.7;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+  }
+
+  a { color: #58a6ff; text-decoration: none; }
+  a:hover { text-decoration: underline; }
+
+  .crumbs {
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 32px 24px 0;
+    width: 100%;
+    font-size: 0.78rem;
+    color: #6e7681;
+  }
+  .crumbs a { color: #6e7681; }
+  .crumbs a:hover { color: #c9d1d9; text-decoration: none; }
+
+  article {
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 40px 24px 64px;
+    width: 100%;
+    flex: 1;
+  }
+
+  article header { margin-bottom: 40px; }
+
+  h1 {
+    font-size: 1.8rem;
+    color: #f0f6fc;
+    font-weight: 600;
+    line-height: 1.3;
+    letter-spacing: -0.3px;
+    margin-bottom: 12px;
+    text-wrap: balance;
+  }
+
+  h2 {
+    font-size: 0.88rem;
+    color: #8b949e;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    margin: 36px 0 14px;
+  }
+
+  .meta {
+    font-size: 0.78rem;
+    color: #6e7681;
+  }
+
+  .meta .tag {
+    border-radius: 12px;
+    padding: 1px 8px;
+    margin-left: 8px;
+    border: 1px solid;
+  }
+
+  p {
+    color: #c9d1d9;
+    font-size: 0.92rem;
+    margin-bottom: 16px;
+  }
+
+  em { color: #f0f6fc; }
+
+  .end {
+    margin-top: 48px;
+    padding-top: 24px;
+    border-top: 1px solid #21262d;
+    color: #8b949e;
+    font-size: 0.86rem;
+  }
+
+  footer {
+    padding: 24px;
+    text-align: center;
+    color: #484f58;
+    font-size: 0.78rem;
+    border-top: 1px solid #21262d;
+  }
+
+  footer a { color: #6e7681; }
+
+  @media (max-width: 640px) {
+    article { padding: 24px 18px 48px; }
+    h1 { font-size: 1.5rem; }
+  }
+</style>
+</head>
+<body>
+
+<nav class="crumbs">
+  <a href="/">Paperworlds</a> · <a href="/blog/">Blog</a>
+</nav>
+
+<article>
+  <header>
+    <h1>Shadow IT grew up</h1>
+    <div class="meta">
+      2026-09-01 · 7 min read
+      <span class="tag" style="color:#d29922;border-color:#9e6a03">essay</span>
+      <span class="tag" style="color:#79c0ff;border-color:#1f6feb">textmasks</span>
+    </div>
+  </header>
+
+  <p>Seventeen people in HR, each solving the same problem. Seventeen agents, each built independently, each with its own read on what "handle the onboarding request" means. Nobody told IT. Each one has API access. Each one touches production systems — the HRIS, the identity provider, the ticketing queue, whatever was closest at hand when someone needed the thing to actually work. Ask what the org's attack surface looks like and the honest answer is: nobody knows, not because it's hidden, but because nobody counted. The seventeen weren't built in secret. They were built in the open, one at a time, each one reasonable on its own, and the sum was never anybody's job to add up.</p>
+
+  <p>This is the shape of the problem worth naming precisely, because the name people reach for — shadow IT — undersells it.</p>
+
+  <h2>A different order of magnitude</h2>
+
+  <p>Shadow IT used to mean a marketing team paying for a SaaS tool on a personal card because procurement took three weeks. It was a governance headache. Someone eventually found the subscription on an expense report, brought it into the fold or shut it down, and the risk, while real, had a ceiling. A rogue spreadsheet tool doesn't act. It sits there, holding data, waiting for a human to do something with it.</p>
+
+  <p>An agent doesn't wait. It has permissions and it uses them. It reads files, writes to systems, calls APIs, and does all of this on a loop, without someone approving each step. The difference between the old shadow IT and the new one isn't really about how many unauthorized tools exist — organizations have always had more of those than IT could see. The difference is in what the tools are now capable of doing once they exist. A forgotten subscription is a line item. A forgotten agent is a standing, autonomous actor with a key to something.</p>
+
+  <h2>The organizational trap underneath the technical one</h2>
+
+  <p>Here's the part that makes this hard to fix, and it's not a tooling problem — it's an incentive problem. Building an agent to handle one HR person's version of the onboarding workflow takes about twenty minutes. It solves their problem today. Coordinating seventeen people around a shared, reviewed, governed primitive instead takes weeks, meetings, and — critically — asks each person to give up a piece of local autonomy for the sake of a system-wide property that they, personally, will barely feel.</p>
+
+  <p>That's a bad trade from where any one of the seventeen is standing. The cost of coordination is immediate and personal — the meetings, the compromise, the loss of "my agent does exactly what I want." The benefit of coordination is distributed and delayed — a smaller attack surface, an auditable set of permissions, a system nobody has to reverse-engineer six months from now. Rational individual behavior, aggregated, produces an irrational organizational outcome. This is why the fix can't just be "tell people to stop." The twenty-minute agent will always win that argument in the moment it's built.</p>
+
+  <h2>What a shared primitive actually looks like</h2>
+
+  <p>The concrete answer isn't a policy memo. It's giving the seventeen a version of the twenty-minute agent that's already coordinated — a shared, versionable, auditable persona definition that multiple teams can reference instead of each hand-rolling their own. This is the <a href="https://github.com/Paperworlds/textmasks">textmasks</a> idea: define the agent's scope, permissions, and behavior once, in a form that can be reviewed, diffed, and improved centrally, and let teams build on top of that shared definition instead of starting from a blank prompt each time. Seventeen bespoke agents become one persona, referenced seventeen times, each instantiation inheriting the same guardrails by construction.</p>
+
+  <p>It's worth being honest about where this breaks, though, because it does break, and pretending otherwise would undercut the whole argument. A persona defined in <em>personas/</em> can encode a structural denial — this agent cannot touch that system, full stop, enforced by the shape of the definition itself. But agents don't run in <em>personas/</em>. They run in whatever native format the target platform expects, and getting there requires rendering the persona into that format's <em>agents/</em> directory. Somewhere in that render step, the structural denial — the thing that was actually enforced, not just requested — becomes advisory prose. A hard boundary becomes a strongly worded instruction. The agent's runtime doesn't know the difference between "cannot" and "please don't." Only the definition did, and the definition doesn't run.</p>
+
+  <h2>Where the boundary actually is</h2>
+
+  <p>This is the same tension that keeps showing up across these posts, in different clothes each time. You can write the rule with total precision. You can define least-privilege by construction, at the level of the definition. But enforcement has an edge, and past that edge, the system is trusting something instead of guaranteeing it. The PR is the last honest moment before code ships; after that, you're trusting the code did what the review thought it would. The persona is the last honest moment before an agent runs; after that, you're trusting the render preserved what the definition enforced.</p>
+
+  <p>The question isn't whether that boundary exists — it always does, somewhere. The question is whether you know exactly where it is, or whether you're finding out the way the seventeen HR agents found out: after the fact, when someone finally counts.</p>
+
+  <div class="end">
+    Pairs with: <a href="/blog/we-are-many-slowly.html">We are many, slowly</a> · <a href="/blog/contract-you-didnt-sign.html">The contract you didn't know you signed</a> · <a href="/blog/rounds-down-to-zero.html">Rounds down to zero</a>
+  </div>
+</article>
+
+<footer>
+  <a href="/">Paperworlds</a>
+</footer>
+
+</body>
+</html>
